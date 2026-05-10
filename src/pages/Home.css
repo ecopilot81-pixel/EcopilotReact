@@ -1,0 +1,55 @@
+.hero {
+  background: linear-gradient(#1a5f3a, #2d7a4f);
+  color: white;
+  padding: 60px;
+  text-align: center;
+}
+
+.btn {
+  background: white;
+  color: #1a5f3a;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.features {
+  padding: 40px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.rating {
+  text-align: center;
+  padding: 40px;
+}
+
+.stars span {
+  font-size: 30px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.stars .active {
+  color: #2d7a4f;
+}
+
+.cta {
+  background: #1a5f3a;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
