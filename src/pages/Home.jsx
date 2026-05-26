@@ -8,67 +8,63 @@ const Home = () => {
   return (
     <div className="home">
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="hero">
-        <h1>Eco-Pilot</h1>
-        <p>Recicla, aprende y cuida el planeta</p>
-
-        <Link to="/register" className="btn">
-          Empezar
-        </Link>
-      </section>
-
-      {/* OPCIONES */}
-      <section className="features">
-        <h2>Explora</h2>
-
-        <div className="grid">
-          <Link to="/puntos" className="card">
-            <h3>Puntos de Recolección</h3>
-            <p>Encuentra lugares para reciclar</p>
-          </Link>
-
-          <Link to="/emprendimientos" className="card">
-            <h3>Emprendimientos</h3>
-            <p>Apoya proyectos sostenibles</p>
-          </Link>
-
-          <Link to="/manualidades" className="card">
-            <h3>Manualidades</h3>
-            <p>Aprende a reutilizar</p>
-          </Link>
-
-          <Link to="/juego" className="card">
-            <h3>Juego</h3>
-            <p>Diviértete reciclando</p>
+        <div className="hero-content">
+          <h1>Eco-Pilot</h1>
+          <p>Tu guía interactiva para reciclar, aprender y cuidar el planeta juntos.</p>
+          <Link to="/Login" className="btn">
+          Inicia tu viaje
           </Link>
         </div>
       </section>
 
-      {/* CALIFICACIÓN */}
+      {/* SECCIÓN DE OPCIONES */}
+      <section className="features">
+        <h2>Explora nuestra plataforma</h2>
+        
+        <div className="grid">
+          <Link to="/puntos" className="card">
+            <div className="card-icon">📍</div>
+            <h3>Puntos de Recolección</h3>
+            <p>Encuentra los centros de acopio y reciclaje más cercanos a ti.</p>
+          </Link>
+
+          <Link to="/emprendimientos" className="card">
+            <div className="card-icon">🌱</div>
+            <h3>Emprendimientos</h3>
+            <p>Apoya y conoce proyectos locales con impacto sostenible.</p>
+          </Link>
+
+          {/* Ajustado a "/Manualidades" con mayúscula para que coincida con tu Navbar */}
+          <Link to="/Manualidades" className="card">
+            <div className="card-icon">🎨</div>
+            <h3>Manualidades</h3>
+            <p>Descubre tutoriales creativos para reutilizar tus residuos.</p>
+          </Link>
+        </div>
+      </section>
+
+      {/* SECCIÓN DE CALIFICACIÓN */}
       <section className="rating">
-        <h2>Califica la página</h2>
+        <h2>¿Qué te parece Eco-Pilot?</h2>
+        <p>Tu opinión nos ayuda a seguir mejorando por el planeta.</p>
 
         <div className="stars">
           {[1, 2, 3, 4, 5].map((n) => (
             <span
               key={n}
               onClick={() => setRating(n)}
-              className={n <= rating ? "active" : ""}
+              className={n <= rating ? "star active" : "star"}
+              title={`Calificar con ${n} estrellas`}
             >
               ★
             </span>
           ))}
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="cta">
-        <h2>Únete ahora</h2>
-
-        <Link to="/register" className="btn">
-          Crear cuenta
-        </Link>
+        {rating > 0 && (
+          <p className="rating-thanks">¡Gracias por calificarnos con {rating} estrellas! ✨</p>
+        )}
       </section>
 
     </div>

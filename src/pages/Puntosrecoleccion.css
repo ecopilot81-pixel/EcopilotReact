@@ -1,74 +1,163 @@
-.puntos {
-  padding: 40px;
-  background: #f5f5f5;
+/* Contenedor General de la página */
+.puntos-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  color: #1a202c;
+}
+
+/* Estilos del Encabezado */
+.puntos-header {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.container {
-  display: flex;
-  gap: 30px;
-  margin-top: 30px;
+.puntos-header h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #000000;
 }
 
-/* Mapa */
-.mapa {
-  flex: 2;
+.puntos-header p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
 }
 
-.map-box {
+/* Distribución de las dos columnas principales */
+.puntos-content-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr; /* Columna izquierda un poco más ancha */
+  gap: 40px;
+  align-items: start;
+}
+
+/* Títulos internos de las secciones (Mapa e Info) */
+.mapa-section h2, 
+.ubicaciones-section h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1a202c;
+}
+
+/* Caja contenedora del Mapa */
+.mapa-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra sutil del Figma */
+}
+
+/* Fondo verde claro del mapa interactivo */
+.mapa-placeholder {
+  background-color: #e2f0e7; /* El tono de verde claro que se ve en tu imagen */
+  height: 450px;
+  border-radius: 8px;
   position: relative;
-  height: 400px;
-  background: linear-gradient(#e5f5ed, #d4edda);
-  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* Marcadores */
-.marker {
+/* Pines simulados sobre el mapa */
+.pin {
   position: absolute;
+  font-size: 1.8rem;
+  color: #1e5e3a;
   transform: translate(-50%, -50%);
-  font-size: 28px;
-  cursor: pointer;
-  transition: 0.3s;
+}
+.pin-1 { top: 40%; left: 65%; }
+.pin-2 { top: 75%; left: 60%; }
+.pin-3 { top: 90%; left: 40%; }
+
+/* Lista de Tarjetas a la derecha */
+.tarjetas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.marker:hover {
-  transform: translate(-50%, -50%) scale(1.2);
+/* Tarjeta individual de Ubicación */
+.ubicacion-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.marker.active {
-  transform: translate(-50%, -50%) scale(1.5);
+/* Círculo verde del icono de ubicación */
+.card-icon-container {
+  background-color: #1e5e3a;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; /* Evita que el círculo se deforme */
 }
 
-/* Lista */
-.lista {
+.geo-icon {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+/* Textos dentro de la tarjeta */
+.card-details {
   flex: 1;
-  text-align: left;
 }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
+.card-details h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
 }
 
-.card:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.detail-item {
+  margin: 0 0 8px 0;
+  color: #718096;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.card.active {
-  border: 2px solid #2e7d32;
+.icon-sub {
+  font-size: 1rem;
+  opacity: 0.7;
 }
 
-/* Botón */
-.card button {
-  margin-top: 10px;
-  background: #2e7d32;
-  color: white;
+/* Botón "Cómo Llegar" de la tarjeta */
+.btn-como-llegar {
+  background-color: #1e5e3a;
+  color: #ffffff;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
+  margin-top: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-como-llegar:hover {
+  background-color: #144228;
+}
+
+/* Responsivo para pantallas medianas o celulares */
+@media (max-width: 900px) {
+  .puntos-content-layout {
+    grid-template-columns: 1fr; /* Pasa a una sola columna en pantallas pequeñas */
+    gap: 30px;
+  }
+  
+  .mapa-placeholder {
+    height: 350px;
+  }
 }

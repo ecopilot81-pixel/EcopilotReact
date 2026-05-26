@@ -13,6 +13,8 @@ const Navbar = () => {
           <li><Link to="/">Inicio</Link></li>
           <li><Link to="/puntos">Puntos de Recolección</Link></li> {/* ✔ */}
           <li><Link to="/emprendimientos">Emprendimientos</Link></li>
+          <li><Link to="/Login">Iniciar Sesión / Registro</Link></li>
+          <li><Link to="/Manualidades">Manualidades</Link></li>
         </ul>
 
     </nav>

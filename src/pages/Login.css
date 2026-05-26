@@ -1,0 +1,125 @@
+/* Contenedor principal de la página de Login */
+.login-page-container {
+  background-color: #1e5e3a; /* Color verde oscuro oficial de Eco-Pilot */
+  min-height: calc(100vh - 70px); /* Ocupa el 100% de la altura de la pantalla restando el espacio del Navbar */
+  display: flex; /* Activa Flexbox para poder alinear el contenido fácilmente */
+  justify-content: center; /* Centra la tarjeta horizontalmente */
+  align-items: center; 
+  padding: 20px; /* Margen interno para evitar que la tarjeta toque los bordes en celulares */
+  box-sizing: border-box; /* Asegura que el padding no altere el tamaño total calculado */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+/* Tarjeta blanca centralizada donde viven los formularios */
+.login-card {
+  background-color: #ffffff; /* Fondo completamente blanco */
+  width: 100%; /* Toma todo el ancho disponible... */
+  max-width: 450px; /* ...pero se detiene al llegar a un máximo de 450px */
+  border-radius: 12px; /* Redondea las 4 esquinas de la tarjeta */
+  overflow: hidden; /* Corta cualquier contenido que sobresalga de las esquinas redondeadas */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra suave para dar efecto de elevación 3D */
+}
+
+/* Barra superior que agrupa los dos botones/pestañas */
+.form-tabs {
+  display: flex; /* Coloca los botones uno al lado del otro */
+  background-color: #f7fafc; /* Fondo gris muy claro para diferenciarlo del formulario */
+  border-bottom: 1px solid #e2e8f0; /* Línea divisoria gris abajo de las pestañas */
+}
+
+/* Estilo base para ambos botones de las pestañas */
+.tab-btn {
+  flex: 1; /* Hace que ambos botones midan exactamente lo mismo (50% de ancho cada uno) */
+  padding: 16px; /* Espaciado interno para hacer el botón más alto y fácil de presionar */
+  background: none; /* Quita el fondo por defecto del botón */
+  border: none; /* Quita los bordes por defecto del botón */
+  font-size: 1rem; /* Tamaño de letra estándar */
+  font-weight: 600; /* Texto semi-negrita */
+  color: #718096; /* Color de letra gris para la pestaña que está inactiva */
+  cursor: pointer; /* Cambia el cursor a una mano al pasar por encima */
+  transition: all 0.2s ease; /* Suaviza los cambios de color */
+}
+
+/* Estilo exclusivo que se activa únicamente en la pestaña seleccionada (activa) */
+.tab-btn.active {
+  color: #1e5e3a;
+  background-color: #ffffff; 
+  border-bottom: 3px solid #1e5e3a; 
+}
+/* Bloque contenedor que envuelve los textos, campos e inputs */
+.formulario-content {
+  padding: 40px; /* Margen interno generoso para que el formulario respire y no esté apretado */
+  text-align: center; /* Centra los títulos h2 y subtítulos */
+}
+
+/* Título principal interno (Ej: "Bienvenido de vuelta") */
+.formulario-content h2 {
+  font-size: 1.6rem;
+  color: #1a202c; /* Gris casi negro muy profesional */
+  margin: 0 0 8px 0; /* Margen de 8px solo en la parte inferior */
+}
+
+/* Subtítulos informativos cortos debajo del título */
+.formulario-content .subtitle {
+  color: #718096; /* Gris intermedio */
+  font-size: 0.9rem;
+  margin: 0 0 30px 0; /* Genera una separación de 30px antes de que comiencen los inputs */
+}
+
+/* Alineación de las etiquetas e inputs */
+.formulario-content form {
+  text-align: left; /* Rompe el centrado anterior para que las etiquetas e inputs se alineen a la izquierda */
+}
+
+/* Espaciador para agrupar cada Label con su respectivo Input */
+.input-group {
+  margin-bottom: 20px; /* Separa un campo del siguiente por 20px */
+}
+
+/* Texto de las etiquetas (Ej: "Correo Electrónico") */
+.input-group label {
+  display: block; /* Fuerza a la etiqueta a ocupar toda la línea, mandando al input hacia abajo */
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 6px; /* Separación de 6px con su propio input */
+}
+
+/* Estilos de las cajas de texto (Inputs) donde escribe el usuario */
+.formulario-content input {
+  width: 100%; /* El input llena todo el ancho de la tarjeta */
+  padding: 12px; /* Espacio cómodo para el texto interno */
+  border: 1px solid #cbd5e0; /* Borde gris delgado */
+  border-radius: 6px; /* Redondea ligeramente las esquinas del input */
+  font-size: 0.95rem;
+  color: #2d3748;
+  box-sizing: border-box; /* Evita que el padding sume tamaño extra al ancho */
+  outline: none; /* Quita el borde azul por defecto que traen algunos navegadores */
+  transition: border-color 0.2s, box-shadow 0.2s; /* Suaviza el efecto de enfoque (focus) */
+}
+
+/* Efecto visual cuando el usuario hace clic dentro de un input para escribir */
+.formulario-content input:focus {
+  border-color: #1e5e3a; /* El borde gris cambia al verde Eco-Pilot */
+  box-shadow: 0 0 0 3px rgba(30, 94, 58, 0.1); 
+}
+
+/* Botón grande verde para enviar el formulario */
+.submit-btn {
+  width: 100%; /* Botón del ancho completo del formulario */
+  background-color: #1e5e3a; /* Fondo verde Eco-Pilot */
+  color: #ffffff; /* Texto blanco */
+  border: none; /* Sin bordes */
+  padding: 14px; /* Botón alto y fácil de clickear */
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px; /* Esquinas suavizadas */
+  cursor: pointer; /* Cursor de mano interactiva */
+  margin-top: 10px; /* Separación con el último campo de texto */
+  transition: background-color 0.2s ease; /* Suaviza el cambio de color al pasar el ratón */
+}
+
+/* Efecto cuando el usuario pasa el cursor por encima del botón de enviar */
+.submit-btn:hover {
+  background-color: #144228; /* El verde se oscurece un poco para indicar que es accionable */
+}

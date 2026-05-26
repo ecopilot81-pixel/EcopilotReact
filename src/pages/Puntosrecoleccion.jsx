@@ -1,108 +1,86 @@
-import { useState } from "react";
+import React from "react";
 import "./PuntosRecoleccion.css";
 
 const PuntosRecoleccion = () => {
-  const [selectedPoint, setSelectedPoint] = useState(null);
-
-  const points = [
+  // Datos de prueba basados exactamente en tu captura de Popayán
+  const ubicaciones = [
     {
       id: 1,
-      name: "C.C Terraplaza",
-      address: "Carrera 9 # 24N-01, Popayán",
-      hours: "Lun-Sáb: 10:00 AM - 8:00 PM",
-      phone: "+57 2 820 0000",
-      lat: 2.4527,
-      lng: -76.6057,
+      nombre: "C.C Terraplaza",
+      direccion: "Carrera 9 # 24N-01, Popayán",
+      horario: "Lun-Sáb: 10:00 AM - 8:00 PM",
+      telefono: "+57 2 820 0000",
     },
     {
       id: 2,
-      name: "EcoCampanario",
-      address: "Calle 5 # 8-60, Popayán",
-      hours: "Lun-Vie: 8:00 AM - 6:00 PM",
-      phone: "+57 312 456 7890",
-      lat: 2.4422,
-      lng: -76.6063,
-    },
-    {
-      id: 3,
-      name: "Barrio El Uvo",
-      address: "Carrera 15 con Calle 18N, Popayán",
-      hours: "Lun-Dom: 7:00 AM - 5:00 PM",
-      phone: "+57 300 123 4567",
-      lat: 2.4583,
-      lng: -76.5989,
-    },
-    {
-      id: 4,
-      name: "Barrio El Empedrado",
-      address: "Calle 3 # 12-45, Popayán",
-      hours: "Mar-Sáb: 9:00 AM - 4:00 PM",
-      phone: "+57 315 987 6543",
-      lat: 2.4391,
-      lng: -76.6128,
-    },
+      nombre: "EcoCampanario",
+      direccion: "Calle 5 # 8-60, Popayán",
+      horario: "Lun-Vie: 8:00 AM - 6:00 PM",
+      telefono: "+57 2 833 3333",
+    }
   ];
 
   return (
-    <div className="puntos">
+    <div className="puntos-container">
+      
+      {/* Encabezado Principal */}
+      <header className="puntos-header">
+        <h1>Puntos de Recolección en Popayán</h1>
+        <p>Encuentra el punto de reciclaje más cercano a ti</p>
+      </header>
 
-      <h1>Puntos de Recolección en Popayán</h1>
-      <p>Encuentra el punto de reciclaje más cercano a ti</p>
-
-      <div className="container">
-
-        {/* Mapa */}
-        <div className="mapa">
+      {/* Contenido en dos columnas (Mapa a la izquierda, Tarjetas a la derecha) */}
+      <div className="puntos-content-layout">
+        
+        {/* COLUMNA IZQUIERDA: Mapa Interactivo */}
+        <section className="mapa-section">
           <h2>Mapa Interactivo</h2>
+          <div className="mapa-box">
+            {/* Aquí simulamos el mapa con los pines verdes del diseño */}
+            <div className="mapa-placeholder">
+              <div className="pin pin-1">📍</div>
+              <div className="pin pin-2">📍</div>
+              <div className="pin pin-3">📍</div>
+            </div>
+          </div>
+        </section>
 
-          <div className="map-box">
-            {points.map((point) => (
-              <div
-                key={point.id}
-                className={`marker ${
-                  selectedPoint === point.id ? "active" : ""
-                }`}
-                onClick={() => setSelectedPoint(point.id)}
-                style={{
-                  left: `${((point.lng + 76.62) / 0.02) * 100}%`,
-                  top: `${100 - ((point.lat - 2.43) / 0.03) * 100}%`,
-                }}
-              >
-                📍
+        {/* COLUMNA DERECHA: Lista de Ubicaciones */}
+        <section className="ubicaciones-section">
+          <h2>Ubicaciones</h2>
+          
+          <div className="tarjetas-lista">
+            {ubicaciones.map((lugar) => (
+              <div key={lugar.id} className="ubicacion-card">
+                
+                {/* Icono del pin a la izquierda de la info */}
+                <div className="card-icon-container">
+                  <span className="geo-icon">📍</span>
+                </div>
+
+                {/* Detalles del lugar */}
+                <div className="card-details">
+                  <h3>{lugar.nombre}</h3>
+                  <p className="detail-item">
+                    <span className="icon-sub">🧭</span> {lugar.direccion}
+                  </p>
+                  <p className="detail-item">
+                    <span className="icon-sub">🕒</span> {lugar.horario}
+                  </p>
+                  {lugar.telefono && (
+                    <p className="detail-item">
+                      <span className="icon-sub">📞</span> {lugar.telefono}
+                    </p>
+                  )}
+                  
+                  <button className="btn-como-llegar">Cómo Llegar</button>
+                </div>
+
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Lista */}
-        <div className="lista">
-          <h2>Ubicaciones</h2>
-
-          {points.map((point) => (
-            <div
-              key={point.id}
-              className={`card ${
-                selectedPoint === point.id ? "active" : ""
-              }`}
-              onClick={() => setSelectedPoint(point.id)}
-            >
-              <h3>{point.name}</h3>
-              <p>📍 {point.address}</p>
-              <p>🕒 {point.hours}</p>
-              <p>📞 {point.phone}</p>
-
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://www.google.com/maps?q=${point.lat},${point.lng}`
-                  )
-                }
-              >
-                Cómo llegar
-              </button>
-            </div>
-          ))}
-        </div>
+        </section>
 
       </div>
     </div>
