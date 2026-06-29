@@ -1,11 +1,12 @@
 // Importamos el hook useState para manejar los estados internos del componente
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import "./Login.css";
 
 function Login() {
   // ESTADO: Guarda qué pestaña está activa ('login' o 'registro'). Por defecto inicia en 'login'.
   const [activeTab, setActiveTab] = useState("login");
-  
+  const navigate = useNavigate();
   // ESTADOS DE PRUEBA: Guardan en tiempo real lo que el usuario escribe en los campos de texto
   const [email, setEmail] = useState("");     // Guarda el correo electrónico
   const [password, setPassword] = useState(""); // Guarda la contraseña
@@ -17,9 +18,26 @@ function Login() {
     console.log("=== Datos de Inicio de Sesión ===");
     console.log("Correo:", email);
     console.log("Contraseña:", password);
-    alert(`Prototipo: Iniciando sesión con ${email}`); // Muestra una alerta de confirmación
+    if (email === "admin@ecopilot.com" && password === "123456") {
+      alert("¡Bienvenido Administrador!");
+      
+      // Te redirige al inicio de la app, limpiando el historial para que no pueda volver atrás al login
+      navigate("/", { replace: true }); 
+      
+    } else if (email === "empresa@ecopilot.com" && password === "123456") {
+      alert("¡Bienvenido Aliado Empresarial!");
+      
+      // Si tuvieran una ruta específica para empresas, la usarían aquí:
+      navigate("/emprendimientos", { replace: true });
+      
+    } else {
+      // Alerta simple por si se equivocan en los datos de prueba
+      alert("Credenciales incorrectas. Prueba con: admin@ecopilot.com o empresa@ecopilot.com (Clave: 123456)");
+    }
   };
 
+  
+  
   // FUNCIÓN: Se ejecuta cuando el usuario envía el formulario de Registro
   const handleRegisterSubmit = (e) => {
     e.preventDefault(); // Evita la recarga de la página
@@ -39,7 +57,8 @@ function Login() {
         {/* SECCIÓN DE PESTAÑAS: Permite cambiar entre Login y Registro */}
         <div className="form-tabs">
           {/* Botón de Iniciar Sesión: Si activeTab es 'login', se le añade la clase CSS 'active' */}
-          <button 
+          <button
+            type="button"
             className={`tab-btn ${activeTab === "login" ? "active" : ""}`} 
             onClick={() => setActiveTab("login")} // Al hacer clic, cambia el estado a 'login'
           >
@@ -47,7 +66,8 @@ function Login() {
           </button>
           
           {/* Botón de Registrarte: Si activeTab es 'registro', se le añade la clase CSS 'active' */}
-          <button 
+          <button
+            type="button"
             className={`tab-btn ${activeTab === "registro" ? "active" : ""}`} 
             onClick={() => setActiveTab("registro")} // Al hacer clic, cambia el estado a 'registro'
           >
