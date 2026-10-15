@@ -1,95 +1,100 @@
-/* Contenedor General de la página */
+/* El contenedor centra Puntos de Recolección sobre el lienzo Main. */
 .puntos-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 1250px;
   margin: 0 auto;
-  padding: 40px 20px;
-  color: #1a202c;
+  padding: 48px 20px;
+  color: #eaf5ed;
 }
 
-/* Estilos del Encabezado */
+/* El encabezado centra título y texto introductorio. */
 .puntos-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
+/* El título de página usa tamaño destacado y texto verde muy claro. */
 .puntos-header h1 {
   font-size: 2.3rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: #000000;
+  color: #eaf5ed;
 }
 
+/* El resumen de página usa texto secundario, con contraste sobre el fondo oscuro. */
 .puntos-header p {
-  color: #718096;
+  color: #aab8af;
   font-size: 1.1rem;
   margin: 0;
 }
 
-/* Distribución de las dos columnas principales */
+/* El mapa se muestra arriba y las ubicaciones se organizan debajo. */
 .puntos-content-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr; /* Columna izquierda un poco más ancha */
-  gap: 40px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
-/* Títulos internos de las secciones (Mapa e Info) */
+/* Los títulos de mapa y ubicaciones comparten tamaño y tono verde claro. */
 .mapa-section h2, 
 .ubicaciones-section h2 {
   font-size: 1.4rem;
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 20px;
-  color: #1a202c;
+  color: #d7f5df;
 }
 
-/* Caja contenedora del Mapa */
+/* El mapa queda en un panel verde oscuro elevado. */
 .mapa-box {
-  background-color: #ffffff;
-  border-radius: 12px;
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra sutil del Figma */
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* Fondo verde claro del mapa interactivo */
-.mapa-placeholder {
-  background-color: #e2f0e7; /* El tono de verde claro que se ve en tu imagen */
+/* El iframe del mapa ocupa todo el panel y conserva el radio del diseño. */
+.google-map-frame {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
   height: 450px;
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
+  border: 0;
 }
 
-/* Pines simulados sobre el mapa */
+/* Cada pin se posiciona respecto al mapa simulado. */
 .pin {
   position: absolute;
   font-size: 1.8rem;
   color: #1e5e3a;
   transform: translate(-50%, -50%);
 }
+/* Ubicación visual del primer pin del mapa. */
 .pin-1 { top: 40%; left: 65%; }
+/* Ubicación visual del segundo pin del mapa. */
 .pin-2 { top: 75%; left: 60%; }
+/* Ubicación visual del tercer pin del mapa. */
 .pin-3 { top: 90%; left: 40%; }
 
-/* Lista de Tarjetas a la derecha */
+/* La lista distribuye las ubicaciones con separación uniforme. */
 .tarjetas-lista {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Tarjeta individual de Ubicación */
+/* Cada ubicación aparece en un panel verde oscuro con borde sutil. */
 .ubicacion-card {
-  background-color: #ffffff;
-  border-radius: 12px;
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 18px;
   padding: 24px;
   display: flex;
   gap: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* Círculo verde del icono de ubicación */
+/* El icono de ubicación se centra dentro de un círculo verde. */
 .card-icon-container {
   background-color: #1e5e3a;
   width: 48px;
@@ -101,63 +106,66 @@
   flex-shrink: 0; /* Evita que el círculo se deforme */
 }
 
+/* El pin usa un tamaño legible dentro del círculo. */
 .geo-icon {
-  color: #ffffff;
+  color: #eaf5ed;
   font-size: 1.2rem;
 }
 
-/* Textos dentro de la tarjeta */
+/* El texto de la tarjeta ocupa el espacio restante junto al icono. */
 .card-details {
   flex: 1;
 }
 
+/* El título de ubicación se destaca dentro de la tarjeta. */
 .card-details h3 {
   margin: 0 0 12px 0;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #000000;
+  color: #eaf5ed;
 }
 
+/* Dirección, horario y teléfono comparten estilo secundario y alineación. */
 .detail-item {
   margin: 0 0 8px 0;
-  color: #718096;
+  color: #b5c9ba;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+/* Los iconos auxiliares se reducen frente al contenido de texto. */
 .icon-sub {
   font-size: 1rem;
   opacity: 0.7;
 }
 
-/* Botón "Cómo Llegar" de la tarjeta */
+/* El botón de ruta usa el verde de acción de la aplicación. */
 .btn-como-llegar {
-  background-color: #1e5e3a;
-  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  background: #45b96b;
+  color: #07100a;
   border: none;
   padding: 10px 20px;
   font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
+  text-decoration: none;
   margin-top: 12px;
   transition: background-color 0.2s ease;
 }
 
+/* El hover aclara el botón de ruta para confirmar interacción. */
 .btn-como-llegar:hover {
-  background-color: #144228;
+  background: #72d58f;
 }
 
-/* Responsivo para pantallas medianas o celulares */
+/* En móvil, se conserva el orden vertical y se reduce la altura del mapa. */
 @media (max-width: 900px) {
-  .puntos-content-layout {
-    grid-template-columns: 1fr; /* Pasa a una sola columna en pantallas pequeñas */
-    gap: 30px;
-  }
-  
-  .mapa-placeholder {
+  .google-map-frame {
     height: 350px;
   }
 }

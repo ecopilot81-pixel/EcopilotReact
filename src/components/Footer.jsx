@@ -1,6 +1,3 @@
-import React from "react";
-import "./Footer.css"; 
-
 const Footer = () => {
   return (
     <footer className="footer-container">
@@ -24,9 +21,8 @@ const Footer = () => {
             <li>David H.</li>
             <li>Kamila C.</li>
             <li>Alejandro P.</li>
-            <li>Manuel R.</li>
             <li>Daniel E.</li>
-            <li>Manuel R.</li>
+            <li>Manuel.</li>
           </ul>
         </div>
 

@@ -1,10 +1,13 @@
 .manualidades-page {
-  background-color: #f7fafc;
+  /* La página usa el degradado común del lienzo padre en lugar de un fondo claro propio. */
+  background: transparent;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: #eaf5ed;
 }
 
+/* El contenedor centra el contenido de manualidades en el lienzo principal. */
 .manualidades-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -12,14 +15,16 @@
   flex: 1;
 }
 
+/* El icono temático se centra sobre el encabezado. */
 .art-icon-container {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
 }
 
+/* El icono circular usa un degradado de marca y sombra oscura. */
 .circle-art-icon {
-  background-color: #1e5e3a;
+  background: linear-gradient(135deg, #45b96b, #1e5e3a);
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -27,34 +32,39 @@
   justify-content: center;
   align-items: center;
   font-size: 1.8rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
+/* El título de página se centra con tipografía clara. */
 .manualidades-header h1 {
   text-align: center;
   font-size: 2.2rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #eaf5ed;
   margin-bottom: 25px;
 }
 
+/* El mensaje de bienvenida se presenta en un panel verde oscuro. */
 .welcome-banner {
-  background-color: #e2ece6;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #194b2d, #102d1d);
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 18px;
   padding: 24px 40px;
   text-align: center;
   max-width: 750px;
   margin: 0 auto 50px auto;
 }
 
+/* El texto del banner usa un tono claro legible. */
 .welcome-banner p {
-  color: #2d3748;
+  color: #d0ddd3;
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
 }
 
-.cards-grid {
+/* Los proyectos se distribuyen en dos columnas y se apilan en móvil. */
+.manualidades-page .cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
   gap: 30px;
@@ -62,98 +72,113 @@
 }
 
 .manualidad-card {
-  background-color: #ffffff;
-  border-radius: 12px;
+  /* Cada manualidad se presenta en un panel verde oscuro con contraste legible. */
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
 
-.card-header-green {
-  background-color: #236c43;
+/* La cabecera visual de la tarjeta usa un degradado verde profundo. */
+.manualidades-page .card-header-green {
+  background: linear-gradient(135deg, #236c43, #102d1d);
   height: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.project-emoji {
+/* El emoji se amplía como elemento visual del proyecto. */
+.manualidades-page .project-emoji {
   font-size: 3.5rem;
 }
 
-.card-body {
+/* El cuerpo de tarjeta distribuye el contenido y fija la acción al fondo. */
+.manualidades-page .card-body {
   padding: 30px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.card-body h3 {
+/* El nombre del proyecto se resalta con texto claro. */
+.manualidades-page .card-body h3 {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #eaf5ed;
   margin: 0 0 12px 0;
 }
 
-.meta-info {
+/* Dificultad y tiempo aparecen en una fila compacta. */
+.manualidades-page .meta-info {
   display: flex;
   gap: 15px;
   margin-bottom: 15px;
 }
 
-.meta-item {
+/* Los metadatos usan el tono secundario claro del tema. */
+.manualidades-page .meta-item {
   font-size: 0.85rem;
-  color: #718096;
+  color: #b5c9ba;
   font-weight: 500;
 }
 
-.project-description {
-  color: #4a5568;
+/* La descripción del tutorial conserva contraste y lectura cómoda. */
+.manualidades-page .project-description {
+  color: #d0ddd3;
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0 0 20px 0;
 }
 
-.materials-section h4 {
+/* El encabezado de materiales se destaca en verde claro. */
+.manualidades-page .materials-section h4 {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #d7f5df;
   margin: 0 0 8px 0;
 }
 
-.materials-section ul {
+/* La lista de materiales elimina viñetas duplicadas del navegador. */
+.manualidades-page .materials-section ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.materials-section li {
+/* Los materiales se separan con espaciado vertical constante. */
+.manualidades-page .materials-section li {
   font-size: 0.9rem;
-  color: #4a5568;
+  color: #b5c9ba;
   margin-bottom: 6px;
 }
 
-.btn-tutorial {
-  background-color: #1e5e3a;
-  color: #ffffff;
+/* El botón principal se fija al final del contenido de la tarjeta. */
+.manualidades-page .btn-tutorial {
+  background: #45b96b;
+  color: #07100a;
   border: none;
   width: 100%;
   padding: 12px;
   font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 6px;
+  border-radius: 999px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: auto; 
   transition: background-color 0.2s ease;
 }
 
-.btn-tutorial:hover {
-  background-color: #144228;
+/* El hover aclara el botón para señalar interacción. */
+.manualidades-page .btn-tutorial:hover {
+  background: #72d58f;
 }
 
 @media (max-width: 768px) {
-  .cards-grid {
+  /* En pantallas estrechas, los proyectos pasan a una sola columna. */
+  .manualidades-page .cards-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Carousel from "../layouts/Carousel";
 import "./Home.css";
 
 const Home = () => {
@@ -7,22 +8,16 @@ const Home = () => {
 
   return (
     <div className="home">
+      {/* Home reutiliza el carrusel definido como componente dentro de layouts. */}
+      <Carousel />
 
-      {/* HERO SECTION */}
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Eco-Pilot</h1>
-          <p>Tu guía interactiva para reciclar, aprender y cuidar el planeta juntos.</p>
-          <Link to="/Login" className="btn">
-          Inicia tu viaje
-          </Link>
-        </div>
-      </section>
-
-      {/* SECCIÓN DE OPCIONES */}
+      {/* SECCIÓN DE OPCIONES: se mantiene la navegación por temática con cards más visuales. */}
       <section className="features">
-        <h2>Explora nuestra plataforma</h2>
-        
+        <div className="section-heading">
+          <span className="eyebrow eyebrow-dark">Nuestra plataforma</span>
+          <h2>Explora nuestra plataforma</h2>
+        </div>
+
         <div className="grid">
           <Link to="/puntos" className="card">
             <div className="card-icon">📍</div>
@@ -36,8 +31,7 @@ const Home = () => {
             <p>Apoya y conoce proyectos locales con impacto sostenible.</p>
           </Link>
 
-          {/* Ajustado a "/Manualidades" con mayúscula para que coincida con tu Navbar */}
-          <Link to="/Manualidades" className="card">
+          <Link to="/manualidades" className="card">
             <div className="card-icon">🎨</div>
             <h3>Manualidades</h3>
             <p>Descubre tutoriales creativos para reutilizar tus residuos.</p>
@@ -45,28 +39,32 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SECCIÓN DE CALIFICACIÓN */}
+      {/* SECCIÓN DE CALIFICACIÓN: se conserva la interacción pero con más estilo y semántica visual. */}
       <section className="rating">
-        <h2>¿Qué te parece Eco-Pilot?</h2>
+        <div className="section-heading">
+          <span className="eyebrow eyebrow-dark">Tu opinión</span>
+          <h2>¿Qué te parece Eco-Pilot?</h2>
+        </div>
         <p>Tu opinión nos ayuda a seguir mejorando por el planeta.</p>
 
-        <div className="stars">
+        <div className="stars" aria-label="Calificación del sitio">
           {[1, 2, 3, 4, 5].map((n) => (
-            <span
+            <button
               key={n}
+              type="button"
               onClick={() => setRating(n)}
               className={n <= rating ? "star active" : "star"}
               title={`Calificar con ${n} estrellas`}
+              aria-label={`Calificar con ${n} estrellas`}
             >
               ★
-            </span>
+            </button>
           ))}
         </div>
         {rating > 0 && (
           <p className="rating-thanks">¡Gracias por calificarnos con {rating} estrellas! ✨</p>
         )}
       </section>
-
     </div>
   );
 };
