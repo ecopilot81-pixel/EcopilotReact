@@ -1,6 +1,7 @@
 /* Estilos exclusivos de la tarjeta y los campos de acceso. */
 .login-page-container {
   /* Centra el formulario en la ventana sin depender del layout principal. */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,9 +19,6 @@
 .login-card {
   width: 100%;
   max-width: 760px;
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  align-items: center;
   overflow: hidden;
   border: 1px solid rgba(69, 185, 107, 0.25);
   border-radius: 22px;
@@ -35,36 +33,64 @@
   text-align: center;
 }
 
-/* El logo enlaza de vuelta al inicio desde la pantalla de acceso. */
-.login-home-link {
+/* El logo y su enlace al inicio se ubican fuera de la tarjeta. */
+.auth-home-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  justify-self: center;
-  padding: 1rem;
-  border-radius: 12px;
-  color: #72d58f;
-  font-size: 0.9rem;
+  width: 120px;
+  color: #f2f7f3;
+  font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
 }
 
-.login-home-link img {
+/* Mantiene el logo proporcionado y reserva espacio para el texto inferior. */
+.auth-home-link img {
   display: block;
-  width: min(100%, 120px);
-  height: auto;
+  width: 120px;
+  height: 78px;
   object-fit: contain;
 }
 
-.login-home-link:focus-visible {
-  outline: 3px solid #72d58f;
-  outline-offset: 4px;
+/* Resalta el enlace cuando el usuario pasa el cursor sobre él. */
+.auth-home-link:hover {
+  color: #a5e9b7;
 }
 
-.login-home-link:hover span {
+/* Hace visible el foco del enlace al navegar con teclado. */
+.auth-home-link:focus-visible {
+  border-radius: 6px;
+  outline: 3px solid #72d58f;
+  outline-offset: 3px;
+}
+
+/* Presenta el regreso desde el formulario de registro al acceso. */
+.register-back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(114, 213, 143, 0.4);
+  border-radius: 999px;
+  background: #0b100d;
+  color: #72d58f;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.register-back-link:hover {
+  background: #194b2d;
   color: #a5e9b7;
-  text-decoration: underline;
+}
+
+.register-back-link:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 3px;
 }
 
 /* El título del formulario sobresale sobre el panel oscuro. */
@@ -101,7 +127,8 @@
 }
 
 /* Los campos de texto usan fondo oscuro y borde verde al enfocarse. */
-.formulario-content input {
+.formulario-content input,
+.formulario-content select {
   width: 100%;
   padding: 0.9rem 1rem;
   box-sizing: border-box;
@@ -114,13 +141,19 @@
 }
 
 /* El foco del campo se hace visible con un contorno luminoso verde. */
-.formulario-content input:focus {
+.formulario-content input:focus,
+.formulario-content select:focus {
   border-color: #45b96b;
   outline: none;
   box-shadow: 0 0 0 3px rgba(69, 185, 107, 0.2);
 }
 
-/* El botón conserva su apariencia mientras indica que el acceso no está habilitado. */
+/* Mantiene las opciones del selector legibles sobre el fondo oscuro del formulario. */
+.formulario-content select {
+  color-scheme: dark;
+}
+
+/* El botón de avance tiene apariencia activa; solo los botones inactivos se atenúan. */
 .submit-btn {
   width: 100%;
   margin-top: 0.5rem;
@@ -131,8 +164,22 @@
   color: #07100a;
   font-size: 1rem;
   font-weight: 800;
+  cursor: pointer;
+}
+
+/* Distingue acciones que aún requieren el servicio del backend. */
+.submit-btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Explica junto a la contraseña las condiciones exigidas por su validación. */
+.password-hint {
+  display: block;
+  margin-top: 0.5rem;
+  color: #aab8af;
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 
 /* Acciones secundarias no activas y el cambio visual entre formularios. */
@@ -177,7 +224,8 @@
 }
 
 /* Los controles muestran un foco accesible para navegación con teclado. */
-.formulario-content input:focus-visible {
+.formulario-content input:focus-visible,
+.formulario-content select:focus-visible {
   outline: 3px solid #72d58f;
   outline-offset: 3px;
 }

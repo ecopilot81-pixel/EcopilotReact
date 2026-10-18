@@ -134,18 +134,36 @@ h6 {
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
 }
 
-/* Alinea el logo y conserva sus dimensiones dentro de la navegación. */
+/* Presenta el acceso al inicio con la misma composición visual que en registro. */
 .logo {
   display: flex;
+  flex-direction: column;
   align-items: center;
   flex-shrink: 0;
+  color: #f2f7f3;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
 }
 
+/* Ajusta el logo para mantenerlo proporcionado sobre el texto de navegación. */
 .logo img {
   display: block;
-  width: 72px;
-  height: 48px;
+  width: 120px;
+  height: 78px;
   object-fit: contain;
+}
+
+/* Mantiene el texto de inicio visible al interactuar con el logo. */
+.logo:hover {
+  color: #a5e9b7;
+}
+
+/* Señala el enlace cuando se alcanza con teclado, además de su estado al pasar el cursor. */
+.logo:focus-visible {
+  border-radius: 6px;
+  outline: 3px solid #72d58f;
+  outline-offset: 3px;
 }
 
 /* Distribuye los enlaces y elimina el formato predeterminado de la lista. */

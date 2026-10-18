@@ -6,6 +6,7 @@ import Emprendimientos from "./pages/Emprendimientos";
 import Manualidades from "./pages/Manualidades";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
+import CompletarRegistro from "./pages/CompletarRegistro";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route path="/Login" element={<Login />} />
         {/* El formulario de registro también queda separado de la navegación principal. */}
         <Route path="/Registro" element={<Registro />} />
+        {/* Segundo paso para que el usuario defina sus credenciales. */}
+        <Route path="/CompletarRegistro" element={<CompletarRegistro />} />
       </Routes>
     </BrowserRouter>
   );

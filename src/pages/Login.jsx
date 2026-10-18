@@ -7,15 +7,12 @@ function Login() {
   return (
     <>
       <main className="login-page-container">
+        {/* El enlace agrupa el logo y el texto visible para regresar a la página de inicio. */}
+        <Link className="auth-home-link" to="/" aria-label="Ir al inicio">
+          <img src={ecoPilotLogo} alt="Eco-Pilot" />
+          <span>Ir al inicio</span>
+        </Link>
         <section className="login-card" aria-labelledby="login-title">
-          <Link
-            to="/"
-            className="login-home-link"
-            aria-label="Eco-Pilot, volver al inicio"
-          >
-            <img src={ecoPilotLogo} alt="Eco-Pilot" />
-            <span>Ir al inicio</span>
-          </Link>
           <div className="formulario-content">
             <h1 id="login-title">Bienvenido a Eco-Pilot</h1>
             <p className="subtitle">Inicia sesión para continuar</p>

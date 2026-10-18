@@ -1,28 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ecoPilotLogo from "../assets/ecopilot log.png";
 import "../styles/login.css";
 import Footer from "../components/Footer";
 
 export default function Registro() {
+  const navigate = useNavigate();
+
+  // Avanza solo cuando los campos requeridos pasan la validación nativa del navegador.
+  function handleSubmit(event) {
+    event.preventDefault();
+    navigate("/CompletarRegistro");
+  }
+
   return (
     <>
       <main className="login-page-container">
+        {/* El enlace agrupa el logo y el texto visible para regresar a la página de inicio. */}
+        <Link className="auth-home-link" to="/" aria-label="Ir al inicio">
+          <img src={ecoPilotLogo} alt="Eco-Pilot" />
+          <span>Ir al inicio</span>
+        </Link>
         <section className="login-card" aria-labelledby="registro-title">
-          <Link
-            to="/"
-            className="login-home-link"
-            aria-label="Eco-Pilot, volver al inicio"
-          >
-            <img src={ecoPilotLogo} alt="Eco-Pilot" />
-            <span>Ir al inicio</span>
-          </Link>
-
           <div className="formulario-content">
+            {/* El enlace devuelve al formulario de acceso sin habilitar el envío del registro. */}
+            <Link className="register-back-link" to="/Login">
+              Atrás
+            </Link>
             <h1 id="registro-title">Crear una cuenta</h1>
             <p className="subtitle">Completa tus datos para registrarte</p>
 
-            {/* required activa la validación nativa para los datos obligatorios; los nombres secundarios son opcionales. */}
-            <form>
+            {/* required valida los datos obligatorios; los nombres secundarios son opcionales. */}
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="registro-primer-nombre">Primer nombre (obligatorio)</label>
                 <input
@@ -64,8 +72,25 @@ export default function Registro() {
                 />
               </div>
 
+              {/* Se exige seleccionar el tipo de documento antes de ingresar su número. */}
               <div className="input-group">
-                <label htmlFor="registro-identificacion">Número de identificación (obligatorio)</label>
+                <label htmlFor="registro-tipo-documento">Tipo de documento (obligatorio)</label>
+                <select
+                  id="registro-tipo-documento"
+                  name="tipoDocumento"
+                  defaultValue=""
+                  required
+                >
+                  <option value="" disabled>Selecciona un tipo de documento</option>
+                  <option value="tarjeta-identidad">Tarjeta de identidad</option>
+                  <option value="cedula">Cédula</option>
+                  <option value="cedula-extranjera">Cédula extranjera</option>
+                  <option value="permiso-permanencia">Permiso de permanencia</option>
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="registro-identificacion">Número de documento (obligatorio)</label>
                 <input
                   id="registro-identificacion"
                   name="identificacion"
@@ -97,9 +122,9 @@ export default function Registro() {
                 />
               </div>
 
-              {/* El registro es una maqueta: se puede completar visualmente, pero no enviar sin el servicio. */}
-              <button type="button" className="submit-btn" disabled>
-                Crear cuenta
+              {/* Este botón solo avanza al siguiente formulario; no envía los datos a un servidor. */}
+              <button type="submit" className="submit-btn">
+                Continuar
               </button>
             </form>
 
@@ -107,7 +132,7 @@ export default function Registro() {
               ¿Ya tienes cuenta? <Link className="login-link" to="/Login">Inicia sesión aquí</Link>
             </p>
             <p className="login-notice" role="status">
-              El registro aún no está activo.
+              Después de tus datos personales, podrás definir tu usuario y contraseña.
             </p>
           </div>
         </section>

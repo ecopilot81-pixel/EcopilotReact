@@ -7,10 +7,13 @@ const Navbar = () => {
   // La clase home identifica este Navbar para alinear su único enlace a la derecha.
   return (
     <nav className={pathname === "/" ? "navbar home" : "navbar"}>
-      {/* En Home se oculta el logo para dejar visible únicamente el acceso. */}
+      {/* En Home se oculta este acceso para conservar el diseño del encabezado; aparece en las demás páginas. */}
       {pathname !== "/" && (
-        <Link to="/" className="logo" aria-label="Eco-Pilot, ir al inicio">
+        <Link to="/" className="logo" aria-label="Ir al inicio">
+          {/* Reutiliza el logo de Eco-Pilot como acceso visual a la página principal. */}
           <img src={ecopilotLog} alt="Eco-Pilot" />
+          {/* El texto indica explícitamente el destino del enlace. */}
+          <span>Ir al inicio</span>
         </Link>
       )}
 
