@@ -1,4 +1,4 @@
-/* Espaciado del carrusel reutilizable presentado en Home. */
+/* Espaciado del carrusel presentado en Home. */
 .hero {
   padding: 2rem 1.25rem 0;
 }
@@ -166,43 +166,6 @@
 .slider-arrow:focus-visible {
   outline: 3px solid #72d58f;
   outline-offset: 4px;
-}
-
-/* El carrusel reduce su altura y padding en pantallas medianas. */
-@media (max-width: 768px) {
-  /* El alto y el padding se adaptan a tablets y teléfonos. */
-  .hero-slider {
-    height: 460px;
-  }
-
-  .hero-content {
-    padding: 2rem 1.5rem;
-    max-width: 100%;
-  }
-
-  .slider-arrow {
-    width: 40px;
-    height: 40px;
-  }
-
-  .slider-arrow--previous {
-    left: 0.75rem;
-  }
-
-  .slider-arrow--next {
-    right: 0.75rem;
-  }
-}
-
-/* En teléfonos, el carrusel usa una proporción más compacta. */
-@media (max-width: 480px) {
-  .hero-slider {
-    height: 390px;
-  }
-
-  .hero-content h1 {
-    font-size: 2.5rem;
-  }
 }
 
 /* Respeta la preferencia del usuario por movimiento reducido. */

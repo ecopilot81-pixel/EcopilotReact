@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Carousel from "../layouts/Carousel";
-import "./Home.css";
+import Carousel from "../components/Carousel";
 
 const Home = () => {
   const [rating, setRating] = useState(0);
 
   return (
     <div className="home">
-      {/* Home reutiliza el carrusel definido como componente dentro de layouts. */}
+      {/* Home reutiliza el carrusel compartido como componente. */}
       <Carousel />
 
       {/* SECCIÓN DE OPCIONES: se mantiene la navegación por temática con cards más visuales. */}

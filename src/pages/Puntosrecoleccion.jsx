@@ -1,5 +1,3 @@
-import "./PuntosRecoleccion.css";
-
 // Ubicaciones de Popayán que se muestran en las tarjetas y como marcadores.
 const ubicaciones = [
   {

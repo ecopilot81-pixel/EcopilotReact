@@ -1,11 +1,17 @@
-/* El formulario ocupa el ancho asignado por Auth y centra la tarjeta. */
+/* Estilos exclusivos de la tarjeta y los campos de acceso. */
 .login-page-container {
-  /* Auth ya gestiona el centrado vertical y horizontal del formulario. */
+  /* Centra el formulario en la ventana sin depender del layout principal. */
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   box-sizing: border-box;
+  padding: clamp(1rem, 4vw, 3rem);
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(69, 185, 107, 0.2), transparent 40%),
+    linear-gradient(135deg, #07100a, #10251b 62%, #153a2c);
 }
 
 /* La tarjeta de acceso usa superficie negra y borde verde. */
@@ -129,6 +135,39 @@
   opacity: 0.6;
 }
 
+/* Acciones secundarias no activas y el cambio visual entre formularios. */
+.login-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #72d58f;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link:hover:not(:disabled) {
+  color: #a5e9b7;
+}
+
+.login-link:focus-visible {
+  outline: 2px solid #72d58f;
+  outline-offset: 3px;
+}
+
+.login-link--disabled {
+  margin-top: 1rem;
+  color: #aab8af;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.account-switch {
+  margin: 1rem 0 0;
+  color: #aab8af;
+  font-size: 0.9rem;
+}
+
 /* La nota deja claro que los campos son parte de una maqueta, no de un acceso real. */
 .login-notice {
   margin: 1.25rem 0 0;
@@ -141,25 +180,4 @@
 .formulario-content input:focus-visible {
   outline: 3px solid #72d58f;
   outline-offset: 3px;
-}
-
-/* En móviles, se reduce el radio para adaptar el formulario a la pantalla. */
-@media (max-width: 480px) {
-  .login-card {
-    grid-template-columns: 82px minmax(0, 1fr);
-    border-radius: 16px;
-  }
-
-  .login-home-link {
-    padding: 0.5rem;
-    font-size: 0.75rem;
-  }
-
-  .login-home-link img {
-    width: 64px;
-  }
-
-  .formulario-content {
-    padding: 1.25rem 1rem;
-  }
 }

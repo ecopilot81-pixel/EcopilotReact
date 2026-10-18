@@ -4,9 +4,9 @@ import imageTwo from "../assets/img 2.jpg";
 import imageThree from "../assets/img 3.jpg";
 import imageFour from "../assets/img 4.jpg";
 import imageFive from "../assets/img 5.jpg";
-import "./Carousel.css";
+import "../styles/carousel.css";
 
-// El carrusel reúne las imágenes del proyecto y los mensajes que las acompañan.
+// El componente de carrusel reúne las imágenes del proyecto y sus mensajes.
 const slides = [
   {
     image: imageOne,

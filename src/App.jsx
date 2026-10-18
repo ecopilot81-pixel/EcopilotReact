@@ -1,28 +1,27 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./layouts/Main";
-import Auth from "./layouts/Auth";
+import MainLayout from "./layouts/Main";
 import Home from "./pages/Home";
 import PuntosRecoleccion from "./pages/Puntosrecoleccion";
 import Emprendimientos from "./pages/Emprendimientos";
 import Manualidades from "./pages/Manualidades";
 import Login from "./pages/Login";
+import Registro from "./pages/Registro";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Las páginas del sitio comparten Navbar, lienzo visual y Footer mediante Main. */}
-        <Route element={<Main />}>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/puntos" element={<PuntosRecoleccion />} />
           <Route path="/emprendimientos" element={<Emprendimientos />} />
           <Route path="/manualidades" element={<Manualidades />} />
         </Route>
 
-        {/* La muestra de acceso se mantiene separada del Navbar y el Footer. */}
-        <Route element={<Auth />}>
-          <Route path="/Login" element={<Login />} />
-        </Route>
+        {/* El acceso queda fuera de MainLayout para no mostrar Navbar ni Sidebar. */}
+        <Route path="/Login" element={<Login />} />
+        {/* El formulario de registro también queda separado de la navegación principal. */}
+        <Route path="/Registro" element={<Registro />} />
       </Routes>
     </BrowserRouter>
   );

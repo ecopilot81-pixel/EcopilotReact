@@ -1,6 +1,4 @@
 import React from "react";
-import "./Manualidades.css";
-
 const Manualidades = () => {
   const proyectos = [
     {

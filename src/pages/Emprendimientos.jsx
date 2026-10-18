@@ -1,5 +1,3 @@
-import "./Emprendimientos.css";
-
 const Emprendimientos = () => {
   const entrepreneurs = [
     {
