@@ -1,7 +1,7 @@
 
 /* Estilos globales*/
 /* Valores visuales compartidos que heredan todos los estilos del proyecto. */
-:root {
+body {
   --font-system: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --color-background: #07100a;
   --color-surface: #111713;
@@ -19,6 +19,10 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
+}
+
+body,
+#root {
   background: var(--color-background);
 }
 
@@ -839,6 +843,163 @@ h6 {
 
 .visual-stat-card small {
   color: #b5c9ba;
+}
+
+.visual-material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.visual-material-card {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+}
+
+.visual-material-card h3,
+.visual-material-card p {
+  margin: 0;
+}
+
+.visual-material-card h3 {
+  color: #eaf5ed;
+  font-size: 1.1rem;
+}
+
+.visual-material-card p {
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.visual-material-card .visual-material-card__points {
+  color: #a5e9b7;
+  font-weight: 700;
+}
+
+.visual-material-card__icon {
+  font-size: 1.7rem;
+}
+
+/* Organiza las categorías de noticias en tarjetas adaptables al ancho disponible. */
+.visual-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Destaca el nombre de cada categoría recibida del API. */
+.visual-category-card {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+}
+
+.visual-category-button {
+  width: 100%;
+  padding: 1.4rem;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.visual-category-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(114, 213, 143, 0.55);
+}
+
+.visual-category-button:focus-visible {
+  outline: 2px solid #a5e9b7;
+  outline-offset: 3px;
+}
+
+.visual-category-button.is-selected {
+  border-color: #72d58f;
+  background: linear-gradient(145deg, #236c43, #123823);
+}
+
+.visual-category-card > span {
+  font-size: 1.5rem;
+}
+
+.visual-category-card__name {
+  color: #eaf5ed;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.visual-category-card__count {
+  color: #a5e9b7;
+  font-size: 0.85rem;
+}
+
+/* Distribuye las noticias del API en tarjetas adaptables a pantallas pequeñas. */
+.visual-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Deja espacio al desplazarse para que el encabezado de noticias no quede pegado arriba. */
+#lista-noticias {
+  scroll-margin-top: 1.5rem;
+}
+
+/* Ordena el título, resumen y metadatos de cada noticia. */
+.visual-news-card {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.visual-news-card h3,
+.visual-news-card p {
+  margin: 0;
+}
+
+.visual-news-card h3 {
+  color: #eaf5ed;
+  font-size: 1.2rem;
+}
+
+.visual-news-card p,
+.visual-news-card__meta,
+.visual-news-card__source {
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.visual-news-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.visual-news-card a {
+  color: #a5e9b7;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.visual-news-card a:hover {
+  text-decoration: underline;
+}
+
+.visual-data-message {
+  margin: 1rem 0 0;
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.visual-data-message--error {
+  color: #ffb4ab;
 }
 
 .visual-progress-track {
