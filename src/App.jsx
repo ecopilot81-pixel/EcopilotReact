@@ -14,34 +14,42 @@ import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import CompletarRegistro from "./pages/CompletarRegistro";
+import { AuthProvider } from "./context/AuthProvider";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/puntos" element={<PuntosRecoleccion />} />
-          <Route path="/emprendimientos" element={<Emprendimientos />} />
-          <Route path="/manualidades" element={<Manualidades />} />
-          {/* Vistas visuales de los módulos respaldados por recursos de Laravel. */}
-          <Route path="/noticias" element={<Noticias />} />
-          <Route path="/reciclaje" element={<Reciclaje />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/tienda" element={<Tienda />} />
-          <Route path="/coleccion" element={<MiColeccion />} />
-          <Route path="/comunidad" element={<Comunidad />} />
-        </Route>
+    <AuthProvider>
+      {/* Provee estado de sesión compartido a todas las rutas de la aplicación. */}
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/puntos" element={<PuntosRecoleccion />} />
+            <Route path="/emprendimientos" element={<Emprendimientos />} />
+            <Route path="/manualidades" element={<Manualidades />} />
+            {/* Vistas visuales de los módulos respaldados por recursos de Laravel. */}
+            <Route path="/noticias" element={<Noticias />} />
+            <Route path="/reciclaje" element={<Reciclaje />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="/tienda" element={<Tienda />} />
+            <Route path="/comunidad" element={<Comunidad />} />
+            {/* Las pantallas personales requieren una sesión web activa. */}
+            <Route element={<RequireAuth />}>
+              <Route path="/perfil" element={<Perfil />} />
+              <Route path="/coleccion" element={<MiColeccion />} />
+            </Route>
+          </Route>
 
-        {/* El acceso queda fuera de MainLayout para no mostrar Navbar ni Sidebar. */}
-        <Route path="/Login" element={<Login />} />
-        {/* El formulario de registro también queda separado de la navegación principal. */}
-        <Route path="/Registro" element={<Registro />} />
-        {/* Segundo paso para que el usuario defina sus credenciales. */}
-        <Route path="/CompletarRegistro" element={<CompletarRegistro />} />
-      </Routes>
-    </BrowserRouter>
+          {/* El acceso queda fuera de MainLayout para no mostrar Navbar ni Sidebar. */}
+          <Route path="/Login" element={<Login />} />
+          {/* El formulario de registro también queda separado de la navegación principal. */}
+          <Route path="/Registro" element={<Registro />} />
+          {/* Segundo paso para que el usuario defina sus credenciales. */}
+          <Route path="/CompletarRegistro" element={<CompletarRegistro />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -1,9 +1,38 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ecoPilotLogo from "../assets/ecopilot log.png";
 import "../styles/login.css";
 import Footer from "../components/Footer";
+import { useAuth } from "../context/useAuth";
 
 function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, error: sessionError } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  // Envía las credenciales al backend y vuelve al inicio cuando el acceso es válido.
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      await login({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      });
+      navigate(location.state?.from?.pathname || "/", { replace: true });
+    } catch (loginError) {
+      setError(loginError.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <>
       <main className="login-page-container">
@@ -17,14 +46,16 @@ function Login() {
             <h1 id="login-title">Bienvenido a Eco-Pilot</h1>
             <p className="subtitle">Inicia sesión para continuar</p>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="login-email">Correo electrónico</label>
                 <input
                   id="login-email"
+                  name="email"
                   type="email"
                   placeholder="tu@email.com"
                   autoComplete="email"
+                  required
                 />
               </div>
 
@@ -32,15 +63,21 @@ function Login() {
                 <label htmlFor="login-password">Contraseña</label>
                 <input
                   id="login-password"
+                  name="password"
                   type="password"
                   placeholder="Tu contraseña"
                   autoComplete="current-password"
+                  required
                 />
               </div>
 
-              {/* El envío sigue deshabilitado hasta implementar el servicio de autenticación. */}
-              <button type="button" className="submit-btn" disabled>
-                Iniciar sesión
+              {(error || sessionError) && (
+                <p className="auth-error" role="alert">{error || sessionError}</p>
+              )}
+
+              {/* Envía el formulario al servicio de autenticación web de Laravel. */}
+              <button type="submit" className="submit-btn" disabled={submitting}>
+                {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
               </button>
             </form>
 
@@ -54,8 +91,8 @@ function Login() {
             </p>
 
             <p className="login-notice" role="status">
-              Esta pantalla es una muestra. El acceso, el registro y la recuperación
-              de contraseña aún no están activos.
+              El inicio de sesión está activo. El registro y la recuperación de contraseña
+              todavía no están disponibles.
             </p>
           </div>
         </section>

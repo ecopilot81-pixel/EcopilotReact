@@ -2,10 +2,27 @@
 
 ## Mapa de puntos de recolección
 
-La página muestra un mapa de Google incrustado mediante un `iframe` con una
-ubicación inicial en Popayán. No necesita clave API ni conexión con Laravel.
-Por ahora muestra el mapa general; los puntos de recolección y sus marcadores se
-agregarán cuando se conecten los datos.
+La página muestra el mapa general de Popayán y una lista de ubicaciones obtenidas
+desde la API de Laravel.
+
+## Inicio de sesión local
+
+El formulario de acceso utiliza sesiones web de Laravel y protección CSRF; no
+guarda tokens de autenticación en el navegador. El frontend espera que Laravel
+esté disponible en `http://localhost`. Para cambiar esa dirección, define
+`VITE_API_BASE_URL` en el entorno de Vite.
+
+Laravel expone `GET /csrf-token`, `POST /login`, `GET /me`,
+`GET /my-profile`, `GET /my-collection` y `POST /logout`. El endpoint
+`/my-profile` devuelve el perfil y sus estadísticas; `/my-collection` devuelve
+los artículos y recompensas reclamados. Ambos responden únicamente con datos
+del usuario autenticado.
+Las rutas personales de Perfil y Mi colección solicitan una sesión activa.
+
+El backend permite por defecto los orígenes locales de Vite en los puertos
+5173 y 5174. Si utilizas otro origen, define `CORS_ALLOWED_ORIGINS` en el `.env`
+de Laravel como una lista separada por comas y limpia la caché de configuración
+de Laravel para aplicar el cambio.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
