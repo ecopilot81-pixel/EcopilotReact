@@ -1,11 +1,11 @@
 # React + Vite
 
-## Mapa de recolección
+## Mapa de puntos de recolección
 
-La página de Puntos de Recolección incluye un mapa de Google incrustado directamente
-sin una API key. Muestra resultados de reciclaje en Popayán; los botones de cada punto
-abren una ruta a su dirección en Google Maps. Este mapa incrustado no utiliza la
-Maps JavaScript API ni genera marcadores de la aplicación.
+La página muestra un mapa de Google incrustado mediante un `iframe` con una
+ubicación inicial en Popayán. No necesita clave API ni conexión con Laravel.
+Por ahora muestra el mapa general; los puntos de recolección y sus marcadores se
+agregarán cuando se conecten los datos.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

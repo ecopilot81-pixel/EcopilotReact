@@ -531,44 +531,24 @@ h6 {
   color: #d7f5df;
 }
 
-/* El mapa queda en un panel verde oscuro elevado. */
+/* El mapa incrustado ocupa el panel completo; aún no se muestran puntos de recolección. */
 .mapa-box {
   background: linear-gradient(145deg, #194b2d, #102d1d);
   border: 1px solid rgba(114, 213, 143, 0.2);
   border-radius: 18px;
-  padding: 24px;
+  padding: 12px;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* Reserva visual para el mapa sin conectar servicios externos durante esta fase. */
-.mapa-placeholder {
-  display: grid;
+/* El iframe muestra Google Maps sin una clave ni configuración adicional. */
+.google-map {
+  display: block;
   width: 100%;
-  min-height: 380px;
-  place-content: center;
-  justify-items: center;
-  gap: 0.75rem;
-  border: 1px dashed rgba(114, 213, 143, 0.35);
+  height: min(65vh, 520px);
+  min-height: 360px;
   border-radius: 10px;
-  background:
-    linear-gradient(rgba(11, 16, 13, 0.7), rgba(11, 16, 13, 0.7)),
-    repeating-linear-gradient(45deg, #173523, #173523 18px, #1b402a 18px, #1b402a 36px);
-  color: #d7f5df;
-  text-align: center;
-}
-
-.mapa-placeholder > span {
-  font-size: 2.5rem;
-}
-
-.mapa-placeholder strong {
-  font-size: 1.1rem;
-}
-
-.mapa-placeholder p {
-  max-width: 28rem;
-  margin: 0;
-  color: #b5c9ba;
+  background: #173523;
+  border: 0;
 }
 
 /* ===== Manualidades ===== */
