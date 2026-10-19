@@ -1,8 +1,42 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ecopilotLog from "../assets/ecopilot log.png";
+import { useAuth } from "../context/useAuth";
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user, loading, logout } = useAuth();
+  const [logoutError, setLogoutError] = useState("");
+
+  // Finaliza la sesión web antes de regresar a la página de acceso.
+  async function handleLogout() {
+    setLogoutError("");
+
+    try {
+      await logout();
+      navigate("/Login");
+    } catch (error) {
+      setLogoutError(error.message);
+    }
+  }
+
+  const authAction = loading ? null : user ? (
+    <>
+      <li className="nav-user">Hola, {user.name}</li>
+      <li>
+        <button type="button" className="nav-login" onClick={handleLogout}>
+          Cerrar sesión
+        </button>
+      </li>
+    </>
+  ) : (
+    <li>
+      <Link to="/Login" className="nav-login">
+        Iniciar sesión / Registro
+      </Link>
+    </li>
+  );
 
   // La clase home identifica este Navbar para alinear su único enlace a la derecha.
   return (
@@ -20,25 +54,18 @@ const Navbar = () => {
       {/* Home muestra el acceso; el resto de páginas conserva el menú completo. */}
       <ul className="nav-links">
         {pathname === "/" ? (
-          <li>
-            <Link to="/Login" className="nav-login">
-              Iniciar sesión / Registro
-            </Link>
-          </li>
+          authAction
         ) : (
           <>
             <li><Link to="/">Inicio</Link></li>
             <li><Link to="/puntos">Puntos de Recolección</Link></li>
             <li><Link to="/emprendimientos">Emprendimientos</Link></li>
             <li><Link to="/manualidades">Manualidades</Link></li>
-            <li>
-              <Link to="/Login" className="nav-login">
-                Iniciar sesión / Registro
-              </Link>
-            </li>
+            {authAction}
           </>
         )}
       </ul>
+      {logoutError && <p className="navbar-auth-error" role="alert">{logoutError}</p>}
     </nav>
   );
 };

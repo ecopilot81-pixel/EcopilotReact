@@ -197,6 +197,11 @@ h6 {
   transition: opacity 0.2s ease;
 }
 
+.nav-links .nav-user {
+  color: #a5e9b7;
+  font-weight: 700;
+}
+
 .nav-links a:hover {
   color: #72d58f;
 }
@@ -207,13 +212,22 @@ h6 {
   border-radius: 999px;
   background: #2d8b4e;
   color: #eaf5ed;
+  border: 0;
+  font: inherit;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .nav-links .nav-login:hover {
   background: #45b96b;
   color: #eaf5ed;
   opacity: 1;
+}
+
+.navbar-auth-error {
+  margin: 0;
+  color: #ffb4ab;
+  font-size: 0.8rem;
 }
 
 /* Footer mantiene el tema oscuro y organiza la información en columnas. */
@@ -555,6 +569,72 @@ h6 {
   border: 0;
 }
 
+/* Alinea el título y el total de ubicaciones cargadas desde el API. */
+.puntos-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.puntos-list-heading h2 {
+  margin: 0;
+}
+
+/* Presenta los puntos registrados en tarjetas sencillas, sin marcadores en el mapa. */
+.puntos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.punto-card {
+  padding: 1.25rem;
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.punto-card__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.punto-card__heading h3 {
+  margin: 0;
+  color: #eaf5ed;
+  font-size: 1.1rem;
+}
+
+.punto-card p {
+  margin: 0.45rem 0 0;
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.punto-card__status {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.punto-card__status.is-active {
+  background: rgba(69, 185, 107, 0.16);
+  color: #a5e9b7;
+}
+
+.punto-card__status.is-inactive {
+  background: rgba(255, 180, 171, 0.12);
+  color: #ffb4ab;
+}
+
 /* ===== Manualidades ===== */
 /* Estilos exclusivos de la página de manualidades. */
 .manualidades-page {
@@ -845,6 +925,62 @@ h6 {
   color: #b5c9ba;
 }
 
+/* Lista las posiciones semanales en filas legibles y adaptables. */
+.ranking-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ranking-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 0.85rem;
+  background: rgba(17, 23, 19, 0.55);
+}
+
+.ranking-card__position {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(69, 185, 107, 0.15);
+  color: #a5e9b7;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.ranking-card__participant {
+  display: grid;
+  flex: 1;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.ranking-card__participant strong {
+  overflow-wrap: anywhere;
+  color: #eaf5ed;
+}
+
+.ranking-card__participant span {
+  color: #b5c9ba;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.ranking-card__points {
+  color: #a5e9b7;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .visual-material-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -935,6 +1071,77 @@ h6 {
 .visual-category-card__count {
   color: #a5e9b7;
   font-size: 0.85rem;
+}
+
+/* Separa visualmente los grupos de artículos organizados por categoría. */
+.store-category-list {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.store-category {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.store-category h3 {
+  margin: 0;
+  color: #eaf5ed;
+  font-size: 1.25rem;
+}
+
+.store-category .visual-section-heading p {
+  margin-top: 0.25rem;
+}
+
+/* Adapta las fichas de productos al ancho disponible de la página. */
+.store-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.store-item-card {
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+}
+
+.store-item-card__icon {
+  font-size: 1.6rem;
+}
+
+.store-item-card h4,
+.store-item-card p {
+  margin: 0;
+}
+
+.store-item-card h4 {
+  color: #eaf5ed;
+  font-size: 1.05rem;
+}
+
+.store-item-card p {
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.store-item-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.store-item-card__details strong {
+  color: #a5e9b7;
+}
+
+.store-item-card__details span {
+  color: #c3d1c7;
+  font-size: 0.9rem;
 }
 
 /* Distribuye las noticias del API en tarjetas adaptables a pantallas pequeñas. */

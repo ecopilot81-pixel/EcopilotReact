@@ -223,6 +223,14 @@
   line-height: 1.5;
 }
 
+/* Presenta los errores devueltos por Laravel junto al formulario. */
+.auth-error {
+  margin: 0 0 1rem;
+  color: #ffb4ab;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 /* Los controles muestran un foco accesible para navegación con teclado. */
 .formulario-content input:focus-visible,
 .formulario-content select:focus-visible {
