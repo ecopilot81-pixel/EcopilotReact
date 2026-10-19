@@ -19,6 +19,28 @@ export default function Sidebar() {
           <li>
             <Link className="sidebar__link" to="/manualidades">Manualidades</Link>
           </li>
+          {/* Navegación a las pantallas visuales que corresponden a los módulos del backend. */}
+          <li>
+            <Link className="sidebar__link" to="/noticias">Noticias</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/reciclaje">Mis actividades</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/ranking">Ranking</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/perfil">Mi perfil</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/tienda">Tienda</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/coleccion">Mi colección</Link>
+          </li>
+          <li>
+            <Link className="sidebar__link" to="/comunidad">Comunidad</Link>
+          </li>
         </ul>
       </nav>
     </aside>

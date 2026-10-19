@@ -463,96 +463,6 @@ h6 {
   color: #eaf5ed;
 }
 
-.emprendimientos .grid {
-  /* Las iniciativas se muestran en una cuadrícula que se adapta al ancho. */
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.emprendimientos .card {
-  /* Las tarjetas usan degradado verde oscuro en lugar de superficies blancas. */
-  background: linear-gradient(145deg, #194b2d, #102d1d);
-  border: 1px solid rgba(114, 213, 143, 0.2);
-  color: #eaf5ed;
-  border-radius: 18px;
-  overflow: hidden;
-  text-align: left;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.emprendimientos .card:hover {
-  /* La elevación y el borde verde indican que la tarjeta responde al cursor. */
-  transform: translateY(-4px);
-  border-color: rgba(114, 213, 143, 0.55);
-  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.35);
-}
-
-.emprendimientos .card-top {
-  /* La cabecera de cada iniciativa usa un degradado verde oscuro. */
-  background: linear-gradient(135deg, #236c43, #102d1d);
-  height: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-}
-
-/* El cuerpo de tarjeta mantiene el texto alineado y separado del borde. */
-.emprendimientos .card-body {
-  padding: 24px;
-  text-align: left;
-}
-
-/* El identificador social destaca con el verde claro de marca. */
-.emprendimientos .handle {
-  color: #72d58f;
-  font-size: 14px;
-}
-
-/* La ubicación usa texto secundario, manteniendo contraste sobre el panel. */
-.emprendimientos .location {
-  margin: 10px 0;
-  color: #b5c9ba;
-}
-
-/* La descripción tiene una altura de línea cómoda para lectura. */
-.emprendimientos .desc {
-  margin-bottom: 15px;
-  color: #d0ddd3;
-  line-height: 1.6;
-}
-
-/* Las acciones se alinean horizontalmente dentro de cada tarjeta. */
-.emprendimientos .buttons {
-  display: flex;
-  gap: 10px;
-}
-
-/* La acción principal usa verde brillante con texto oscuro. */
-.emprendimientos .btn-primary {
-  flex: 1;
-  background: #45b96b;
-  color: #07100a;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* La acción secundaria usa fondo negro y borde verde tenue. */
-.emprendimientos .btn-secondary {
-  background: #0b100d;
-  color: #d7f5df;
-  padding: 10px;
-  border: 1px solid rgba(114, 213, 143, 0.3);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 /* El panel de contacto destaca sobre el lienzo mediante un degradado. */
 .emprendimientos .contact {
   margin-top: 40px;
@@ -573,6 +483,7 @@ h6 {
   font-weight: 700;
   text-decoration: none;
 }
+
 /* ===== Puntos de recoleccion ===== */
 /* Estilos exclusivos de la página de puntos de recolección. */
 .puntos-container {
@@ -629,114 +540,35 @@ h6 {
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* El iframe del mapa ocupa todo el panel y conserva el radio del diseño. */
-.google-map-frame {
-  display: block;
+/* Reserva visual para el mapa sin conectar servicios externos durante esta fase. */
+.mapa-placeholder {
+  display: grid;
   width: 100%;
+  min-height: 380px;
+  place-content: center;
+  justify-items: center;
+  gap: 0.75rem;
+  border: 1px dashed rgba(114, 213, 143, 0.35);
   border-radius: 10px;
-  height: 450px;
-  border: 0;
+  background:
+    linear-gradient(rgba(11, 16, 13, 0.7), rgba(11, 16, 13, 0.7)),
+    repeating-linear-gradient(45deg, #173523, #173523 18px, #1b402a 18px, #1b402a 36px);
+  color: #d7f5df;
+  text-align: center;
 }
 
-/* Cada pin se posiciona respecto al mapa simulado. */
-.pin {
-  position: absolute;
-  font-size: 1.8rem;
-  color: #1e5e3a;
-  transform: translate(-50%, -50%);
-}
-/* Ubicación visual del primer pin del mapa. */
-.pin-1 { top: 40%; left: 65%; }
-/* Ubicación visual del segundo pin del mapa. */
-.pin-2 { top: 75%; left: 60%; }
-/* Ubicación visual del tercer pin del mapa. */
-.pin-3 { top: 90%; left: 40%; }
-
-/* La lista distribuye las ubicaciones con separación uniforme. */
-.tarjetas-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.mapa-placeholder > span {
+  font-size: 2.5rem;
 }
 
-/* Cada ubicación aparece en un panel verde oscuro con borde sutil. */
-.ubicacion-card {
-  background: linear-gradient(145deg, #194b2d, #102d1d);
-  border: 1px solid rgba(114, 213, 143, 0.2);
-  border-radius: 18px;
-  padding: 24px;
-  display: flex;
-  gap: 20px;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+.mapa-placeholder strong {
+  font-size: 1.1rem;
 }
 
-/* El icono de ubicación se centra dentro de un círculo verde. */
-.card-icon-container {
-  background-color: #1e5e3a;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0; /* Evita que el círculo se deforme */
-}
-
-/* El pin usa un tamaño legible dentro del círculo. */
-.geo-icon {
-  color: #eaf5ed;
-  font-size: 1.2rem;
-}
-
-/* El texto de la tarjeta ocupa el espacio restante junto al icono. */
-.card-details {
-  flex: 1;
-}
-
-/* El título de ubicación se destaca dentro de la tarjeta. */
-.card-details h3 {
-  margin: 0 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #eaf5ed;
-}
-
-/* Dirección, horario y teléfono comparten estilo secundario y alineación. */
-.detail-item {
-  margin: 0 0 8px 0;
+.mapa-placeholder p {
+  max-width: 28rem;
+  margin: 0;
   color: #b5c9ba;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Los iconos auxiliares se reducen frente al contenido de texto. */
-.icon-sub {
-  font-size: 1rem;
-  opacity: 0.7;
-}
-
-/* El botón de ruta usa el verde de acción de la aplicación. */
-.btn-como-llegar {
-  display: inline-flex;
-  align-items: center;
-  background: #45b96b;
-  color: #07100a;
-  border: none;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 999px;
-  cursor: pointer;
-  text-decoration: none;
-  margin-top: 12px;
-  transition: background-color 0.2s ease;
-}
-
-/* El hover aclara el botón de ruta para confirmar interacción. */
-.btn-como-llegar:hover {
-  background: #72d58f;
 }
 
 /* ===== Manualidades ===== */
@@ -806,115 +638,283 @@ h6 {
   margin: 0;
 }
 
-/* Los proyectos se distribuyen en dos columnas y se apilan en móvil. */
-.manualidades-page .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 30px;
-  margin-bottom: 40px;
-}
-
-.manualidad-card {
-  /* Cada manualidad se presenta en un panel verde oscuro con contraste legible. */
-  background: linear-gradient(145deg, #194b2d, #102d1d);
-  border: 1px solid rgba(114, 213, 143, 0.2);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-}
-
-/* La cabecera visual de la tarjeta usa un degradado verde profundo. */
-.manualidades-page .card-header-green {
-  background: linear-gradient(135deg, #236c43, #102d1d);
-  height: 140px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* El emoji se amplía como elemento visual del proyecto. */
-.manualidades-page .project-emoji {
-  font-size: 3.5rem;
-}
-
-/* El cuerpo de tarjeta distribuye el contenido y fija la acción al fondo. */
-.manualidades-page .card-body {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-/* El nombre del proyecto se resalta con texto claro. */
-.manualidades-page .card-body h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
+/* ===== Vistas visuales de los módulos del proyecto ===== */
+/* Contenedor común para páginas que se diseñan antes de conectarlas al backend. */
+.visual-page {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
   color: #eaf5ed;
-  margin: 0 0 12px 0;
 }
 
-/* Dificultad y tiempo aparecen en una fila compacta. */
-.manualidades-page .meta-info {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-/* Los metadatos usan el tono secundario claro del tema. */
-.manualidades-page .meta-item {
-  font-size: 0.85rem;
+/* Estado vacío para reservar la zona de resultados sin inventar registros. */
+.visual-empty-state {
+  display: grid;
+  min-height: 220px;
+  place-content: center;
+  justify-items: center;
+  gap: 0.7rem;
+  padding: 1.5rem;
+  border: 1px dashed rgba(114, 213, 143, 0.35);
+  border-radius: 1rem;
+  background: rgba(17, 23, 19, 0.55);
   color: #b5c9ba;
-  font-weight: 500;
+  text-align: center;
 }
 
-/* La descripción del tutorial conserva contraste y lectura cómoda. */
-.manualidades-page .project-description {
-  color: #d0ddd3;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0 0 20px 0;
+.visual-empty-state > span {
+  font-size: 2rem;
 }
 
-/* El encabezado de materiales se destaca en verde claro. */
-.manualidades-page .materials-section h4 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #d7f5df;
-  margin: 0 0 8px 0;
-}
-
-/* La lista de materiales elimina viñetas duplicadas del navegador. */
-.manualidades-page .materials-section ul {
-  list-style: none;
-  padding: 0;
+.visual-empty-state h2,
+.visual-empty-state p {
   margin: 0;
 }
 
-/* Los materiales se separan con espaciado vertical constante. */
-.manualidades-page .materials-section li {
-  font-size: 0.9rem;
+.visual-empty-state h2 {
+  color: #eaf5ed;
+  font-size: 1.15rem;
+}
+
+.visual-empty-state p {
+  max-width: 38rem;
+  line-height: 1.5;
+}
+
+.visual-empty-state--compact {
+  min-height: 140px;
+  margin-top: 1rem;
+}
+
+/* Encabezado compartido para dar contexto a cada módulo. */
+.visual-page__header {
+  margin-bottom: 1.5rem;
+}
+
+.visual-page__header h1 {
+  margin: 0.4rem 0;
+  color: #f2f7f3;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.visual-page__header p {
+  margin: 0;
   color: #b5c9ba;
-  margin-bottom: 6px;
+  line-height: 1.6;
 }
 
-/* El botón principal se fija al final del contenido de la tarjeta. */
-.manualidades-page .btn-tutorial {
-  background: #45b96b;
-  color: #07100a;
-  border: none;
-  width: 100%;
-  padding: 12px;
-  font-size: 0.95rem;
+/* Identifica páginas y secciones con el verde de marca. */
+.visual-eyebrow {
+  color: #72d58f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Aclara que el contenido sirve para maquetación y todavía no viene del API. */
+.visual-demo-notice {
+  margin: 0 0 1.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(114, 213, 143, 0.28);
+  border-radius: 0.75rem;
+  background: rgba(69, 185, 107, 0.09);
+  color: #c8ead1;
+  font-size: 0.9rem;
+}
+
+/* Superficie reutilizable para tarjetas y paneles de información. */
+.visual-panel,
+.visual-profile-card,
+.visual-stat-card {
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.visual-panel {
+  padding: 1.4rem;
+}
+
+.visual-panel h2 {
+  margin: 0 0 0.5rem;
+  color: #eaf5ed;
+  font-size: 1.2rem;
+}
+
+.visual-panel--narrow {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* Etiquetas compactas para categorías, temporadas y estados visuales. */
+.visual-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(114, 213, 143, 0.25);
   border-radius: 999px;
+  background: rgba(69, 185, 107, 0.12);
+  color: #a5e9b7;
+  font-size: 0.75rem;
   font-weight: 700;
-  cursor: pointer;
-  margin-top: auto; 
-  transition: background-color 0.2s ease;
 }
 
-/* El hover aclara el botón para señalar interacción. */
-.manualidades-page .btn-tutorial:hover {
-  background: #72d58f;
+.visual-section-heading,
+.visual-progress-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.visual-footnote {
+  color: #aab8af;
+  font-size: 0.82rem;
+}
+
+.visual-section-heading p {
+  margin: 0;
+  color: #c3d1c7;
+  line-height: 1.55;
+}
+
+/* Alinea en dos columnas los paneles de historial de comunidad. */
+.visual-two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.visual-section-heading {
+  align-items: flex-start;
+}
+
+.visual-section-heading > div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.visual-footnote {
+  margin: 1rem 0 0;
+  line-height: 1.5;
+}
+
+/* Perfil y resumen de estadísticas de usuario. */
+.visual-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.visual-avatar {
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  flex: 0 0 5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: #236c43;
+  font-size: 2.4rem;
+}
+
+.visual-profile-info {
+  flex: 1;
+}
+
+.visual-profile-info h2 {
+  margin: 0.55rem 0 0.25rem;
+}
+
+.visual-profile-info p {
+  margin: 0.25rem 0;
+  color: #b5c9ba;
+  line-height: 1.5;
+}
+
+.visual-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.visual-stat-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1.2rem;
+}
+
+.visual-stat-card > span {
+  font-size: 1.5rem;
+}
+
+.visual-stat-card strong {
+  font-size: 1.5rem;
+}
+
+.visual-stat-card small {
+  color: #b5c9ba;
+}
+
+.visual-progress-track {
+  height: 0.7rem;
+  overflow: hidden;
+  margin-top: 1rem;
+  border-radius: 999px;
+  background: #0b100d;
+}
+
+.visual-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #45b96b, #a5e9b7);
+}
+
+.visual-progress-track .visual-progress-track__placeholder {
+  width: 0;
+}
+
+.visual-progress-caption {
+  margin-top: 0.5rem;
+  color: #b5c9ba;
+  font-size: 0.82rem;
+}
+
+/* Presenta el saldo vacío de la tienda hasta recibir datos del backend. */
+.visual-wallet {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(114, 213, 143, 0.28);
+  border-radius: 1rem;
+  background: linear-gradient(110deg, #194b2d, #102d1d);
+}
+
+.visual-wallet > span:first-child {
+  font-size: 2rem;
+}
+
+.visual-wallet div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.visual-wallet small {
+  color: #b5c9ba;
+}
+
+.visual-wallet strong {
+  color: #f2f7f3;
+  font-size: 1.2rem;
+}
+
+.visual-store-section {
+  margin: 1rem 0;
 }
