@@ -1,0 +1,102 @@
+.footer-container {
+  background-color: #121614;
+  color: #9aa5b1;
+  padding: 50px 40px 30px 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative; 
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr; 
+  gap: 60px; 
+}
+
+.footer-column h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.footer-logo h2 {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.footer-logo .footer-icon {
+  font-size: 1.4rem;
+}
+
+.footer-description {
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: #9aa5b1;
+  max-width: 320px;
+  margin: 0;
+}
+
+.team-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.team-list li {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.contact-email {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-email a {
+  color: #9aa5b1;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease; 
+}
+
+.contact-email a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0 auto;
+  text-align: center;
+}
+
+.footer-divider {
+  border: 0;
+  border-top: 1px solid #23292f;
+  margin-bottom: 25px;
+}
+
+.copyright-text {
+  font-size: 0.85rem;
+  color: #616e7c;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr; 
+    gap: 40px; 
+  }
+}

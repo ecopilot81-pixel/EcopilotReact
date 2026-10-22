@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/Main";
 import Home from "./pages/Home";
 import PuntosRecoleccion from "./pages/Puntosrecoleccion";
@@ -11,6 +11,8 @@ import Perfil from "./pages/Perfil";
 import Tienda from "./pages/Tienda";
 import MiColeccion from "./pages/MiColeccion";
 import Comunidad from "./pages/Comunidad";
+import Conocimiento from "./pages/Conocimiento";
+import Investigacion from "./pages/Investigacion";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import CompletarRegistro from "./pages/CompletarRegistro";
@@ -26,13 +28,16 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/puntos" element={<PuntosRecoleccion />} />
-            <Route path="/emprendimientos" element={<Emprendimientos />} />
+            <Route path="/tienda" element={<Emprendimientos />} />
+            <Route path="/emprendimientos" element={<Navigate to="/tienda" replace />} />
             <Route path="/manualidades" element={<Manualidades />} />
+            <Route path="/conocimiento" element={<Conocimiento />} />
+            <Route path="/investigacion" element={<Investigacion />} />
             {/* Vistas visuales de los módulos respaldados por recursos de Laravel. */}
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/reciclaje" element={<Reciclaje />} />
             <Route path="/ranking" element={<Ranking />} />
-            <Route path="/tienda" element={<Tienda />} />
+            <Route path="/recompensas" element={<Tienda />} />
             <Route path="/comunidad" element={<Comunidad />} />
             {/* Las pantallas personales requieren una sesión web activa. */}
             <Route element={<RequireAuth />}>

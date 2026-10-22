@@ -5,11 +5,11 @@ export default function Tienda() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Al abrir la tienda, carga las categorías junto con los artículos asociados.
+  // Al abrir las recompensas, carga las categorías junto con los artículos asociados.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Consulta el endpoint que devuelve las categorías de tienda y sus artículos.
+    // Consulta el endpoint que devuelve las categorías de recompensas y sus artículos.
     async function cargarTienda() {
       try {
         const respuesta = await fetch(
@@ -31,7 +31,7 @@ export default function Tienda() {
         setCategorias(datos);
       } catch (errorSolicitud) {
         if (errorSolicitud.name !== "AbortError") {
-          setError(errorSolicitud.message || "No fue posible cargar la tienda.");
+          setError(errorSolicitud.message || "No fue posible cargar las recompensas.");
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -53,14 +53,14 @@ export default function Tienda() {
     <div className="visual-page">
       <header className="visual-page__header">
         <span className="visual-eyebrow">Recompensas</span>
-        <h1>Tienda Eco-Pilot</h1>
+        <h1>Recompensas Eco-Pilot</h1>
         <p>Explora los artículos y beneficios disponibles para la comunidad.</p>
       </header>
 
       <section aria-labelledby="tienda-categorias-heading">
         <div className="visual-section-heading">
           <div>
-            <h2 id="tienda-categorias-heading">Categorías y artículos</h2>
+            <h2 id="tienda-categorias-heading">Categorías y recompensas</h2>
             <p>Consulta los beneficios, el costo y las unidades disponibles.</p>
           </div>
           {!cargando && !error && (
@@ -72,13 +72,13 @@ export default function Tienda() {
 
         {cargando && (
           <p role="status" className="visual-data-message">
-            Cargando artículos de la tienda...
+            Cargando recompensas...
           </p>
         )}
 
         {error && (
           <p role="alert" className="visual-data-message visual-data-message--error">
-            No se pudo cargar la tienda: {error}
+            No se pudieron cargar las recompensas: {error}
           </p>
         )}
 
