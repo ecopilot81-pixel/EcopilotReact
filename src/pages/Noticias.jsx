@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { apiUrl } from "../services/api";
 
 export default function Noticias() {
   const [categorias, setCategorias] = useState([]);
@@ -20,7 +21,7 @@ export default function Noticias() {
     async function cargarCategorias() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/categorias-globales",
+          apiUrl("categorias-globales"),
           { signal: controller.signal },
         );
 
@@ -59,7 +60,7 @@ export default function Noticias() {
     async function cargarNoticias() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/consultas/noticias",
+          apiUrl("consultas/noticias"),
           { signal: controller.signal },
         );
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../services/api";
 
 export default function Reciclaje() {
   const [materiales, setMateriales] = useState([]);
@@ -14,7 +15,7 @@ export default function Reciclaje() {
       try {
         // GET al endpoint de materiales; la URL base es el servidor Laravel local.
         const respuesta = await fetch(
-          "http://localhost/v1/tipos-materiales",
+          apiUrl("tipos-materiales"),
           { signal: controller.signal },
         );
 
