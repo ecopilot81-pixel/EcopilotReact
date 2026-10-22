@@ -49,7 +49,7 @@ export default function NavigationMenu() {
           <li><Link to="/ranking">Ranking</Link></li>
           <li><Link to="/recompensas">Recompensas</Link></li>
           <li><Link to="/coleccion">Mi colección</Link></li>
-          <li><Link to="/comunidad">Comunidad</Link></li>
+          <li><Link to="/chatbot">Chatbot IA</Link></li>
         </ul>
       </nav>
     </div>

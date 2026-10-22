@@ -10,7 +10,7 @@ import Ranking from "./pages/Ranking";
 import Perfil from "./pages/Perfil";
 import Tienda from "./pages/Tienda";
 import MiColeccion from "./pages/MiColeccion";
-import Comunidad from "./pages/Comunidad";
+import Chatbot from "./pages/Chatbot";
 import Conocimiento from "./pages/Conocimiento";
 import Investigacion from "./pages/Investigacion";
 import Login from "./pages/Login";
@@ -38,11 +38,14 @@ function App() {
             <Route path="/reciclaje" element={<Reciclaje />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/recompensas" element={<Tienda />} />
-            <Route path="/comunidad" element={<Comunidad />} />
+            {/* Conserva la ruta anterior y la redirige al nuevo módulo de chatbot. */}
+            <Route path="/comunidad" element={<Navigate to="/chatbot" replace />} />
             {/* Las pantallas personales requieren una sesión web activa. */}
             <Route element={<RequireAuth />}>
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/coleccion" element={<MiColeccion />} />
+              {/* El historial del chatbot es privado y requiere autenticación. */}
+              <Route path="/chatbot" element={<Chatbot />} />
             </Route>
           </Route>
 

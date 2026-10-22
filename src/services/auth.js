@@ -96,6 +96,25 @@ export async function getMyCollection({ signal } = {}) {
   return data;
 }
 
+// Recupera el historial privado asociado a la sesión web activa.
+export async function getMyChatHistory({ signal } = {}) {
+  const data = await requestData(
+    api.get("/my-chat-history", { signal }),
+    "No se pudo cargar el historial",
+  );
+
+  if (!Array.isArray(data)) {
+    throw new Error("La respuesta del servidor no tiene el formato esperado para el historial.");
+  }
+
+  return data;
+}
+
+// Envía una pregunta al backend y la guarda para el usuario autenticado.
+export async function sendChatMessage(question) {
+  return postSession("/my-chat-history", { pregunta_usuario: question });
+}
+
 // Inicia la sesión web de Laravel con el correo y la contraseña del formulario.
 export async function signIn(credentials) {
   const data = await postSession("/login", credentials);
