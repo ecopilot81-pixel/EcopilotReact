@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../services/api";
 
 export default function Tienda() {
   const [categorias, setCategorias] = useState([]);
@@ -13,7 +14,7 @@ export default function Tienda() {
     async function cargarTienda() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/consultas/categorias-tienda-items",
+          apiUrl("consultas/categorias-tienda-items"),
           { signal: controller.signal },
         );
 

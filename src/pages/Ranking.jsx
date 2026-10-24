@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../services/api";
 
 export default function Ranking() {
   const [rankings, setRankings] = useState([]);
@@ -13,7 +14,7 @@ export default function Ranking() {
     async function cargarRankings() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/consultas/rankings",
+          apiUrl("consultas/rankings"),
           { signal: controller.signal },
         );
 

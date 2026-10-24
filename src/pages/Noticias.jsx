@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { apiUrl } from "../services/api";
 
 export default function Noticias() {
   const [categorias, setCategorias] = useState([]);
@@ -12,7 +13,7 @@ export default function Noticias() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const noticiasRef = useRef(null);
 
-  // Al abrir Noticias, obtiene del backend las categorías disponibles.
+  // Al abrir las publicaciones, obtiene del backend las categorías disponibles.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -20,7 +21,7 @@ export default function Noticias() {
     async function cargarCategorias() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/categorias-globales",
+          apiUrl("categorias-globales"),
           { signal: controller.signal },
         );
 
@@ -51,7 +52,7 @@ export default function Noticias() {
     return () => controller.abort();
   }, []);
 
-  // Al abrir Noticias, también solicita las noticias publicadas con su categoría y autor.
+  // Al abrir las publicaciones, también solicita las noticias con su categoría y autor.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -59,7 +60,7 @@ export default function Noticias() {
     async function cargarNoticias() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/consultas/noticias",
+          apiUrl("consultas/noticias"),
           { signal: controller.signal },
         );
 
@@ -107,9 +108,9 @@ export default function Noticias() {
   return (
     <div className="visual-page">
       <header className="visual-page__header">
-        <span className="visual-eyebrow">Novedades</span>
-        <h1>Noticias ambientales</h1>
-        <p>Información y novedades para una comunidad más sostenible.</p>
+        <span className="visual-eyebrow">Conocimiento</span>
+        <h1>Noticias y publicaciones científicas</h1>
+        <p>Información, novedades y publicaciones para una comunidad más sostenible.</p>
       </header>
 
       <section aria-labelledby="categorias-heading">

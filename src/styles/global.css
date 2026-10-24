@@ -3,14 +3,14 @@
 /* Valores visuales compartidos que heredan todos los estilos del proyecto. */
 body {
   --font-system: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --color-background: #07100a;
-  --color-surface: #111713;
-  --color-panel: #123823;
-  --color-panel-light: #194b2d;
-  --color-green: #45b96b;
-  --color-green-dark: #1e5e3a;
-  --color-text: #f2f7f3;
-  --color-muted: #aab8af;
+  --color-background: #0c1410;
+  --color-surface: #151d18;
+  --color-panel: #193526;
+  --color-panel-light: #234532;
+  --color-green: #62aa77;
+  --color-green-dark: #28583a;
+  --color-text: #f2f5f1;
+  --color-muted: #bbc5bd;
 }
 
 /* Elimina márgenes predeterminados y comparte el fondo base en toda la aplicación. */
@@ -56,13 +56,12 @@ h6 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(145deg, #07100a 0%, #10251b 52%, #153a2c 100%);
+  background: linear-gradient(145deg, #0c1410 0%, #17231b 52%, #203329 100%);
   color: var(--color-text);
 }
 
-/* Coloca el sidebar junto al contenido y permite que ambos ocupen el espacio disponible. */
+/* El contenido principal ocupa el espacio disponible debajo del encabezado. */
 .main-layout__body {
-  display: flex;
   flex: 1;
   min-height: 0;
 }
@@ -74,35 +73,88 @@ h6 {
   padding: 1.5rem;
 }
 
-/* Mantiene el sidebar a un ancho fijo en escritorio y lo separa del contenido. */
-.sidebar {
-  flex: 0 0 240px;
-  padding: 1.5rem 1rem;
-  background: rgba(7, 16, 10, 0.55);
-  border-right: 1px solid rgba(114, 213, 143, 0.16);
+.main-layout__content:has(.home) {
+  padding: 1rem clamp(1rem, 2vw, 2rem);
 }
 
-/* Da jerarquía visual al título del menú lateral. */
-.sidebar__title {
-  margin: 0 0 1rem;
-  padding: 0 0.75rem;
-  color: #aab8af;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.navigation-menu {
+  position: relative;
 }
 
-/* Ordena los enlaces del sidebar sin los estilos predeterminados de lista. */
-.sidebar__links {
+.navigation-menu__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 18px;
+  border: 1px solid rgba(114, 213, 143, 0.25);
+  border-radius: 999px;
+  background: rgba(69, 185, 107, 0.08);
+  color: #eaf3ed;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.navigation-menu__toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(114, 213, 143, 0.42);
+  background: rgba(69, 185, 107, 0.16);
+  color: #a5e9b7;
+}
+
+.navigation-menu__toggle:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 2px;
+}
+
+.navigation-menu__icon {
+  width: 0.48rem;
+  height: 0.48rem;
+  margin: -0.2rem 0 0 0.1rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.navigation-menu__toggle[aria-expanded="true"] .navigation-menu__icon {
+  margin-top: 0.2rem;
+  transform: rotate(225deg);
+}
+
+.navigation-menu__dropdown {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  right: 0;
+  width: max-content;
+  min-width: 14rem;
+  padding-top: 0.55rem;
+  animation: menu-enter 0.2s ease both;
+}
+
+.navigation-menu__dropdown[hidden],
+.emprendimientos__menu-dropdown[hidden] {
+  display: none;
+}
+
+/* Presenta las opciones del menú como una lista compacta desplegable. */
+.navigation-menu__links {
   display: grid;
   gap: 0.4rem;
   margin: 0;
-  padding: 0;
+  padding: 0.4rem;
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 0.75rem;
+  background: #111713;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
   list-style: none;
 }
 
-/* Define la apariencia común de los enlaces laterales. */
-.sidebar__link {
+/* Mantiene legibles y accesibles los enlaces del menú principal. */
+.navigation-menu__links a {
   display: block;
   padding: 0.75rem;
   border-radius: 0.65rem;
@@ -111,16 +163,26 @@ h6 {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Resalta el enlace lateral al pasar el puntero. */
-.sidebar__link:hover {
+.navigation-menu__links a:hover {
   background: rgba(69, 185, 107, 0.16);
   color: #72d58f;
 }
 
-/* Mantiene visible el foco del teclado al navegar por el sidebar. */
-.sidebar__link:focus-visible {
+.navigation-menu__links a:focus-visible {
   outline: 3px solid #72d58f;
   outline-offset: 2px;
+}
+
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Navbar y footer */
@@ -133,7 +195,7 @@ h6 {
   align-items: center;
   gap: 2rem;
   padding: 15px 40px;
-  background: #0b100d;
+  background: #111814;
   font-family: var(--font-system);
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
 }
@@ -179,6 +241,13 @@ h6 {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
 }
 
 /* El selector .navbar.home alinea el acceso de Inicio a la derecha. */
@@ -233,98 +302,147 @@ h6 {
 /* Footer mantiene el tema oscuro y organiza la información en columnas. */
 .footer-container {
   position: relative;
-  padding: 50px 40px 30px;
-  background-color: #0b100d;
-  color: #9aa5b1;
+  overflow: hidden;
+  padding: 4rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+  border-top: 1px solid rgba(165, 214, 177, 0.16);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(66, 111, 78, 0.16), transparent 42%),
+    linear-gradient(145deg, #111914, #0c120e 72%);
+  color: #c0cac2;
   font-family: var(--font-system);
 }
 
 .footer-content {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
-  gap: 60px;
-  max-width: 1200px;
+  grid-template-columns: minmax(260px, 1.4fr) minmax(180px, 0.8fr) minmax(250px, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  max-width: 1280px;
   margin: 0 auto;
 }
 
+.footer-column {
+  min-width: 0;
+}
+
 .footer-column h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #d7f5df;
-  font-size: 1.1rem;
-  font-weight: 600;
+  margin: 0 0 1.25rem;
+  color: #edf3ee;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
 }
 
 .footer-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 0.85rem;
+  margin-bottom: 1.15rem;
 }
 
 .footer-logo h2 {
   margin: 0;
-  color: #d7f5df;
-  font-size: 1.4rem;
-  font-weight: 700;
+  color: #f0f5f1;
+  font-size: 1.55rem;
+  font-weight: 750;
+  letter-spacing: -0.045em;
 }
 
 .footer-logo .footer-icon {
-  font-size: 1.4rem;
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border: 1px solid rgba(165, 214, 177, 0.2);
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, rgba(114, 170, 126, 0.2), rgba(114, 170, 126, 0.07));
+  font-size: 1.45rem;
 }
 
 .footer-description {
-  max-width: 320px;
+  max-width: 34ch;
   margin: 0;
-  color: #9aa5b1;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  color: #aeb9b1;
+  font-size: 0.92rem;
+  line-height: 1.75;
 }
 
 .team-list {
+  display: grid;
+  gap: 0.7rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .team-list li {
-  margin-bottom: 12px;
-  font-size: 0.95rem;
+  color: #b7c2ba;
+  font-size: 0.9rem;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.team-list li:hover {
+  transform: translateX(3px);
+  color: #dce9df;
 }
 
 .contact-email {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.85rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(165, 214, 177, 0.14);
+  border-radius: 0.85rem;
+  background: rgba(226, 239, 228, 0.035);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-email:hover {
+  border-color: rgba(165, 214, 177, 0.32);
+  background: rgba(226, 239, 228, 0.07);
 }
 
 .contact-email a {
-  color: #9aa5b1;
-  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+  color: #c0cac2;
+  font-size: 0.9rem;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .contact-email a:hover {
-  color: #72d58f;
+  color: #b5dfbd;
+}
+
+.contact-email .footer-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.6rem;
+  background: rgba(165, 214, 177, 0.1);
+  font-size: 0.95rem;
 }
 
 .footer-bottom {
-  max-width: 1200px;
-  margin: 40px auto 0;
+  max-width: 1280px;
+  margin: 3rem auto 0;
   text-align: center;
 }
 
 .footer-divider {
-  margin-bottom: 25px;
+  margin: 0 0 1.25rem;
   border: 0;
-  border-top: 1px solid rgba(114, 213, 143, 0.22);
+  border-top: 1px solid rgba(190, 211, 194, 0.13);
 }
 
 .copyright-text {
   margin: 0;
-  color: #8fa397;
-  font-size: 0.85rem;
+  color: #89978d;
+  font-size: 0.8rem;
+  letter-spacing: 0.015em;
 }
 
 /* Pagina de inicio */
@@ -337,9 +455,9 @@ h6 {
 
 /* Las etiquetas de sección destacan con un fondo y texto verdes. */
 .home .eyebrow-dark {
-  background: #1b3324;
-  border-color: rgba(69, 185, 107, 0.28);
-  color: #72d58f;
+  background: #29382e;
+  border-color: rgba(165, 214, 177, 0.24);
+  color: #a5d6b1;
 }
 
 /* El contenido de Home queda centrado y limitado para facilitar su lectura. */
@@ -374,20 +492,20 @@ h6 {
 /* Cada opción de Home usa una tarjeta oscura con borde verde tenue. */
 .home .card {
   display: block;
-  background: #111713;
+  background: #161e19;
   padding: 2rem 1.4rem;
   border-radius: 24px;
   text-decoration: none;
   color: #f2f7f3;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(69, 185, 107, 0.16);
+  border: 1px solid rgba(165, 214, 177, 0.16);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* El hover eleva la tarjeta para indicar que es un enlace interactivo. */
 .home .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(69, 185, 107, 0.55);
+  border-color: rgba(165, 214, 177, 0.45);
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.32);
 }
 
@@ -400,7 +518,7 @@ h6 {
   height: 60px;
   margin-bottom: 1rem;
   border-radius: 18px;
-  background: linear-gradient(135deg, #1e5e3a, #45b96b);
+  background: linear-gradient(135deg, #315f40, #69a97a);
   font-size: 2rem;
 }
 
@@ -426,8 +544,8 @@ h6 {
   text-align: center;
   border-radius: 30px;
   /* El panel de calificación mantiene el tema oscuro con un borde verde sutil. */
-  background: #111713;
-  border: 1px solid rgba(69, 185, 107, 0.18);
+  background: #161e19;
+  border: 1px solid rgba(165, 214, 177, 0.16);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -470,36 +588,217 @@ h6 {
   color: #72d58f;
 }
 
-/* ===== Emprendimientos ===== */
-/* Estilos exclusivos de la página de emprendimientos. */
+/* ===== Tienda de emprendimientos ===== */
 .emprendimientos {
-  /* La página hereda el degradado oscuro del lienzo Main y usa texto claro. */
   min-height: 100%;
-  padding: 48px max(24px, calc((100% - 1200px) / 2));
-  background: transparent;
-  text-align: center;
   color: #eaf5ed;
 }
 
-/* El panel de contacto destaca sobre el lienzo mediante un degradado. */
-.emprendimientos .contact {
-  margin-top: 40px;
-  background: linear-gradient(135deg, #194b2d, #102d1d);
-  border: 1px solid rgba(114, 213, 143, 0.2);
-  padding: 30px;
-  border-radius: 18px;
+.emprendimientos__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
 }
 
-/* El enlace de contacto conserva el estilo de acción principal. */
-.emprendimientos .contact a {
+.emprendimientos__menu {
+  position: relative;
+}
+
+.emprendimientos__menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(114, 213, 143, 0.25);
+  border-radius: 0.7rem;
+  background: rgba(17, 23, 19, 0.75);
+  color: #eaf5ed;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.emprendimientos__menu-button:hover {
+  border-color: #72d58f;
+  background: rgba(69, 185, 107, 0.16);
+}
+
+.emprendimientos__menu-button:focus-visible,
+.emprendimientos__menu-dropdown a:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 2px;
+}
+
+.emprendimientos__menu-arrow {
+  transition: transform 0.2s ease;
+}
+
+.emprendimientos__menu-button[aria-expanded="true"] .emprendimientos__menu-arrow {
+  transform: rotate(180deg);
+}
+
+.emprendimientos__menu-dropdown {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  min-width: 13rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(114, 213, 143, 0.22);
+  border-radius: 0.75rem;
+  background: #111713;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  animation: menu-enter 0.18s ease both;
+}
+
+.emprendimientos__menu-dropdown a {
+  display: block;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  color: #eaf5ed;
+  text-decoration: none;
+}
+
+.emprendimientos__menu-dropdown a:hover {
+  background: rgba(69, 185, 107, 0.16);
+  color: #a5e9b7;
+}
+
+.emprendimientos__contact {
+  margin-top: 2rem;
+}
+
+.emprendimientos__contact p {
+  color: #c3d1c7;
+}
+
+.emprendimientos__contact a {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 0.5rem;
   background: #45b96b;
   color: #07100a;
-  padding: 10px 20px;
+  padding: 0.65rem 1rem;
   border-radius: 999px;
   font-weight: 700;
   text-decoration: none;
+}
+
+.emprendimientos__contact a:hover {
+  background: #72d58f;
+}
+
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.knowledge-card {
+  display: flex;
+  min-height: 13rem;
+  flex-direction: column;
+  align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.knowledge-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(114, 213, 143, 0.55);
+}
+
+.knowledge-card:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 3px;
+}
+
+.knowledge-card__icon {
+  margin-bottom: 0.7rem;
+  font-size: 1.8rem;
+}
+
+.knowledge-card h2 {
+  margin: 0 0 0.5rem;
+}
+
+.knowledge-card p {
+  margin: 0;
+  color: #c3d1c7;
+  line-height: 1.5;
+}
+
+.knowledge-card__action {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1.25rem;
+  color: #a5e9b7;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    gap: 1rem;
+    padding: 12px 16px;
+  }
+
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+
+  .navigation-menu__toggle {
+    padding: 8px 12px;
+  }
+
+  .nav-links .nav-login {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .knowledge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+  }
+
+  .footer-column.branding {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-column.branding {
+    grid-column: auto;
+  }
+
+  .footer-container {
+    padding-top: 3rem;
+  }
+
+  .footer-bottom {
+    margin-top: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ===== Puntos de recoleccion ===== */
@@ -791,9 +1090,9 @@ h6 {
 .visual-panel,
 .visual-profile-card,
 .visual-stat-card {
-  border: 1px solid rgba(114, 213, 143, 0.2);
+  border: 1px solid rgba(165, 195, 172, 0.2);
   border-radius: 1rem;
-  background: linear-gradient(145deg, #194b2d, #102d1d);
+  background: linear-gradient(145deg, #26382d, #18251d);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -1054,8 +1353,8 @@ h6 {
 }
 
 .visual-category-button.is-selected {
-  border-color: #72d58f;
-  background: linear-gradient(145deg, #236c43, #123823);
+  border-color: #91c49d;
+  background: linear-gradient(145deg, #315d3e, #1d3c29);
 }
 
 .visual-category-card > span {

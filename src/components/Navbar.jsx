@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ecopilotLog from "../assets/ecopilot log.png";
 import { useAuth } from "../context/useAuth";
+import NavigationMenu from "./NavigationMenu";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -51,20 +52,10 @@ const Navbar = () => {
         </Link>
       )}
 
-      {/* Home muestra el acceso; el resto de páginas conserva el menú completo. */}
-      <ul className="nav-links">
-        {pathname === "/" ? (
-          authAction
-        ) : (
-          <>
-            <li><Link to="/">Inicio</Link></li>
-            <li><Link to="/puntos">Puntos de Recolección</Link></li>
-            <li><Link to="/emprendimientos">Emprendimientos</Link></li>
-            <li><Link to="/manualidades">Manualidades</Link></li>
-            {authAction}
-          </>
-        )}
-      </ul>
+      <div className="navbar-actions">
+        <ul className="nav-links">{authAction}</ul>
+        <NavigationMenu />
+      </div>
       {logoutError && <p className="navbar-auth-error" role="alert">{logoutError}</p>}
     </nav>
   );

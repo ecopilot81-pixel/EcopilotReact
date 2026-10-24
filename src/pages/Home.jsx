@@ -24,9 +24,9 @@ const Home = () => {
             <p>Encuentra los centros de acopio y reciclaje más cercanos a ti.</p>
           </Link>
 
-          <Link to="/emprendimientos" className="card">
+          <Link to="/tienda" className="card">
             <div className="card-icon">🌱</div>
-            <h3>Emprendimientos</h3>
+            <h3>Tienda</h3>
             <p>Apoya y conoce proyectos locales con impacto sostenible.</p>
           </Link>
 

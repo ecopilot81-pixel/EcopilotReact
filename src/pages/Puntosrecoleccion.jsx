@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../services/api";
 
 const PuntosRecoleccion = () => {
   const [puntos, setPuntos] = useState([]);
@@ -13,7 +14,7 @@ const PuntosRecoleccion = () => {
     async function cargarPuntos() {
       try {
         const respuesta = await fetch(
-          "http://localhost/v1/consultas/puntos-zona",
+          apiUrl("consultas/puntos-zona"),
           { signal: controller.signal },
         );
 
