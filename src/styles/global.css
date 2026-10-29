@@ -10,7 +10,7 @@ body {
   --color-green: #62aa77;
   --color-green-dark: #28583a;
   --color-text: #f2f5f1;
-  --color-muted: #bbc5bd;
+  --color-muted: #bbc5bd; 
 }
 
 /* Elimina márgenes predeterminados y comparte el fondo base en toda la aplicación. */
