@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
-import { apiUrl } from "../services/api";
+import { getApiData } from "../api/client";
 
 export default function Reciclaje() {
   const [materiales, setMateriales] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Al abrir la vista, solicita al backend el catálogo de tipos de materiales.
   useEffect(() => {
     const controller = new AbortController();
 
-    // `async` permite esperar la respuesta del API; esta función carga los materiales y actualiza la vista.
     async function cargarMateriales() {
       try {
-        // GET al endpoint de materiales; la URL base es el servidor Laravel local.
-        const respuesta = await fetch(
-          apiUrl("tipos-materiales"),
-          { signal: controller.signal },
-        );
+        // GET del catálogo de materiales.
+        const datos = await getApiData("tipos-materiales", {
+          signal: controller.signal,
+        });
 
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
-
-        // Guarda los registros recibidos para mostrarlos en las tarjetas.
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");
         }

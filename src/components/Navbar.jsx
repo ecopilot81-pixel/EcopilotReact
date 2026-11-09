@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ecopilotLog from "../assets/ecopilot log.png";
-import { useAuth } from "../context/useAuth";
 import NavigationMenu from "./NavigationMenu";
 
-const Navbar = () => {
+const Navbar = ({ auth }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout } = auth;
   const [logoutError, setLogoutError] = useState("");
 
   // Finaliza la sesión web antes de regresar a la página de acceso.

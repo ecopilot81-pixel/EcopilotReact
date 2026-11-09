@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { apiUrl } from "../services/api";
+import { getApiData } from "../api/client";
 
 export default function Noticias() {
   const [categorias, setCategorias] = useState([]);
@@ -13,23 +13,15 @@ export default function Noticias() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const noticiasRef = useRef(null);
 
-  // Al abrir las publicaciones, obtiene del backend las categorías disponibles.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Solicita la lista de categorías globales al API de Laravel.
+    // GET de categorías globales.
     async function cargarCategorias() {
       try {
-        const respuesta = await fetch(
-          apiUrl("categorias-globales"),
-          { signal: controller.signal },
-        );
-
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await getApiData("categorias-globales", {
+          signal: controller.signal,
+        });
 
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");
@@ -52,23 +44,15 @@ export default function Noticias() {
     return () => controller.abort();
   }, []);
 
-  // Al abrir las publicaciones, también solicita las noticias con su categoría y autor.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Consulta la ruta del backend que incluye las relaciones de categoría y usuario.
+    // GET de noticias con sus categorías y autores.
     async function cargarNoticias() {
       try {
-        const respuesta = await fetch(
-          apiUrl("consultas/noticias"),
-          { signal: controller.signal },
-        );
-
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await getApiData("consultas/noticias", {
+          signal: controller.signal,
+        });
 
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");

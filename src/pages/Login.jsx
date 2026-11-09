@@ -3,12 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import ecoPilotLogo from "../assets/ecopilot log.png";
 import "../styles/login.css";
 import Footer from "../components/Footer";
-import { useAuth } from "../context/useAuth";
 
-function Login() {
+function Login({ auth }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, error: sessionError } = useAuth();
+  const { login, error: sessionError } = auth;
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 

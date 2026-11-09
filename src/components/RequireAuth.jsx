@@ -1,9 +1,8 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../context/useAuth";
 
 // Espera a comprobar la sesión y devuelve a Login las rutas personales sin acceso.
-export default function RequireAuth() {
-  const { user, loading } = useAuth();
+export default function RequireAuth({ auth }) {
+  const { user, loading } = auth;
   const location = useLocation();
 
   if (loading) {

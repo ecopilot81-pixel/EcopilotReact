@@ -1,34 +1,25 @@
 import { useEffect, useState } from "react";
-import { apiUrl } from "../services/api";
+import { getApiData } from "../api/client";
 
 const PuntosRecoleccion = () => {
   const [puntos, setPuntos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Al abrir la vista, carga los puntos junto con los datos de su zona.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Consulta al backend los puntos de recolección y sus zonas asociadas.
+    // GET de puntos de recolección con sus zonas.
     async function cargarPuntos() {
       try {
-        const respuesta = await fetch(
-          apiUrl("consultas/puntos-zona"),
-          { signal: controller.signal },
-        );
-
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await getApiData("consultas/puntos-zona", {
+          signal: controller.signal,
+        });
 
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");
         }
 
-        // Guarda los registros recibidos para mostrarlos en la lista de ubicaciones.
         setPuntos(datos);
       } catch (errorSolicitud) {
         if (errorSolicitud.name !== "AbortError") {

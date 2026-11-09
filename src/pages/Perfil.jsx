@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getMyProfile } from "../services/auth";
+import { getMyProfile } from "../api/auth";
 
 export default function Perfil() {
   const [perfil, setPerfil] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Carga la información privada correspondiente a la sesión activa.
+  // GET del perfil asociado a la sesión.
   useEffect(() => {
     const controller = new AbortController();
 

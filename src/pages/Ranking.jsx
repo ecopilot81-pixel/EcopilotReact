@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react";
-import { apiUrl } from "../services/api";
+import { getApiData } from "../api/client";
 
 export default function Ranking() {
   const [rankings, setRankings] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Al abrir la vista, obtiene del backend el ranking semanal con los usuarios.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Consulta los registros ya ordenados por puntaje y relacionados con cada usuario.
+    // GET del ranking semanal con los usuarios asociados.
     async function cargarRankings() {
       try {
-        const respuesta = await fetch(
-          apiUrl("consultas/rankings"),
-          { signal: controller.signal },
-        );
-
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await getApiData("consultas/rankings", {
+          signal: controller.signal,
+        });
 
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");

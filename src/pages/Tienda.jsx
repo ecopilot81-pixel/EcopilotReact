@@ -1,34 +1,25 @@
 import { useEffect, useState } from "react";
-import { apiUrl } from "../services/api";
+import { getApiData } from "../api/client";
 
 export default function Tienda() {
   const [categorias, setCategorias] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Al abrir la tienda, carga las categorías junto con los artículos asociados.
   useEffect(() => {
     const controller = new AbortController();
 
-    // Consulta el endpoint que devuelve las categorías de tienda y sus artículos.
+    // GET de categorías de tienda con sus artículos.
     async function cargarTienda() {
       try {
-        const respuesta = await fetch(
-          apiUrl("consultas/categorias-tienda-items"),
-          { signal: controller.signal },
-        );
-
-        if (!respuesta.ok) {
-          throw new Error(`El servidor respondió con el estado ${respuesta.status}.`);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await getApiData("consultas/categorias-tienda-items", {
+          signal: controller.signal,
+        });
 
         if (!Array.isArray(datos)) {
           throw new Error("La respuesta del servidor no tiene el formato esperado.");
         }
 
-        // Guarda las categorías y sus artículos para mostrarlos en la tienda.
         setCategorias(datos);
       } catch (errorSolicitud) {
         if (errorSolicitud.name !== "AbortError") {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getMyCollection } from "../services/auth";
+import { getMyCollection } from "../api/auth";
 
 export default function MiColeccion() {
   const [coleccion, setColeccion] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Consulta la colección privada al entrar y cancela la solicitud al salir de la página.
+  // GET de la colección; cancela la solicitud al salir.
   useEffect(() => {
     const controller = new AbortController();
 

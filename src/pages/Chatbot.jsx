@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyChatHistory, sendChatMessage } from "../services/auth";
+import { getMyChatHistory, sendChatMessage } from "../api/auth";
 
 export default function Chatbot() {
   const [history, setHistory] = useState([]);
@@ -11,7 +11,7 @@ export default function Chatbot() {
   useEffect(() => {
     const controller = new AbortController();
 
-    // Carga solo el historial de la sesión activa y cancela la solicitud al salir.
+    // GET del historial del usuario; cancela la solicitud al salir.
     getMyChatHistory({ signal: controller.signal })
       .then(setHistory)
       .catch((requestError) => {
@@ -28,7 +28,7 @@ export default function Chatbot() {
     return () => controller.abort();
   }, []);
 
-  // Guarda la pregunta en el backend y añade al historial el registro devuelto.
+  // POST de la pregunta; agrega al historial el registro recibido.
   async function handleSubmit(event) {
     event.preventDefault();
     const message = question.trim();
