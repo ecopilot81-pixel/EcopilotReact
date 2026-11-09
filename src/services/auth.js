@@ -1,4 +1,7 @@
 import axios from "axios";
+
+// Las rutas de sesión viven en la raíz (no bajo /v1) y deben usar el mismo
+// protocolo y host local que la API para enviar correctamente las cookies.
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost";
 
 // Cliente compartido para solicitudes de sesión con cookies de Laravel.
@@ -9,10 +12,12 @@ const api = axios.create({
 });
 
 function createRequestError(error, fallback) {
+  // Mantiene las cancelaciones identificables para que las vistas puedan ignorarlas.
   if (axios.isCancel(error)) {
     return new DOMException(error.message, "AbortError");
   }
 
+  // Prioriza el mensaje del backend y, si no existe, informa el estado HTTP o el error de red.
   const message =
     error.response?.data?.message ||
     (error.response
@@ -23,6 +28,7 @@ function createRequestError(error, fallback) {
 
 async function requestData(request, fallback) {
   try {
+    // Axios envuelve la respuesta HTTP; la aplicación solo necesita el contenido JSON.
     const { data } = await request;
     return data;
   } catch (error) {
@@ -32,6 +38,7 @@ async function requestData(request, fallback) {
 
 // Obtiene el token CSRF necesario para iniciar o cerrar una sesión de Laravel.
 async function getCsrfToken() {
+  // Laravel usa este token para validar las solicitudes que modifican la sesión.
   const data = await requestData(
     api.get("/csrf-token"),
     "No se pudo obtener el token de seguridad.",
@@ -45,6 +52,7 @@ async function getCsrfToken() {
 }
 
 async function postSession(path, body) {
+  // Envía primero el token CSRF y luego los datos de la operación de sesión.
   const csrfToken = await getCsrfToken();
   return requestData(
     api.post(path, body, { headers: { "X-CSRF-TOKEN": csrfToken } }),
@@ -68,6 +76,7 @@ export async function getCurrentUser({ signal } = {}) {
   }
 }
 
+// Obtiene el perfil privado; signal permite cancelar la petición al salir de la vista.
 export async function getMyProfile({ signal } = {}) {
   return requestData(
     api.get("/my-profile", { signal }),
@@ -76,6 +85,7 @@ export async function getMyProfile({ signal } = {}) {
 }
 
 export async function getMyCollection({ signal } = {}) {
+  // La respuesta debe contener ambas listas antes de que la vista las consuma.
   const data = await requestData(
     api.get("/my-collection", { signal }),
     "No se pudo cargar tu colección",
@@ -88,6 +98,7 @@ export async function getMyCollection({ signal } = {}) {
   return data;
 }
 
+// Recupera el historial de chat de la sesión y verifica que el servidor devuelva una lista.
 export async function getMyChatHistory({ signal } = {}) {
   const data = await requestData(
     api.get("/my-chat-history", { signal }),
@@ -101,15 +112,18 @@ export async function getMyChatHistory({ signal } = {}) {
   return data;
 }
 
+// Guarda la pregunta del usuario en el endpoint de historial del chatbot.
 export async function sendChatMessage(question) {
   return postSession("/my-chat-history", { pregunta_usuario: question });
 }
 
+// Inicia sesión y entrega al contexto de React solo el usuario autenticado.
 export async function signIn(credentials) {
   const data = await postSession("/login", credentials);
   return data.user;
 }
 
+// Cierra la sesión actual en Laravel; las cookies se envían mediante el cliente Axios.
 export async function signOut() {
   await postSession("/logout", {});
 }

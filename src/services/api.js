@@ -1,4 +1,5 @@
-// Vite solo expone al navegador las variables de entorno que empiezan con VITE_.
+// En local, el VirtualHost de Apache escucha por HTTP en el puerto 80:
+// usa http://api.ecopilot.test/v1; HTTPS requiere un VirtualHost SSL para esta API.
 const API_BASE_URL = import.meta.env.VITE_SERVER_API;
 
 // Une la URL base y la ruta sin dejar barras duplicadas o faltantes.
