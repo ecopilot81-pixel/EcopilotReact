@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getApiData } from "../api/client";
 
-export default function Reciclaje() {
+export default function Reciclaje({ embedded = false }) {
   const [materiales, setMateriales] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -36,11 +36,12 @@ export default function Reciclaje() {
     return () => controller.abort();
   }, []);
 
+  // El modo incrustado permite mostrar las actividades dentro del perfil.
   return (
-    <div className="visual-page">
+    <div className={embedded ? "visual-page visual-page--embedded" : "visual-page"}>
       <header className="visual-page__header">
         <span className="visual-eyebrow">Participa</span>
-        <h1>Recicla tus materiales</h1>
+        {embedded ? <h2>Mis actividades</h2> : <h1>Recicla tus materiales</h1>}
         <p>Conoce qué materiales puedes reciclar y cuántos puntos otorga cada uno.</p>
       </header>
 

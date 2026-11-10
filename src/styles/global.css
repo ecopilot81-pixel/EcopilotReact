@@ -212,7 +212,7 @@ h6 {
   text-decoration: none;
 }
 
-/* Ajusta el logo para mantenerlo proporcionado sobre el texto de navegación. */
+/* Mantiene el logo proporcionado dentro del encabezado. */
 .logo img {
   display: block;
   width: 120px;
@@ -220,7 +220,13 @@ h6 {
   object-fit: contain;
 }
 
-/* Mantiene el texto de inicio visible al interactuar con el logo. */
+/* Da al logo principal un tamaño cómodo sin competir con las acciones del menú. */
+.navbar.home .logo img {
+  width: 132px;
+  height: 84px;
+}
+
+/* Mantiene el texto de inicio visible al interactuar con él en otras páginas. */
 .logo:hover {
   color: #a5e9b7;
 }
@@ -250,7 +256,50 @@ h6 {
   margin-left: auto;
 }
 
-/* El selector .navbar.home alinea el acceso de Inicio a la derecha. */
+.navbar-location-button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(114, 213, 143, 0.3);
+  border-radius: 50%;
+  background: rgba(69, 185, 107, 0.08);
+  color: #a5e9b7;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.navbar-location-button svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.navbar-location-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(114, 213, 143, 0.65);
+  background: rgba(69, 185, 107, 0.2);
+}
+
+.navbar-location-button:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 3px;
+}
+
+.navbar-location-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+/* El selector .navbar.home alinea las acciones del encabezado principal a la derecha. */
 .navbar.home .nav-links {
   margin-left: auto;
   justify-content: flex-end;
@@ -453,13 +502,6 @@ h6 {
   color: #eaf5ed;
 }
 
-/* Las etiquetas de sección destacan con un fondo y texto verdes. */
-.home .eyebrow-dark {
-  background: #29382e;
-  border-color: rgba(165, 214, 177, 0.24);
-  color: #a5d6b1;
-}
-
 /* El contenido de Home queda centrado y limitado para facilitar su lectura. */
 .home .features {
   width: min(1200px, calc(100% - 2rem));
@@ -480,6 +522,23 @@ h6 {
   line-height: 1.1;
   letter-spacing: -0.05em;
   color: #eaf5ed;
+}
+
+/* El título de la plataforma entra con un desplazamiento breve y discreto. */
+.home .features .section-heading h2 {
+  animation: platform-title-enter 700ms ease-out both;
+}
+
+@keyframes platform-title-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Las opciones de Home se distribuyen en una cuadrícula adaptable. */
@@ -744,6 +803,11 @@ h6 {
     padding: 12px 16px;
   }
 
+  .navbar.home .logo img {
+    width: 108px;
+    height: 72px;
+  }
+
   .navbar-actions {
     gap: 0.5rem;
   }
@@ -848,7 +912,7 @@ h6 {
   color: #d7f5df;
 }
 
-/* El mapa incrustado ocupa el panel completo; aún no se muestran puntos de recolección. */
+/* El mapa incrustado ocupa el panel completo. */
 .mapa-box {
   background: linear-gradient(145deg, #194b2d, #102d1d);
   border: 1px solid rgba(114, 213, 143, 0.2);
@@ -880,7 +944,61 @@ h6 {
   margin: 0;
 }
 
-/* Presenta los puntos registrados en tarjetas sencillas, sin marcadores en el mapa. */
+/* Explica el uso de la ubicación antes de solicitar permiso al navegador. */
+.puntos-location-help {
+  margin: 0.75rem 0 1rem;
+  color: #aab8af;
+  line-height: 1.5;
+}
+
+.puntos-nearest-button {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(165, 214, 177, 0.45);
+  border-radius: 0.75rem;
+  background: #45b96b;
+  color: #07100a;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.puntos-nearest-button:hover:not(:disabled) {
+  background: #72d58f;
+  transform: translateY(-1px);
+}
+
+.puntos-nearest-button:focus-visible,
+.punto-card__link:focus-visible {
+  outline: 3px solid #a5e9b7;
+  outline-offset: 3px;
+}
+
+.puntos-nearest-button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+
+.punto-nearest-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(165, 214, 177, 0.32);
+  border-radius: 1rem;
+  background: rgba(69, 185, 107, 0.1);
+}
+
+.punto-nearest-result p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Presenta los puntos oficiales en tarjetas adaptables. */
 .puntos-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -893,6 +1011,16 @@ h6 {
   border-radius: 1rem;
   background: linear-gradient(145deg, #194b2d, #102d1d);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.punto-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(165, 214, 177, 0.48);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
 }
 
 .punto-card__heading {
@@ -915,23 +1043,45 @@ h6 {
   line-height: 1.5;
 }
 
-.punto-card__status {
-  flex: 0 0 auto;
-  padding: 0.25rem 0.55rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: capitalize;
+.punto-card p a {
+  color: #a5e9b7;
+  overflow-wrap: anywhere;
 }
 
-.punto-card__status.is-active {
-  background: rgba(69, 185, 107, 0.16);
+.punto-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.punto-card__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(165, 214, 177, 0.4);
+  border-radius: 0.65rem;
+  background: #45b96b;
+  color: #07100a;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.punto-card__link:hover {
+  background: #72d58f;
+}
+
+.punto-card__link--secondary {
+  background: transparent;
   color: #a5e9b7;
 }
 
-.punto-card__status.is-inactive {
-  background: rgba(255, 180, 171, 0.12);
-  color: #ffb4ab;
+.punto-card__link--secondary:hover {
+  background: rgba(165, 233, 183, 0.1);
 }
 
 /* ===== Manualidades ===== */
@@ -1008,6 +1158,23 @@ h6 {
   margin: 0 auto;
   padding: 1.5rem 0 3rem;
   color: #eaf5ed;
+}
+
+.visual-page--embedded {
+  width: 100%;
+  padding: 1rem 0 0;
+}
+
+.visual-page--embedded .visual-page__header h2 {
+  margin: 0.4rem 0;
+  color: #f2f7f3;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.profile-module + .profile-module {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(165, 195, 172, 0.2);
 }
 
 /* Estado vacío para reservar la zona de resultados sin inventar registros. */

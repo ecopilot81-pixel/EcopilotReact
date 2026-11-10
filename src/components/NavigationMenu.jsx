@@ -45,8 +45,6 @@ export default function NavigationMenu() {
           <li><Link to="/tienda">Tienda</Link></li>
           <li><Link to="/manualidades">Manualidades</Link></li>
           <li><Link to="/conocimiento">Conocimiento</Link></li>
-          <li><Link to="/reciclaje">Mis actividades</Link></li>
-          <li><Link to="/ranking">Ranking</Link></li>
           <li><Link to="/recompensas">Recompensas</Link></li>
           <li><Link to="/coleccion">Mi colección</Link></li>
           <li><Link to="/chatbot">Chatbot IA</Link></li>

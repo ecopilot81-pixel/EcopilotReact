@@ -13,7 +13,6 @@ const Home = () => {
       {/* SECCIÓN DE OPCIONES: se mantiene la navegación por temática con cards más visuales. */}
       <section className="features">
         <div className="section-heading">
-          <span className="eyebrow eyebrow-dark">Nuestra plataforma</span>
           <h2>Explora nuestra plataforma</h2>
         </div>
 

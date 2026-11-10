@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// URL base de Laravel con el prefijo /v1, configurada en el .env.
-const API_BASE_URL = import.meta.env.VITE_SERVER_API;
+// Las rutas API de Laravel usan el prefijo /v1.
+const API_BASE_URL = import.meta.env.VITE_SERVER_API || "/v1";
 
 const apiClient = axios.create({
   headers: { Accept: "application/json" },

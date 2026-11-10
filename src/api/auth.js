@@ -1,10 +1,6 @@
 import axios from "axios";
 
-// Las rutas de sesión están fuera de /v1 y requieren cookies del navegador.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost";
-
 const api = axios.create({
-  baseURL: API_BASE_URL,
   withCredentials: true,
   headers: { Accept: "application/json" },
 });

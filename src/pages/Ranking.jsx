@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getApiData } from "../api/client";
 
-export default function Ranking() {
+export default function Ranking({ embedded = false }) {
   const [rankings, setRankings] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -41,11 +41,12 @@ export default function Ranking() {
     return () => controller.abort();
   }, []);
 
+  // El modo incrustado adapta el encabezado sin duplicar la página.
   return (
-    <div className="visual-page">
+    <div className={embedded ? "visual-page visual-page--embedded" : "visual-page"}>
       <header className="visual-page__header">
         <span className="visual-eyebrow">Comunidad</span>
-        <h1>Ranking semanal</h1>
+        {embedded ? <h2>Ranking semanal</h2> : <h1>Ranking semanal</h1>}
         <p>Reconocemos a quienes suman acciones positivas para el planeta.</p>
       </header>
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMyProfile } from "../api/auth";
+import Reciclaje from "./Reciclaje";
+import Ranking from "./Ranking";
 
 export default function Perfil() {
   const [perfil, setPerfil] = useState(null);
@@ -89,6 +91,15 @@ export default function Perfil() {
           </section>
         </>
       )}
+
+      {/* Reutiliza los módulos completos para conservar sus consultas y estados de carga. */}
+      <section className="profile-module" aria-label="Ranking semanal">
+        <Ranking embedded />
+      </section>
+
+      <section className="profile-module" aria-label="Mis actividades de reciclaje">
+        <Reciclaje embedded />
+      </section>
     </div>
   );
 }
