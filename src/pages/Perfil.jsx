@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import { getMyProfile } from "../api/auth";
-import Reciclaje from "./Reciclaje";
-import Ranking from "./Ranking";
-=======
 import { getMyProfile, saveMyProfile } from "../api/auth";
 import { apiAssetUrl } from "../api/client";
->>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
 
 export default function Perfil() {
   const [perfil, setPerfil] = useState(null);

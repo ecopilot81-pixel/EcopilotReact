@@ -1,11 +1,5 @@
 import axios from "axios";
 
-<<<<<<< HEAD
-=======
-// Las rutas de sesión están fuera de /v1; en desarrollo, Vite las reenvía al API.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || window.location.origin;
-
->>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
 const api = axios.create({
   withCredentials: true,
   headers: { Accept: "application/json" },

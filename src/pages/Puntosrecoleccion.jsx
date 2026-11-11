@@ -1,6 +1,11 @@
-<<<<<<< HEAD
-import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  createApiData,
+  deleteApiData,
+  getApiData,
+  updateApiData,
+} from "../api/client";
 
 const puntosOficiales = [
   {
@@ -41,8 +46,18 @@ const puntosOficiales = [
   },
 ];
 
+const emptyForm = {
+  nombre_lugar: "",
+  direccion: "",
+  latitud: "",
+  longitud: "",
+  telefono: "",
+  horario_atencion: "",
+  estado_punto: "activo",
+  zona_id: "",
+};
+
 function calcularDistancia(origen, destino) {
-  // La distancia en línea recta permite comparar puntos sin solicitar una ruta externa.
   const gradosARadianes = (grados) => (grados * Math.PI) / 180;
   const radioTierraKm = 6371;
   const diferenciaLatitud = gradosARadianes(destino.lat - origen.lat);
@@ -64,7 +79,6 @@ function calcularDistancia(origen, destino) {
 }
 
 function crearEnlaceRuta(punto, origen) {
-  // Google Maps calcula la ruta real al abrir el enlace.
   const parametros = new URLSearchParams({
     api: "1",
     destination: `${punto.nombre}, ${punto.direccion}`,
@@ -78,41 +92,10 @@ function crearEnlaceRuta(punto, origen) {
   return `https://www.google.com/maps/dir/?${parametros.toString()}`;
 }
 
-const PuntosRecoleccion = () => {
+export default function PuntosRecoleccion({ auth }) {
   const routeLocation = useLocation();
   const navigate = useNavigate();
   const [buscandoCercano, setBuscandoCercano] = useState(false);
-  const ubicacionUsuario = routeLocation.state?.ubicacionUsuario ?? null;
-  const errorUbicacion = routeLocation.state?.errorUbicacion ?? "";
-
-  function buscarPuntoMasCercano() {
-    if (!navigator.geolocation) {
-      navigate(routeLocation.pathname, {
-        replace: true,
-        state: { errorUbicacion: "Tu navegador no permite consultar la ubicación actual." },
-      });
-      return;
-=======
-import { useEffect, useState } from "react";
-import {
-  createApiData,
-  deleteApiData,
-  getApiData,
-  updateApiData,
-} from "../api/client";
-
-const emptyForm = {
-  nombre_lugar: "",
-  direccion: "",
-  latitud: "",
-  longitud: "",
-  telefono: "",
-  horario_atencion: "",
-  estado_punto: "activo",
-  zona_id: "",
-};
-
-const PuntosRecoleccion = ({ auth }) => {
   const [puntos, setPuntos] = useState([]);
   const [zonas, setZonas] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -123,6 +106,9 @@ const PuntosRecoleccion = ({ auth }) => {
   const [puntoEditando, setPuntoEditando] = useState(null);
   const [guardando, setGuardando] = useState(false);
   const [eliminandoId, setEliminandoId] = useState(null);
+
+  const ubicacionUsuario = routeLocation.state?.ubicacionUsuario ?? null;
+  const errorUbicacion = routeLocation.state?.errorUbicacion ?? "";
 
   async function cargarDatos(signal) {
     const config = signal ? { signal } : undefined;
@@ -146,7 +132,6 @@ const PuntosRecoleccion = ({ auth }) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    // GET de puntos y zonas al abrir la página.
     async function cargarPuntos() {
       try {
         await cargarDatos(controller.signal);
@@ -159,7 +144,23 @@ const PuntosRecoleccion = ({ auth }) => {
           setCargando(false);
         }
       }
->>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
+    }
+
+    cargarPuntos();
+
+    return () => controller.abort();
+  }, []);
+
+  function buscarPuntoMasCercano() {
+    if (!navigator.geolocation) {
+      navigate(routeLocation.pathname, {
+        replace: true,
+        state: {
+          ...routeLocation.state,
+          errorUbicacion: "Tu navegador no permite consultar la ubicación actual.",
+        },
+      });
+      return;
     }
 
     setBuscandoCercano(true);
@@ -167,7 +168,11 @@ const PuntosRecoleccion = ({ auth }) => {
       ({ coords }) => {
         navigate(routeLocation.pathname, {
           replace: true,
-          state: { ubicacionUsuario: { lat: coords.latitude, lng: coords.longitude } },
+          state: {
+            ...routeLocation.state,
+            ubicacionUsuario: { lat: coords.latitude, lng: coords.longitude },
+            errorUbicacion: "",
+          },
         });
         setBuscandoCercano(false);
       },
@@ -180,6 +185,7 @@ const PuntosRecoleccion = ({ auth }) => {
         navigate(routeLocation.pathname, {
           replace: true,
           state: {
+            ...routeLocation.state,
             errorUbicacion:
               mensajes[errorGeolocalizacion.code] || "No fue posible consultar tu ubicación.",
           },
@@ -190,15 +196,15 @@ const PuntosRecoleccion = ({ auth }) => {
     );
   }
 
-  // Solo se calcula si hay ubicación; los datos de ubicación llegan desde el menú o este botón.
-  const puntoMasCercano = ubicacionUsuario
-    ? puntosOficiales.reduce((masCercano, punto) =>
-        calcularDistancia(ubicacionUsuario, punto.coordenadas) <
-        calcularDistancia(ubicacionUsuario, masCercano.coordenadas)
-          ? punto
-          : masCercano,
-      )
-    : null;
+  const puntoMasCercano =
+    ubicacionUsuario && puntosOficiales.length > 0
+      ? puntosOficiales.reduce((masCercano, punto) =>
+          calcularDistancia(ubicacionUsuario, punto.coordenadas) <
+          calcularDistancia(ubicacionUsuario, masCercano.coordenadas)
+            ? punto
+            : masCercano,
+        )
+      : null;
 
   function editarPunto(punto) {
     setPuntoEditando(punto.id);
@@ -234,11 +240,10 @@ const PuntosRecoleccion = ({ auth }) => {
       longitud: Number(form.longitud),
       telefono: form.telefono || null,
       zona_id: Number(form.zona_id),
-      administrador_id: auth.user.id,
+      administrador_id: auth?.user?.id,
     };
 
     try {
-      // Usa POST para crear y PUT para guardar los cambios.
       if (puntoEditando) {
         await updateApiData("puntos", puntoEditando, datosPunto);
         setMensaje("Punto actualizado correctamente.");
@@ -271,7 +276,6 @@ const PuntosRecoleccion = ({ auth }) => {
     setMensaje("");
 
     try {
-      // DELETE elimina el punto y actualiza la lista visible.
       await deleteApiData("puntos", id);
       setPuntos((actuales) => actuales.filter((punto) => punto.id !== id));
       setMensaje("Punto eliminado correctamente.");
@@ -403,7 +407,11 @@ const PuntosRecoleccion = ({ auth }) => {
                   <option value="inactivo">Inactivo</option>
                 </select>
               </label>
-              {errorFormulario && <p role="alert" className="visual-data-message--error">{errorFormulario}</p>}
+              {errorFormulario && (
+                <p role="alert" className="visual-data-message--error">
+                  {errorFormulario}
+                </p>
+              )}
               {mensaje && <p role="status">{mensaje}</p>}
               <div className="punto-form__actions">
                 <button type="submit" disabled={guardando || zonas.length === 0}>
@@ -444,7 +452,6 @@ const PuntosRecoleccion = ({ auth }) => {
             </p>
           )}
 
-<<<<<<< HEAD
           {puntoMasCercano && (
             <div className="punto-nearest-result" role="status">
               <p>
@@ -458,49 +465,6 @@ const PuntosRecoleccion = ({ auth }) => {
               >
                 Ver ruta en Google Maps
               </a>
-=======
-          {!cargando && !error && puntos.length === 0 && (
-            <p className="visual-data-message">
-              No hay puntos de recolección registrados por el momento.
-            </p>
-          )}
-
-          {/* Muestra cada punto registrado con su dirección, zona, horario y estado. */}
-          {!cargando && !error && puntos.length > 0 && (
-            <div className="puntos-list">
-              {puntos.map((punto) => (
-                <article className="punto-card" key={punto.id}>
-                  <div className="punto-card__heading">
-                    <h3>{punto.nombre_lugar}</h3>
-                    <span
-                      className={`punto-card__status ${
-                        punto.estado_punto === "activo" ? "is-active" : "is-inactive"
-                      }`}
-                    >
-                      {punto.estado_punto || "Sin estado"}
-                    </span>
-                  </div>
-                  <p><strong>Zona:</strong> {punto.zona?.nombre || "Sin zona asignada"}</p>
-                  <p><strong>Dirección:</strong> {punto.direccion}</p>
-                  <p><strong>Horario:</strong> {punto.horario_atencion}</p>
-                  {punto.telefono && <p><strong>Teléfono:</strong> {punto.telefono}</p>}
-                  {auth?.user && (
-                    <div className="punto-form__actions">
-                      <button type="button" onClick={() => editarPunto(punto)}>
-                        Editar
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => eliminarPunto(punto.id)}
-                        disabled={eliminandoId === punto.id}
-                      >
-                        {eliminandoId === punto.id ? "Eliminando..." : "Eliminar"}
-                      </button>
-                    </div>
-                  )}
-                </article>
-              ))}
->>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
             </div>
           )}
 
@@ -556,9 +520,57 @@ const PuntosRecoleccion = ({ auth }) => {
             ))}
           </div>
         </section>
+
+        {error && (
+          <p role="alert" className="visual-data-message visual-data-message--error">
+            {error}
+          </p>
+        )}
+
+        {!cargando && !error && puntos.length === 0 && (
+          <p className="visual-data-message">
+            No hay puntos de recolección registrados por el momento.
+          </p>
+        )}
+
+        {!cargando && !error && puntos.length > 0 && (
+          <section className="puntos-list">
+            <h2>Puntos registrados</h2>
+            {puntos.map((punto) => (
+              <article className="punto-card" key={punto.id}>
+                <div className="punto-card__heading">
+                  <h3>{punto.nombre_lugar}</h3>
+                  <span
+                    className={`punto-card__status ${
+                      punto.estado_punto === "activo" ? "is-active" : "is-inactive"
+                    }`}
+                  >
+                    {punto.estado_punto || "Sin estado"}
+                  </span>
+                </div>
+                <p><strong>Zona:</strong> {punto.zona?.nombre || "Sin zona asignada"}</p>
+                <p><strong>Dirección:</strong> {punto.direccion}</p>
+                <p><strong>Horario:</strong> {punto.horario_atencion}</p>
+                {punto.telefono && <p><strong>Teléfono:</strong> {punto.telefono}</p>}
+                {auth?.user && (
+                  <div className="punto-form__actions">
+                    <button type="button" onClick={() => editarPunto(punto)}>
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => eliminarPunto(punto.id)}
+                      disabled={eliminandoId === punto.id}
+                    >
+                      {eliminandoId === punto.id ? "Eliminando..." : "Eliminar"}
+                    </button>
+                  </div>
+                )}
+              </article>
+            ))}
+          </section>
+        )}
       </div>
     </div>
   );
-};
-
-export default PuntosRecoleccion;
+}

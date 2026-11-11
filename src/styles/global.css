@@ -903,7 +903,7 @@ h6 {
 }
 
 /* Los títulos de mapa y ubicaciones comparten tamaño y tono verde claro. */
-.mapa-section h2, 
+.mapa-section h2,
 .ubicaciones-section h2 {
   font-size: 1.4rem;
   font-weight: 700;
@@ -944,7 +944,6 @@ h6 {
   margin: 0;
 }
 
-<<<<<<< HEAD
 /* Explica el uso de la ubicación antes de solicitar permiso al navegador. */
 .puntos-location-help {
   margin: 0.75rem 0 1rem;
@@ -999,8 +998,6 @@ h6 {
   line-height: 1.5;
 }
 
-/* Presenta los puntos oficiales en tarjetas adaptables. */
-=======
 .punto-form-section {
   padding: 1.25rem;
   border: 1px solid rgba(114, 213, 143, 0.2);
@@ -1057,8 +1054,7 @@ h6 {
   opacity: 0.6;
 }
 
-/* Presenta los puntos registrados en tarjetas sencillas, sin marcadores en el mapa. */
->>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
+/* Presenta los puntos registrados y oficiales en tarjetas adaptables. */
 .puntos-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1095,6 +1091,28 @@ h6 {
   margin: 0;
   color: #eaf5ed;
   font-size: 1.1rem;
+}
+
+.punto-card__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.punto-card__status.is-active {
+  background: rgba(69, 185, 107, 0.18);
+  color: #a5e9b7;
+}
+
+.punto-card__status.is-inactive {
+  background: rgba(230, 184, 92, 0.16);
+  color: #f2d38a;
 }
 
 .punto-card p {
