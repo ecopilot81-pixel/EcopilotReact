@@ -1,19 +1,50 @@
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { getMyProfile } from "../api/auth";
 import Reciclaje from "./Reciclaje";
 import Ranking from "./Ranking";
+=======
+import { getMyProfile, saveMyProfile } from "../api/auth";
+import { apiAssetUrl } from "../api/client";
+>>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
 
 export default function Perfil() {
   const [perfil, setPerfil] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    nombre: "",
+    apellido: "",
+    alias: "",
+    telefono: "",
+    ciudad: "",
+    biografia: "",
+    foto_perfil: null,
+  });
+  const [guardando, setGuardando] = useState(false);
+  const [errorFormulario, setErrorFormulario] = useState("");
+  const [mensajeFormulario, setMensajeFormulario] = useState("");
+  const [fileInputKey, setFileInputKey] = useState(0);
+  const [fotoNoDisponible, setFotoNoDisponible] = useState(false);
 
   // GET del perfil asociado a la sesión.
   useEffect(() => {
     const controller = new AbortController();
 
     getMyProfile({ signal: controller.signal })
-      .then(setPerfil)
+      .then((datos) => {
+        setPerfil(datos);
+        const partesNombre = (datos.profile?.nombre || datos.user.name).split(/\s+/);
+        setForm({
+          nombre: datos.profile?.nombre || partesNombre.shift() || "",
+          apellido: datos.profile?.apellido || partesNombre.join(" "),
+          alias: datos.profile?.alias || "",
+          telefono: datos.profile?.telefono || "",
+          ciudad: datos.profile?.ciudad || "",
+          biografia: datos.profile?.biografia || "",
+          foto_perfil: null,
+        });
+      })
       .catch((requestError) => {
         if (requestError.name !== "AbortError") {
           setError(requestError.message);
@@ -27,6 +58,49 @@ export default function Perfil() {
 
     return () => controller.abort();
   }, []);
+
+  function actualizarCampo(event) {
+    const { name, value, files } = event.target;
+    setForm((actual) => ({
+      ...actual,
+      [name]: name === "foto_perfil" ? files?.[0] || null : value,
+    }));
+  }
+
+  async function guardarPerfil(event) {
+    event.preventDefault();
+    setGuardando(true);
+    setErrorFormulario("");
+    setMensajeFormulario("");
+
+    const datos = new FormData();
+    Object.entries(form).forEach(([campo, valor]) => {
+      if (campo !== "foto_perfil") {
+        datos.append(campo, valor);
+      }
+    });
+    if (form.foto_perfil) {
+      datos.append("foto_perfil", form.foto_perfil);
+    }
+
+    try {
+      const datosActualizados = await saveMyProfile(datos);
+      setPerfil(datosActualizados);
+      setFotoNoDisponible(false);
+      setForm((actual) => ({ ...actual, foto_perfil: null }));
+      setFileInputKey((key) => key + 1);
+      setMensajeFormulario("Perfil actualizado correctamente.");
+    } catch (requestError) {
+      const errores = requestError.response?.data?.errors;
+      setErrorFormulario(
+        Object.values(errores || {}).flat()[0] ||
+          requestError.response?.data?.message ||
+          requestError.message,
+      );
+    } finally {
+      setGuardando(false);
+    }
+  }
 
   const nombreCompleto = perfil?.profile
     ? `${perfil.profile.nombre} ${perfil.profile.apellido}`.trim()
@@ -54,7 +128,16 @@ export default function Perfil() {
         <>
           {/* Presenta los datos del perfil devueltos para esta cuenta autenticada. */}
           <section className="visual-profile-card">
-            <div className="visual-avatar" aria-hidden="true">🌎</div>
+            {perfil.profile?.foto_perfil && !fotoNoDisponible ? (
+              <img
+                className="visual-avatar visual-avatar--image"
+                src={apiAssetUrl(perfil.profile.foto_perfil)}
+                alt={`Foto de ${nombreCompleto}`}
+                onError={() => setFotoNoDisponible(true)}
+              />
+            ) : (
+              <div className="visual-avatar" aria-hidden="true">🌎</div>
+            )}
             <div className="visual-profile-info">
               <span className="visual-tag">Perfil</span>
               <h2>{nombreCompleto}</h2>
@@ -64,11 +147,101 @@ export default function Perfil() {
                   <p>{perfil.profile.ciudad || "Ciudad no registrada"}</p>
                   <p>{perfil.profile.biografia || "Sin biografía registrada."}</p>
                 </>
-              ) : (
-                <p role="status">No se encontró un perfil personal para esta cuenta.</p>
-              )}
+              ) : <p>Aún no has completado tu perfil personal.</p>}
               <p>{perfil.user.email}</p>
             </div>
+          </section>
+
+          {/* Permite crear o editar únicamente los datos del perfil de la sesión. */}
+          <section className="visual-panel profile-form-panel" aria-labelledby="profile-form-title">
+            <h2 id="profile-form-title">
+              {perfil.profile ? "Editar mi perfil" : "Completar mi perfil"}
+            </h2>
+            <form className="profile-form" onSubmit={guardarPerfil}>
+              <label>
+                Nombre
+                <input
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={actualizarCampo}
+                  maxLength="50"
+                  required
+                />
+              </label>
+              <label>
+                Apellido
+                <input
+                  name="apellido"
+                  value={form.apellido}
+                  onChange={actualizarCampo}
+                  maxLength="50"
+                  required
+                />
+              </label>
+              <label>
+                Alias
+                <input
+                  name="alias"
+                  value={form.alias}
+                  onChange={actualizarCampo}
+                  maxLength="50"
+                  required
+                />
+              </label>
+              <label>
+                Teléfono
+                <input
+                  name="telefono"
+                  type="tel"
+                  value={form.telefono}
+                  onChange={actualizarCampo}
+                  maxLength="20"
+                />
+              </label>
+              <label>
+                Ciudad
+                <input
+                  name="ciudad"
+                  value={form.ciudad}
+                  onChange={actualizarCampo}
+                  maxLength="100"
+                />
+              </label>
+              <label className="profile-form__wide">
+                Biografía
+                <textarea
+                  name="biografia"
+                  value={form.biografia}
+                  onChange={actualizarCampo}
+                  maxLength="255"
+                  rows="4"
+                />
+              </label>
+              <label className="profile-form__wide">
+                Foto de perfil
+                <input
+                  key={fileInputKey}
+                  name="foto_perfil"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={actualizarCampo}
+                />
+                <small>JPG, PNG o WebP; máximo 5 MB.</small>
+              </label>
+              {errorFormulario && (
+                <p role="alert" className="visual-data-message--error profile-form__wide">
+                  {errorFormulario}
+                </p>
+              )}
+              {mensajeFormulario && (
+                <p role="status" className="profile-form__wide">{mensajeFormulario}</p>
+              )}
+              <div className="profile-form__wide profile-form__actions">
+                <button type="submit" disabled={guardando}>
+                  {guardando ? "Guardando..." : "Guardar perfil"}
+                </button>
+              </div>
+            </form>
           </section>
 
           {/* Resume las métricas relacionadas exclusivamente con esta cuenta. */}

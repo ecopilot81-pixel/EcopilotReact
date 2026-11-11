@@ -1,7 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import { getApiData } from "../api/client";
+import {
+  apiAssetUrl,
+  createApiData,
+  deleteApiData,
+  getApiData,
+  updateApiData,
+} from "../api/client";
 
-export default function Noticias() {
+const emptyForm = {
+  titulo: "",
+  resumen: "",
+  contenido: "",
+  fuente: "",
+  url_fuente: "",
+  estado_noticia: "publicada",
+  categoria_global_id: "",
+  imagen_destacada: null,
+};
+
+export default function Noticias({ auth }) {
   const [categorias, setCategorias] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -12,6 +29,14 @@ export default function Noticias() {
   const [errorNoticias, setErrorNoticias] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const noticiasRef = useRef(null);
+  const [form, setForm] = useState(emptyForm);
+  const [noticiaEditando, setNoticiaEditando] = useState(null);
+  const [errorFormulario, setErrorFormulario] = useState("");
+  const [mensajeFormulario, setMensajeFormulario] = useState("");
+  const [guardando, setGuardando] = useState(false);
+  const [eliminandoId, setEliminandoId] = useState(null);
+  const [fileInputKey, setFileInputKey] = useState(0);
+  const authUserId = auth?.user?.id;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -59,7 +84,9 @@ export default function Noticias() {
         }
 
         // Muestra solo noticias publicadas para no presentar borradores en la página.
-        setNoticias(datos.filter((noticia) => noticia.estado_noticia === "publicada"));
+        setNoticias(datos.filter((noticia) =>
+          authUserId || noticia.estado_noticia === "publicada"
+        ));
       } catch (errorSolicitud) {
         if (errorSolicitud.name !== "AbortError") {
           setErrorNoticias(errorSolicitud.message || "No fue posible cargar las noticias.");
@@ -73,7 +100,99 @@ export default function Noticias() {
 
     cargarNoticias();
     return () => controller.abort();
-  }, []);
+  }, [authUserId]);
+
+  function iniciarEdicion(noticia) {
+    setNoticiaEditando(noticia.id);
+    setErrorFormulario("");
+    setMensajeFormulario("");
+    setForm({
+      titulo: noticia.titulo || "",
+      resumen: noticia.resumen || "",
+      contenido: noticia.contenido || "",
+      fuente: noticia.fuente || "",
+      url_fuente: noticia.url_fuente || "",
+      estado_noticia: noticia.estado_noticia || "publicada",
+      categoria_global_id: String(noticia.categoria_global_id || ""),
+      imagen_destacada: null,
+    });
+    setFileInputKey((key) => key + 1);
+  }
+
+  function cancelarEdicion() {
+    setNoticiaEditando(null);
+    setErrorFormulario("");
+    setForm({ ...emptyForm, categoria_global_id: String(categorias[0]?.id || "") });
+    setFileInputKey((key) => key + 1);
+  }
+
+  async function guardarNoticia(event) {
+    event.preventDefault();
+    setGuardando(true);
+    setErrorFormulario("");
+    setMensajeFormulario("");
+
+    const datos = new FormData();
+    Object.entries(form).forEach(([campo, valor]) => {
+      if (campo !== "imagen_destacada" && valor !== "") {
+        datos.append(campo, valor);
+      }
+    });
+    if (form.imagen_destacada) {
+      datos.append("imagen_destacada", form.imagen_destacada);
+    }
+
+    try {
+      // Envía el formulario como multipart para que Laravel reciba el archivo.
+      if (noticiaEditando) {
+        await updateApiData("noticias", noticiaEditando, datos);
+        setMensajeFormulario("Noticia actualizada correctamente.");
+      } else {
+        await createApiData("noticias", datos);
+        setMensajeFormulario("Noticia guardada correctamente.");
+      }
+
+      cancelarEdicion();
+      const datosActualizados = await getApiData("consultas/noticias");
+      setNoticias(datosActualizados.filter((noticia) =>
+        authUserId || noticia.estado_noticia === "publicada"
+      ));
+    } catch (requestError) {
+      const errores = requestError.response?.data?.errors;
+      setErrorFormulario(
+        Object.values(errores || {}).flat()[0] ||
+          requestError.response?.data?.message ||
+          requestError.message,
+      );
+    } finally {
+      setGuardando(false);
+    }
+  }
+
+  async function eliminarNoticia(id) {
+    if (!window.confirm("¿Seguro que deseas eliminar esta noticia?")) {
+      return;
+    }
+
+    setEliminandoId(id);
+    setErrorFormulario("");
+    setMensajeFormulario("");
+
+    try {
+      await deleteApiData("noticias", id);
+      setNoticias((actuales) => actuales.filter((noticia) => noticia.id !== id));
+      setMensajeFormulario("Noticia eliminada correctamente.");
+      if (noticiaEditando === id) {
+        cancelarEdicion();
+      }
+    } catch (requestError) {
+      setErrorFormulario(
+        requestError.response?.data?.message || requestError.message,
+      );
+    } finally {
+      setEliminandoId(null);
+    }
+  }
 
   // Limita la lista mostrada a la categoría elegida; null representa "Todas".
   const noticiasFiltradas = categoriaSeleccionada === null
@@ -166,6 +285,119 @@ export default function Noticias() {
         )}
       </section>
 
+      {auth?.user && (
+        <section className="visual-panel news-form-panel" aria-labelledby="news-form-title">
+          <h2 id="news-form-title">
+            {noticiaEditando ? "Editar noticia" : "Crear noticia"}
+          </h2>
+          <form className="news-form" onSubmit={guardarNoticia}>
+            <label>
+              Título
+              <input
+                name="titulo"
+                value={form.titulo}
+                onChange={(event) => setForm({ ...form, titulo: event.target.value })}
+                maxLength="255"
+                required
+              />
+            </label>
+            <label>
+              Resumen
+              <textarea
+                name="resumen"
+                value={form.resumen}
+                onChange={(event) => setForm({ ...form, resumen: event.target.value })}
+                required
+                rows="3"
+              />
+            </label>
+            <label className="news-form__wide">
+              Contenido
+              <textarea
+                name="contenido"
+                value={form.contenido}
+                onChange={(event) => setForm({ ...form, contenido: event.target.value })}
+                required
+                rows="6"
+              />
+            </label>
+            <label>
+              Categoría
+              <select
+                name="categoria_global_id"
+                value={form.categoria_global_id}
+                onChange={(event) => setForm({ ...form, categoria_global_id: event.target.value })}
+                required
+              >
+                <option value="">Selecciona una categoría</option>
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Imagen destacada
+              <input
+                key={fileInputKey}
+                name="imagen_destacada"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(event) => setForm({ ...form, imagen_destacada: event.target.files?.[0] || null })}
+              />
+              <small>JPG, PNG o WebP; máximo 5 MB.</small>
+            </label>
+            <label>
+              Fuente
+              <input
+                name="fuente"
+                value={form.fuente}
+                onChange={(event) => setForm({ ...form, fuente: event.target.value })}
+                maxLength="255"
+              />
+            </label>
+            <label>
+              URL de la fuente
+              <input
+                name="url_fuente"
+                type="url"
+                value={form.url_fuente}
+                onChange={(event) => setForm({ ...form, url_fuente: event.target.value })}
+                maxLength="255"
+              />
+            </label>
+            <label>
+              Estado
+              <select
+                name="estado_noticia"
+                value={form.estado_noticia}
+                onChange={(event) => setForm({ ...form, estado_noticia: event.target.value })}
+              >
+                <option value="publicada">Publicada</option>
+                <option value="borrador">Borrador</option>
+              </select>
+            </label>
+            {errorFormulario && (
+              <p role="alert" className="visual-data-message--error news-form__wide">
+                {errorFormulario}
+              </p>
+            )}
+            {mensajeFormulario && (
+              <p role="status" className="news-form__wide">{mensajeFormulario}</p>
+            )}
+            <div className="news-form__actions news-form__wide">
+              <button type="submit" disabled={guardando || categorias.length === 0}>
+                {guardando ? "Guardando..." : noticiaEditando ? "Guardar cambios" : "Publicar noticia"}
+              </button>
+              {noticiaEditando && (
+                <button type="button" onClick={cancelarEdicion} disabled={guardando}>
+                  Cancelar
+                </button>
+              )}
+            </div>
+          </form>
+        </section>
+      )}
+
       <section ref={noticiasRef} aria-labelledby="noticias-heading" id="lista-noticias">
         <div className="visual-section-heading">
           <div>
@@ -208,9 +440,20 @@ export default function Noticias() {
           <div className="visual-news-grid">
             {noticiasFiltradas.map((noticia) => (
               <article className="visual-panel visual-news-card" key={noticia.id}>
+                {noticia.imagen_destacada && (
+                  <img
+                    className="visual-news-card__image"
+                    src={apiAssetUrl(noticia.imagen_destacada)}
+                    alt=""
+                    loading="lazy"
+                  />
+                )}
                 <span className="visual-tag">
                   {noticia.categoria_global?.nombre || "General"}
                 </span>
+                {auth?.user && noticia.estado_noticia !== "publicada" && (
+                  <span className="visual-tag">{noticia.estado_noticia}</span>
+                )}
                 <h3>{noticia.titulo}</h3>
                 <p>{noticia.resumen}</p>
                 <div className="visual-news-card__meta">
@@ -229,6 +472,20 @@ export default function Noticias() {
                   ) : (
                     <span className="visual-news-card__source">Fuente: {noticia.fuente}</span>
                   )
+                )}
+                {auth?.user && (
+                  <div className="news-form__actions">
+                    <button type="button" onClick={() => iniciarEdicion(noticia)}>
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => eliminarNoticia(noticia.id)}
+                      disabled={eliminandoId === noticia.id}
+                    >
+                      {eliminandoId === noticia.id ? "Eliminando..." : "Eliminar"}
+                    </button>
+                  </div>
                 )}
               </article>
             ))}

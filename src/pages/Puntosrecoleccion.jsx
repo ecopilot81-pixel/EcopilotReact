@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -91,6 +92,74 @@ const PuntosRecoleccion = () => {
         state: { errorUbicacion: "Tu navegador no permite consultar la ubicación actual." },
       });
       return;
+=======
+import { useEffect, useState } from "react";
+import {
+  createApiData,
+  deleteApiData,
+  getApiData,
+  updateApiData,
+} from "../api/client";
+
+const emptyForm = {
+  nombre_lugar: "",
+  direccion: "",
+  latitud: "",
+  longitud: "",
+  telefono: "",
+  horario_atencion: "",
+  estado_punto: "activo",
+  zona_id: "",
+};
+
+const PuntosRecoleccion = ({ auth }) => {
+  const [puntos, setPuntos] = useState([]);
+  const [zonas, setZonas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
+  const [errorFormulario, setErrorFormulario] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [form, setForm] = useState(emptyForm);
+  const [puntoEditando, setPuntoEditando] = useState(null);
+  const [guardando, setGuardando] = useState(false);
+  const [eliminandoId, setEliminandoId] = useState(null);
+
+  async function cargarDatos(signal) {
+    const config = signal ? { signal } : undefined;
+    const [puntosData, zonasData] = await Promise.all([
+      getApiData("consultas/puntos-zona", config),
+      getApiData("zonas", config),
+    ]);
+
+    if (!Array.isArray(puntosData) || !Array.isArray(zonasData)) {
+      throw new Error("La respuesta del servidor no tiene el formato esperado.");
+    }
+
+    setPuntos(puntosData);
+    setZonas(zonasData);
+    setForm((actual) => ({
+      ...actual,
+      zona_id: actual.zona_id || String(zonasData[0]?.id || ""),
+    }));
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    // GET de puntos y zonas al abrir la página.
+    async function cargarPuntos() {
+      try {
+        await cargarDatos(controller.signal);
+      } catch (errorSolicitud) {
+        if (errorSolicitud.name !== "AbortError") {
+          setError(errorSolicitud.message || "No fue posible cargar los puntos.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setCargando(false);
+        }
+      }
+>>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
     }
 
     setBuscandoCercano(true);
@@ -131,6 +200,93 @@ const PuntosRecoleccion = () => {
       )
     : null;
 
+  function editarPunto(punto) {
+    setPuntoEditando(punto.id);
+    setErrorFormulario("");
+    setMensaje("");
+    setForm({
+      nombre_lugar: punto.nombre_lugar || "",
+      direccion: punto.direccion || "",
+      latitud: punto.latitud || "",
+      longitud: punto.longitud || "",
+      telefono: punto.telefono || "",
+      horario_atencion: punto.horario_atencion || "",
+      estado_punto: punto.estado_punto || "activo",
+      zona_id: String(punto.zona_id || ""),
+    });
+  }
+
+  function cancelarEdicion() {
+    setPuntoEditando(null);
+    setErrorFormulario("");
+    setForm({ ...emptyForm, zona_id: String(zonas[0]?.id || "") });
+  }
+
+  async function guardarPunto(event) {
+    event.preventDefault();
+    setGuardando(true);
+    setErrorFormulario("");
+    setMensaje("");
+
+    const datosPunto = {
+      ...form,
+      latitud: Number(form.latitud),
+      longitud: Number(form.longitud),
+      telefono: form.telefono || null,
+      zona_id: Number(form.zona_id),
+      administrador_id: auth.user.id,
+    };
+
+    try {
+      // Usa POST para crear y PUT para guardar los cambios.
+      if (puntoEditando) {
+        await updateApiData("puntos", puntoEditando, datosPunto);
+        setMensaje("Punto actualizado correctamente.");
+      } else {
+        await createApiData("puntos", datosPunto);
+        setMensaje("Punto creado correctamente.");
+      }
+
+      cancelarEdicion();
+      await cargarDatos();
+    } catch (requestError) {
+      const errores = requestError.response?.data?.errors;
+      setErrorFormulario(
+        Object.values(errores || {}).flat()[0] ||
+          requestError.response?.data?.message ||
+          requestError.message,
+      );
+    } finally {
+      setGuardando(false);
+    }
+  }
+
+  async function eliminarPunto(id) {
+    if (!window.confirm("¿Seguro que deseas eliminar este punto?")) {
+      return;
+    }
+
+    setEliminandoId(id);
+    setErrorFormulario("");
+    setMensaje("");
+
+    try {
+      // DELETE elimina el punto y actualiza la lista visible.
+      await deleteApiData("puntos", id);
+      setPuntos((actuales) => actuales.filter((punto) => punto.id !== id));
+      setMensaje("Punto eliminado correctamente.");
+      if (puntoEditando === id) {
+        cancelarEdicion();
+      }
+    } catch (requestError) {
+      setErrorFormulario(
+        requestError.response?.data?.message || requestError.message,
+      );
+    } finally {
+      setEliminandoId(null);
+    }
+  }
+
   return (
     <div className="puntos-container">
       <header className="puntos-header">
@@ -151,6 +307,117 @@ const PuntosRecoleccion = () => {
             />
           </div>
         </section>
+
+        {auth?.user && (
+          <section className="punto-form-section" aria-labelledby="punto-form-title">
+            <h2 id="punto-form-title">
+              {puntoEditando ? "Editar punto de recolección" : "Registrar punto de recolección"}
+            </h2>
+            <form className="punto-form" onSubmit={guardarPunto}>
+              <label>
+                Nombre del lugar
+                <input
+                  name="nombre_lugar"
+                  value={form.nombre_lugar}
+                  onChange={(event) => setForm({ ...form, nombre_lugar: event.target.value })}
+                  maxLength="255"
+                  required
+                />
+              </label>
+              <label>
+                Dirección
+                <input
+                  name="direccion"
+                  value={form.direccion}
+                  onChange={(event) => setForm({ ...form, direccion: event.target.value })}
+                  maxLength="255"
+                  required
+                />
+              </label>
+              <label>
+                Latitud
+                <input
+                  name="latitud"
+                  type="number"
+                  step="any"
+                  min="-90"
+                  max="90"
+                  value={form.latitud}
+                  onChange={(event) => setForm({ ...form, latitud: event.target.value })}
+                  required
+                />
+              </label>
+              <label>
+                Longitud
+                <input
+                  name="longitud"
+                  type="number"
+                  step="any"
+                  min="-180"
+                  max="180"
+                  value={form.longitud}
+                  onChange={(event) => setForm({ ...form, longitud: event.target.value })}
+                  required
+                />
+              </label>
+              <label>
+                Teléfono
+                <input
+                  name="telefono"
+                  value={form.telefono}
+                  onChange={(event) => setForm({ ...form, telefono: event.target.value })}
+                  maxLength="20"
+                />
+              </label>
+              <label>
+                Horario de atención
+                <input
+                  name="horario_atencion"
+                  value={form.horario_atencion}
+                  onChange={(event) => setForm({ ...form, horario_atencion: event.target.value })}
+                  maxLength="255"
+                  required
+                />
+              </label>
+              <label>
+                Zona
+                <select
+                  name="zona_id"
+                  value={form.zona_id}
+                  onChange={(event) => setForm({ ...form, zona_id: event.target.value })}
+                  required
+                >
+                  {zonas.map((zona) => (
+                    <option key={zona.id} value={zona.id}>{zona.nombre}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Estado
+                <select
+                  name="estado_punto"
+                  value={form.estado_punto}
+                  onChange={(event) => setForm({ ...form, estado_punto: event.target.value })}
+                >
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </label>
+              {errorFormulario && <p role="alert" className="visual-data-message--error">{errorFormulario}</p>}
+              {mensaje && <p role="status">{mensaje}</p>}
+              <div className="punto-form__actions">
+                <button type="submit" disabled={guardando || zonas.length === 0}>
+                  {guardando ? "Guardando..." : puntoEditando ? "Guardar cambios" : "Crear punto"}
+                </button>
+                {puntoEditando && (
+                  <button type="button" onClick={cancelarEdicion} disabled={guardando}>
+                    Cancelar
+                  </button>
+                )}
+              </div>
+            </form>
+          </section>
+        )}
 
         <section className="ubicaciones-section">
           <div className="puntos-list-heading">
@@ -177,6 +444,7 @@ const PuntosRecoleccion = () => {
             </p>
           )}
 
+<<<<<<< HEAD
           {puntoMasCercano && (
             <div className="punto-nearest-result" role="status">
               <p>
@@ -190,6 +458,49 @@ const PuntosRecoleccion = () => {
               >
                 Ver ruta en Google Maps
               </a>
+=======
+          {!cargando && !error && puntos.length === 0 && (
+            <p className="visual-data-message">
+              No hay puntos de recolección registrados por el momento.
+            </p>
+          )}
+
+          {/* Muestra cada punto registrado con su dirección, zona, horario y estado. */}
+          {!cargando && !error && puntos.length > 0 && (
+            <div className="puntos-list">
+              {puntos.map((punto) => (
+                <article className="punto-card" key={punto.id}>
+                  <div className="punto-card__heading">
+                    <h3>{punto.nombre_lugar}</h3>
+                    <span
+                      className={`punto-card__status ${
+                        punto.estado_punto === "activo" ? "is-active" : "is-inactive"
+                      }`}
+                    >
+                      {punto.estado_punto || "Sin estado"}
+                    </span>
+                  </div>
+                  <p><strong>Zona:</strong> {punto.zona?.nombre || "Sin zona asignada"}</p>
+                  <p><strong>Dirección:</strong> {punto.direccion}</p>
+                  <p><strong>Horario:</strong> {punto.horario_atencion}</p>
+                  {punto.telefono && <p><strong>Teléfono:</strong> {punto.telefono}</p>}
+                  {auth?.user && (
+                    <div className="punto-form__actions">
+                      <button type="button" onClick={() => editarPunto(punto)}>
+                        Editar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => eliminarPunto(punto.id)}
+                        disabled={eliminandoId === punto.id}
+                      >
+                        {eliminandoId === punto.id ? "Eliminando..." : "Eliminar"}
+                      </button>
+                    </div>
+                  )}
+                </article>
+              ))}
+>>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
             </div>
           )}
 

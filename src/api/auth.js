@@ -1,5 +1,11 @@
 import axios from "axios";
 
+<<<<<<< HEAD
+=======
+// Las rutas de sesión están fuera de /v1; en desarrollo, Vite las reenvía al API.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+
+>>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
 const api = axios.create({
   withCredentials: true,
   headers: { Accept: "application/json" },
@@ -36,6 +42,20 @@ export async function getMyProfile({ signal } = {}) {
 
     throw error;
   }
+}
+
+// Envía los datos personales y la foto nueva al perfil de la sesión.
+export async function saveMyProfile(profileData) {
+  const { data: csrfData } = await api.get("/csrf-token");
+  if (!csrfData?.csrf_token) {
+    throw new Error("No se pudo obtener el token de seguridad.");
+  }
+
+  profileData.append("_method", "PUT");
+  const { data } = await api.post("/my-profile", profileData, {
+    headers: { "X-CSRF-TOKEN": csrfData.csrf_token },
+  });
+  return data;
 }
 
 // Comprueba que la respuesta contenga inventario y recompensas.

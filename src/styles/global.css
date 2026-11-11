@@ -944,6 +944,7 @@ h6 {
   margin: 0;
 }
 
+<<<<<<< HEAD
 /* Explica el uso de la ubicación antes de solicitar permiso al navegador. */
 .puntos-location-help {
   margin: 0.75rem 0 1rem;
@@ -999,6 +1000,65 @@ h6 {
 }
 
 /* Presenta los puntos oficiales en tarjetas adaptables. */
+=======
+.punto-form-section {
+  padding: 1.25rem;
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #194b2d, #102d1d);
+}
+
+.punto-form-section h2 {
+  margin: 0 0 1rem;
+  color: #d7f5df;
+}
+
+.punto-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.punto-form label {
+  display: grid;
+  gap: 0.4rem;
+  color: #d7f5df;
+}
+
+.punto-form input,
+.punto-form select {
+  width: 100%;
+  min-height: 2.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(165, 214, 177, 0.3);
+  border-radius: 0.55rem;
+  background: #101b14;
+  color: #eaf5ed;
+}
+
+.punto-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.punto-form__actions button {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(114, 213, 143, 0.35);
+  border-radius: 0.55rem;
+  background: #28583a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.punto-form__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Presenta los puntos registrados en tarjetas sencillas, sin marcadores en el mapa. */
+>>>>>>> 633aaae (Crud en Noticias (conocimiento) y Perfil, modificacion en el autenticacion y conexion a la Api para hacer las peticiones http)
 .puntos-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1352,6 +1412,10 @@ h6 {
   font-size: 2.4rem;
 }
 
+.visual-avatar--image {
+  object-fit: cover;
+}
+
 .visual-profile-info {
   flex: 1;
 }
@@ -1364,6 +1428,64 @@ h6 {
   margin: 0.25rem 0;
   color: #b5c9ba;
   line-height: 1.5;
+}
+
+.profile-form-panel {
+  margin: 2rem 0;
+}
+
+.profile-form-panel h2 {
+  margin-top: 0;
+}
+
+.profile-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.profile-form label {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  color: #d7f5df;
+}
+
+.profile-form input,
+.profile-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(165, 214, 177, 0.3);
+  border-radius: 0.55rem;
+  background: #101b14;
+  color: #eaf5ed;
+}
+
+.profile-form input[type="file"] {
+  padding: 0.5rem;
+}
+
+.profile-form small {
+  color: #c3d1c7;
+}
+
+.profile-form__wide {
+  grid-column: 1 / -1;
+}
+
+.profile-form__actions button {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(114, 213, 143, 0.35);
+  border-radius: 0.55rem;
+  background: #28583a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.profile-form__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .visual-stat-grid {
@@ -1618,6 +1740,71 @@ h6 {
   margin-top: 1rem;
 }
 
+.news-form-panel {
+  margin: 2rem 0;
+}
+
+.news-form-panel h2 {
+  margin-top: 0;
+}
+
+.news-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.news-form label {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  color: #d7f5df;
+}
+
+.news-form input,
+.news-form textarea,
+.news-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(165, 214, 177, 0.3);
+  border-radius: 0.55rem;
+  background: #101b14;
+  color: #eaf5ed;
+}
+
+.news-form input[type="file"] {
+  padding: 0.5rem;
+}
+
+.news-form small {
+  color: #c3d1c7;
+}
+
+.news-form__wide {
+  grid-column: 1 / -1;
+}
+
+.news-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.news-form__actions button {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(114, 213, 143, 0.35);
+  border-radius: 0.55rem;
+  background: #28583a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.news-form__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* Deja espacio al desplazarse para que el encabezado de noticias no quede pegado arriba. */
 #lista-noticias {
   scroll-margin-top: 1.5rem;
@@ -1629,6 +1816,13 @@ h6 {
   align-content: start;
   justify-items: start;
   gap: 0.75rem;
+}
+
+.visual-news-card__image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 0.65rem;
 }
 
 .visual-news-card h3,

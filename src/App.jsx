@@ -68,14 +68,14 @@ function App() {
       <Routes>
         <Route element={<MainLayout auth={auth} />}>
           <Route path="/" element={<Home />} />
-          <Route path="/puntos" element={<PuntosRecoleccion />} />
+          <Route path="/puntos" element={<PuntosRecoleccion auth={auth} />} />
           <Route path="/emprendimientos" element={<Emprendimientos />} />
           <Route path="/manualidades" element={<Manualidades />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/recompensas" element={<Navigate to="/tienda" replace />} />
           <Route path="/conocimiento" element={<Conocimiento />} />
           <Route path="/investigacion" element={<Investigacion />} />
-          <Route path="/noticias" element={<Noticias />} />
+          <Route path="/noticias" element={<Noticias auth={auth} />} />
           <Route path="/reciclaje" element={<Reciclaje />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/comunidad" element={<Navigate to="/chatbot" replace />} />
