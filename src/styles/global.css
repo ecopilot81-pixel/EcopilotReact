@@ -348,11 +348,11 @@ h6 {
   font-size: 0.8rem;
 }
 
-/* Footer mantiene el tema oscuro y organiza la información en columnas. */
+/* Footer centrado, inspirado en la referencia y adaptado a la paleta de Eco-Pilot. */
 .footer-container {
   position: relative;
   overflow: hidden;
-  padding: 4rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+  padding: 3.25rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
   border-top: 1px solid rgba(165, 214, 177, 0.16);
   background:
     radial-gradient(ellipse at 12% 0%, rgba(66, 111, 78, 0.16), transparent 42%),
@@ -363,121 +363,128 @@ h6 {
 
 .footer-content {
   display: grid;
-  grid-template-columns: minmax(260px, 1.4fr) minmax(180px, 0.8fr) minmax(250px, 1fr);
-  gap: clamp(2rem, 6vw, 5rem);
+  justify-items: center;
+  gap: 2rem;
   max-width: 1280px;
   margin: 0 auto;
 }
 
-.footer-column {
-  min-width: 0;
+.footer-social-section {
+  /* Agrupa el encabezado y los iconos para mantener el título encima de las redes. */
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
 }
 
-.footer-column h3 {
-  margin: 0 0 1.25rem;
+.footer-section-title {
+  /* Usa la tipografía global con una jerarquía clara sobre el fondo oscuro. */
+  margin: 0;
   color: #edf3ee;
-  font-size: 0.95rem;
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
   font-weight: 700;
-  letter-spacing: 0.015em;
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
-.footer-logo {
+.footer-shortcuts {
+  /* Centra y distribuye los enlaces circulares de redes sociales. */
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 1.15rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.footer-logo h2 {
-  margin: 0;
-  color: #f0f5f1;
-  font-size: 1.55rem;
-  font-weight: 750;
-  letter-spacing: -0.045em;
-}
-
-.footer-logo .footer-icon {
+.footer-shortcuts a {
+  /* Da a cada red un botón circular acorde con la paleta verde del aplicativo. */
   display: grid;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 3.5rem;
+  height: 3.5rem;
   place-items: center;
-  border: 1px solid rgba(165, 214, 177, 0.2);
-  border-radius: 0.9rem;
-  background: linear-gradient(145deg, rgba(114, 170, 126, 0.2), rgba(114, 170, 126, 0.07));
-  font-size: 1.45rem;
+  border: 1px solid rgba(165, 214, 177, 0.45);
+  border-radius: 50%;
+  background: rgba(226, 239, 228, 0.035);
+  color: #c9e5d0;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-.footer-description {
-  max-width: 34ch;
-  margin: 0;
-  color: #aeb9b1;
-  font-size: 0.92rem;
-  line-height: 1.75;
+.footer-shortcuts a:hover {
+  transform: translateY(-3px);
+  border-color: #72d58f;
+  background: rgba(69, 185, 107, 0.16);
+  color: #a5e9b7;
 }
 
-.team-list {
+.footer-shortcuts a:focus-visible {
+  /* Hace visible el foco para quienes navegan con teclado. */
+  outline: 3px solid #72d58f;
+  outline-offset: 4px;
+}
+
+.footer-shortcuts svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.footer-shortcuts .footer-icon-fill {
+  /* Rellena el punto de Instagram para completar la forma de su icono. */
+  fill: currentColor;
+  stroke: none;
+}
+
+.footer-authors {
+  /* Ordena el título y las etiquetas de autores como un bloque centrado. */
   display: grid;
-  gap: 0.7rem;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.footer-author-list {
+  /* Permite que las etiquetas se distribuyan y envuelvan en espacios reducidos. */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.team-list li {
-  color: #b7c2ba;
-  font-size: 0.9rem;
-  transition: color 0.18s ease, transform 0.18s ease;
-}
-
-.team-list li:hover {
-  transform: translateX(3px);
-  color: #dce9df;
-}
-
-.contact-email {
-  display: flex;
+.footer-author-list li {
+  /* Da a cada nombre una etiqueta suave con un acento verde del proyecto. */
+  display: inline-flex;
   align-items: center;
-  gap: 0.85rem;
-  width: fit-content;
-  max-width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid rgba(165, 214, 177, 0.14);
-  border-radius: 0.85rem;
-  background: rgba(226, 239, 228, 0.035);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.contact-email:hover {
-  border-color: rgba(165, 214, 177, 0.32);
-  background: rgba(226, 239, 228, 0.07);
-}
-
-.contact-email a {
-  overflow-wrap: anywhere;
-  color: #c0cac2;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.contact-email a:hover {
-  color: #b5dfbd;
-}
-
-.contact-email .footer-icon {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 0.6rem;
-  background: rgba(165, 214, 177, 0.1);
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(165, 214, 177, 0.2);
+  border-radius: 999px;
+  background: linear-gradient(145deg, rgba(114, 170, 126, 0.16), rgba(114, 170, 126, 0.06));
+  box-shadow: inset 0 1px 0 rgba(226, 239, 228, 0.06);
+  color: #e2ebe4;
   font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.footer-author-list li::before {
+  /* Añade un punto decorativo para reforzar la lectura de cada nombre. */
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #72d58f;
+  content: "";
 }
 
 .footer-bottom {
   max-width: 1280px;
-  margin: 3rem auto 0;
+  margin: 2.25rem auto 0;
   text-align: center;
 }
 
@@ -824,29 +831,37 @@ h6 {
   .knowledge-grid {
     grid-template-columns: 1fr;
   }
-
-  .footer-content {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem 2rem;
-  }
-
-  .footer-column.branding {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 520px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .footer-column.branding {
-    grid-column: auto;
-  }
-
+  /* Reduce espacios y tamaño de los accesos en teléfonos. */
   .footer-container {
-    padding-top: 3rem;
+    padding-top: 2.5rem;
+  }
+
+  .footer-content {
+    gap: 1.75rem;
+  }
+
+  .footer-shortcuts {
+    gap: 0.75rem;
+  }
+
+  .footer-shortcuts a {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  .footer-authors {
+    max-width: 32ch;
+  }
+
+  .footer-author-list {
+    gap: 0.55rem;
+  }
+
+  .footer-author-list li {
+    padding: 0.55rem 0.85rem;
   }
 
   .footer-bottom {
