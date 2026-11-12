@@ -26,7 +26,19 @@ function Login({ auth }) {
       });
       navigate(location.state?.from?.pathname || "/", { replace: true });
     } catch (loginError) {
-      setError(loginError.message);
+      // Prioriza los detalles de validación que devuelve Laravel sobre el mensaje genérico de Axios.
+      const responseData = loginError.response?.data;
+      const validationMessage = Object.values(responseData?.errors || {})
+        .flat()
+        .find((message) => typeof message === "string" && message.trim());
+
+      setError(
+        validationMessage ||
+          responseData?.message ||
+          (loginError.response?.status === 422
+            ? "El servidor rechazó los datos de acceso. Revisa el correo y la contraseña."
+            : loginError.message),
+      );
     } finally {
       setSubmitting(false);
     }

@@ -44,7 +44,8 @@ export default function NavigationMenu() {
           <li><Link to="/puntos">Puntos de recolección</Link></li>
           <li><Link to="/tienda">Tienda</Link></li>
           <li><Link to="/manualidades">Manualidades</Link></li>
-          <li><Link to="/conocimiento">Conocimiento</Link></li>
+          {/* Muestra Noticias en este menú, según el cambio solicitado. */}
+          <li><Link to="/noticias">Noticias</Link></li>
           <li><Link to="/recompensas">Recompensas</Link></li>
           <li><Link to="/coleccion">Mi colección</Link></li>
           <li><Link to="/chatbot">Chatbot IA</Link></li>
