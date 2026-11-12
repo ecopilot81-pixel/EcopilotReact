@@ -153,6 +153,11 @@
   color-scheme: dark;
 }
 
+/* Adapta el icono nativo para mostrar la contraseña al tema oscuro y hacerlo claro. */
+.formulario-content input[type="password"] {
+  color-scheme: dark;
+}
+
 /* El botón de avance tiene apariencia activa; solo los botones inactivos se atenúan. */
 .submit-btn {
   width: 100%;
