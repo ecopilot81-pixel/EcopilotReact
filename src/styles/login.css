@@ -201,13 +201,10 @@
   color-scheme: dark;
 }
 
-<<<<<<< HEAD
 .formulario-content input[type="password"]::-ms-reveal {
   display: none;
 }
 
-=======
->>>>>>> main
 /* El botón de avance tiene apariencia activa; solo los botones inactivos se atenúan. */
 .submit-btn {
   width: 100%;
