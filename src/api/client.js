@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAccessToken } from "./accessToken";
 
-// Las rutas API de Laravel usan el prefijo /v1.
+// Las rutas API de Laravel usan el prefijo /v1 y pueden usar una URL completa.
 const API_BASE_URL = import.meta.env.VITE_SERVER_API || "/v1";
 export const API_ROOT_URL = API_BASE_URL.replace(/\/v1\/?$/, "");
 export { API_BASE_URL };

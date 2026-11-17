@@ -569,6 +569,200 @@ h6 {
   letter-spacing: 0.015em;
 }
 
+.floating-chatbot {
+  position: fixed;
+  z-index: 1200;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: grid;
+  justify-items: end;
+  gap: 0.75rem;
+}
+
+.floating-chatbot__welcome {
+  display: flex;
+  max-width: min(310px, calc(100vw - 2rem));
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.55rem 0.6rem 0.55rem 1rem;
+  border: 1px solid rgba(165, 214, 177, 0.5);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #173323, #0d1b13);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(226, 239, 228, 0.12);
+  color: #f0f7f1;
+  font: inherit;
+  text-align: left;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.floating-chatbot__welcome:hover {
+  transform: translateY(-2px);
+  border-color: rgba(165, 214, 177, 0.8);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(226, 239, 228, 0.16);
+}
+
+.floating-chatbot__welcome:focus-visible {
+  outline: 3px solid #72d58f;
+  outline-offset: 4px;
+}
+
+.floating-chatbot__welcome.is-dragging {
+  cursor: grabbing;
+}
+
+.floating-chatbot__welcome img {
+  display: block;
+  width: 78px;
+  height: 78px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(237, 247, 239, 0.95);
+  border-radius: 50%;
+  background: #17241b;
+  box-shadow: 0 0 0 2px rgba(114, 213, 143, 0.45);
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.05) contrast(1.04);
+  pointer-events: none;
+}
+
+.floating-chatbot__welcome span {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.floating-chatbot__panel {
+  display: grid;
+  width: min(360px, calc(100vw - 2rem));
+  overflow: hidden;
+  border: 1px solid rgba(165, 214, 177, 0.28);
+  border-radius: 18px;
+  background: #101914;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  color: #eaf5ed;
+}
+
+.floating-chatbot__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  background: #18251c;
+}
+
+.floating-chatbot__header h2,
+.floating-chatbot__header p {
+  margin: 0;
+}
+
+.floating-chatbot__header h2 {
+  font-size: 1rem;
+}
+
+.floating-chatbot__header p {
+  margin-top: 0.2rem;
+  color: #aab8af;
+  font-size: 0.8rem;
+}
+
+.floating-chatbot__close {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.floating-chatbot__close:hover {
+  background: rgba(226, 239, 228, 0.1);
+}
+
+.floating-chatbot__messages {
+  min-height: 130px;
+  padding: 1rem;
+}
+
+.floating-chatbot__message {
+  max-width: 90%;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px 14px 14px 4px;
+  background: #1d2b22;
+  color: #eaf5ed;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.floating-chatbot__composer {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid rgba(165, 214, 177, 0.14);
+}
+
+.floating-chatbot__composer input {
+  min-width: 0;
+  flex: 1;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(165, 214, 177, 0.2);
+  border-radius: 10px;
+  background: #0c120e;
+  color: #eaf5ed;
+}
+
+.floating-chatbot__composer button {
+  width: 2.6rem;
+  border: 0;
+  border-radius: 10px;
+  background: #45b96b;
+  color: #07100a;
+  font-size: 1.1rem;
+}
+
+.floating-chatbot__composer input:disabled,
+.floating-chatbot__composer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.nosotros-grid {
+  display: grid;
+  width: min(1100px, 100%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 2rem auto 0;
+}
+
+.nosotros-grid .visual-panel {
+  height: 100%;
+}
+
+.nosotros-grid h2 {
+  margin-top: 0;
+}
+
+.nosotros-grid p {
+  margin-bottom: 0;
+  color: #c0cac2;
+  line-height: 1.6;
+}
+
 /* Pagina de inicio */
 /* Estilos exclusivos de las secciones y tarjetas de la página de inicio. */
 .home {
@@ -876,6 +1070,14 @@ h6 {
   .navbar {
     gap: 1rem;
     padding: 12px 16px;
+  }
+
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nosotros-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .navbar.home .logo img {

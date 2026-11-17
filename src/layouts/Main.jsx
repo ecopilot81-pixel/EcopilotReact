@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
+import FloatingChatbot from "../components/FloatingChatbot";
 import Navbar from "../components/Navbar";
 
 export default function MainLayout({ auth }) {
@@ -14,6 +15,7 @@ export default function MainLayout({ auth }) {
       </div>
 
       <Footer />
+      <FloatingChatbot />
     </div>
   );
 }
