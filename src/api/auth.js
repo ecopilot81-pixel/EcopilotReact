@@ -1,11 +1,26 @@
 import axios from "axios";
+import { API_BASE_URL } from "./client";
+import {
+  clearAccessToken,
+  getAccessToken,
+  setAccessToken,
+} from "./accessToken";
 
 const api = axios.create({
-  withCredentials: true,
+  baseURL: API_BASE_URL || "/v1",
   headers: { Accept: "application/json" },
 });
 
-// Si Laravel responde 401, no hay una sesión iniciada.
+// Envía el token Bearer de Sanctum en las solicitudes autenticadas.
+api.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token) {
+    config.headers.set("Authorization", `Bearer ${token}`);
+  }
+  return config;
+});
+
+// Si Laravel responde 401, no hay un token válido.
 export async function getCurrentUser({ signal } = {}) {
   try {
     const { data } = await api.get("/me", { signal });
@@ -16,6 +31,7 @@ export async function getCurrentUser({ signal } = {}) {
     }
 
     if (error.response?.status === 401) {
+      clearAccessToken();
       return null;
     }
 
@@ -38,17 +54,10 @@ export async function getMyProfile({ signal } = {}) {
   }
 }
 
-// Envía los datos personales y la foto nueva al perfil de la sesión.
+// Envía los datos personales y la foto nueva con el token Bearer.
 export async function saveMyProfile(profileData) {
-  const { data: csrfData } = await api.get("/csrf-token");
-  if (!csrfData?.csrf_token) {
-    throw new Error("No se pudo obtener el token de seguridad.");
-  }
-
   profileData.append("_method", "PUT");
-  const { data } = await api.post("/my-profile", profileData, {
-    headers: { "X-CSRF-TOKEN": csrfData.csrf_token },
-  });
+  const { data } = await api.post("/my-profile", profileData);
   return data;
 }
 
@@ -94,42 +103,35 @@ export async function getMyChatHistory({ signal } = {}) {
   return data;
 }
 
-// Laravel exige un token CSRF antes de guardar el mensaje.
+// Envía el mensaje autenticado con el token Bearer.
 export async function sendChatMessage(question) {
-  const { data: csrfData } = await api.get("/csrf-token");
-  if (!csrfData?.csrf_token) {
-    throw new Error("No se pudo obtener el token de seguridad.");
-  }
-
   const { data } = await api.post(
     "/my-chat-history",
     { pregunta_usuario: question },
-    { headers: { "X-CSRF-TOKEN": csrfData.csrf_token } },
   );
   return data;
 }
 
-// Inicia sesión y devuelve el usuario autenticado.
+// Inicia sesión, guarda el token de Sanctum y devuelve el usuario autenticado.
 export async function signIn(credentials) {
-  const { data: csrfData } = await api.get("/csrf-token");
-  if (!csrfData?.csrf_token) {
-    throw new Error("No se pudo obtener el token de seguridad.");
+  const { data } = await api.post("/login", credentials);
+  if (typeof data?.token !== "string" || !data.token || !data.user) {
+    throw new Error("El servidor no devolvió un token de acceso válido.");
   }
 
-  const { data } = await api.post("/login", credentials, {
-    headers: { "X-CSRF-TOKEN": csrfData.csrf_token },
-  });
+  setAccessToken(data.token);
   return data.user;
 }
 
-// Cierra la sesión actual enviando el token CSRF.
+// Revoca el token actual en Laravel y lo elimina del navegador.
 export async function signOut() {
-  const { data: csrfData } = await api.get("/csrf-token");
-  if (!csrfData?.csrf_token) {
-    throw new Error("No se pudo obtener el token de seguridad.");
+  if (!getAccessToken()) {
+    return;
   }
 
-  await api.post("/logout", {}, {
-    headers: { "X-CSRF-TOKEN": csrfData.csrf_token },
-  });
+  try {
+    await api.post("/logout");
+  } finally {
+    clearAccessToken();
+  }
 }
