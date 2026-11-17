@@ -11,7 +11,7 @@ const Footer = () => {
             <h2>Eco-Pilot</h2>
           </div>
           <p className="footer-description">
-            Se el piloto del planeta. Juntos construimos un futuro más sostenible.
+            Sé el piloto del planeta. Juntos construimos un futuro sostenible.
           </p>
         </div>
 
@@ -21,24 +21,6 @@ const Footer = () => {
             Quiénes somos
           </Link>
         </div>
-
-        <div className="footer-column">
-          <h3>Información de Contacto</h3>
-          <div className="contact-email">
-            <span className="footer-icon">✉️</span>
-            <a href="mailto:ecopilot05@gmail.com">ecopilot05@gmail.com</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="footer-bottom">
-        <hr className="footer-divider" />
-        {/* El año automático evita tener que actualizar manualmente el copyright. */}
-        <p className="copyright-text">
-          © {new Date().getFullYear()} Ecopilot. 
-          <br/>
-          Todos los derechos reservados.
-        </p>
       </div>
     </footer>
   );

@@ -11,7 +11,7 @@ export default function Chatbot() {
   useEffect(() => {
     const controller = new AbortController();
 
-    // GET del historial del usuario; cancela la solicitud al salir.
+    // Consulta el historial del usuario autenticado y cancela la solicitud al salir.
     getMyChatHistory({ signal: controller.signal })
       .then(setHistory)
       .catch((requestError) => {
