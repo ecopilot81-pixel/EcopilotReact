@@ -1,29 +1,23 @@
 import axios from "axios";
+import { getAccessToken } from "./accessToken";
 
 // Las rutas API de Laravel usan el prefijo /v1.
 const API_BASE_URL = import.meta.env.VITE_SERVER_API || "/v1";
+export const API_ROOT_URL = API_BASE_URL.replace(/\/v1\/?$/, "");
+export { API_BASE_URL };
 
 const apiClient = axios.create({
   headers: { Accept: "application/json" },
-  withCredentials: true,
 });
 
-// Adjunta el token CSRF que Laravel exige para las operaciones de escritura.
-async function getCsrfConfig(config) {
-  const apiOrigin = new URL(API_BASE_URL, window.location.origin).origin;
-  const { data } = await apiClient.get(`${apiOrigin}/csrf-token`);
-  if (!data?.csrf_token) {
-    throw new Error("No se pudo obtener el token de seguridad.");
+// Adjunta el token Bearer de Sanctum cuando hay un usuario autenticado.
+apiClient.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token) {
+    config.headers.set("Authorization", `Bearer ${token}`);
   }
-
-  return {
-    ...config,
-    headers: {
-      ...config?.headers,
-      "X-CSRF-TOKEN": data.csrf_token,
-    },
-  };
-}
+  return config;
+});
 
 // Une la URL base con la ruta solicitada.
 export function apiUrl(path) {
@@ -60,48 +54,44 @@ export async function getApiItem(path, id, config) {
 
 // Crea un registro en el recurso indicado.
 export async function createApiData(path, record, config) {
-  const requestConfig = await getCsrfConfig(config);
-  const { data } = await apiClient.post(apiUrl(path), record, requestConfig);
+  const { data } = await apiClient.post(apiUrl(path), record, config);
   return data;
 }
 
 // Reemplaza un registro existente.
 export async function updateApiData(path, id, record, config) {
   const url = apiUrl(`${path.replace(/\/+$/, "")}/${encodeURIComponent(id)}`);
-  const requestConfig = await getCsrfConfig(config);
 
   if (record instanceof FormData) {
     // Laravel/PHP recibe archivos en POST; _method conserva la ruta PUT del CRUD.
     record.append("_method", "PUT");
-    const { data } = await apiClient.post(url, record, requestConfig);
+    const { data } = await apiClient.post(url, record, config);
     return data;
   }
 
-  const { data } = await apiClient.put(url, record, requestConfig);
+  const { data } = await apiClient.put(url, record, config);
   return data;
 }
 
 // Actualiza parcialmente un registro existente.
 export async function patchApiData(path, id, changes, config) {
   const url = apiUrl(`${path.replace(/\/+$/, "")}/${encodeURIComponent(id)}`);
-  const requestConfig = await getCsrfConfig(config);
 
   if (changes instanceof FormData) {
     changes.append("_method", "PATCH");
-    const { data } = await apiClient.post(url, changes, requestConfig);
+    const { data } = await apiClient.post(url, changes, config);
     return data;
   }
 
-  const { data } = await apiClient.patch(url, changes, requestConfig);
+  const { data } = await apiClient.patch(url, changes, config);
   return data;
 }
 
 // Elimina un registro del recurso indicado.
 export async function deleteApiData(path, id, config) {
-  const requestConfig = await getCsrfConfig(config);
   const { data } = await apiClient.delete(
     apiUrl(`${path.replace(/\/+$/, "")}/${encodeURIComponent(id)}`),
-    requestConfig,
+    config,
   );
   return data;
 }
@@ -116,9 +106,8 @@ export function apiAssetUrl(path) {
     return path;
   }
 
-  const apiOrigin = new URL(API_BASE_URL, window.location.origin).origin;
   const storagePath = path.startsWith("storage/")
     ? path
     : `storage/${path.replace(/^\/+/, "")}`;
-  return new URL(storagePath, `${apiOrigin}/`).toString();
+  return new URL(`${API_ROOT_URL}/${storagePath}`, window.location.origin).toString();
 }

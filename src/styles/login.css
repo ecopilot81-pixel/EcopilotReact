@@ -140,6 +140,49 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.password-input {
+  position: relative;
+}
+
+.formulario-content .password-input input {
+  padding-right: 3.25rem;
+}
+
+.password-visibility-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.8rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.password-visibility-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.password-visibility-toggle:hover {
+  color: #a5e9b7;
+}
+
+.password-visibility-toggle:focus-visible {
+  outline: 2px solid #72d58f;
+  outline-offset: 2px;
+}
+
 /* El foco del campo se hace visible con un contorno luminoso verde. */
 .formulario-content input:focus,
 .formulario-content select:focus {
@@ -158,6 +201,13 @@
   color-scheme: dark;
 }
 
+<<<<<<< HEAD
+.formulario-content input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+=======
+>>>>>>> main
 /* El botón de avance tiene apariencia activa; solo los botones inactivos se atenúan. */
 .submit-btn {
   width: 100%;

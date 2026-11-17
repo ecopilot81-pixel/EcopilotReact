@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   createApiData,
@@ -6,6 +6,8 @@ import {
   getApiData,
   updateApiData,
 } from "../api/client";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const puntosOficiales = [
   {
@@ -90,6 +92,78 @@ function crearEnlaceRuta(punto, origen) {
   }
 
   return `https://www.google.com/maps/dir/?${parametros.toString()}`;
+}
+
+function MapaPuntos({ puntoMasCercano, ubicacionUsuario }) {
+  const mapaRef = useRef(null);
+
+  useEffect(() => {
+    const mapa = L.map(mapaRef.current);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(mapa);
+
+    const marcadores = puntosOficiales.map((punto, index) => {
+      const esMasCercano = punto.id === puntoMasCercano?.id;
+      const icono = L.divIcon({
+        className: `punto-map-marker${esMasCercano ? " punto-map-marker--nearest" : ""}`,
+        html: `<span>${index + 1}</span>`,
+        iconSize: [36, 44],
+        iconAnchor: [18, 42],
+        popupAnchor: [0, -38],
+      });
+      const contenido = document.createElement("div");
+      const nombre = document.createElement("strong");
+      const direccion = document.createElement("p");
+      const ruta = document.createElement("a");
+
+      nombre.textContent = punto.nombre;
+      direccion.textContent = punto.direccion;
+      ruta.href = crearEnlaceRuta(punto, ubicacionUsuario);
+      ruta.target = "_blank";
+      ruta.rel = "noreferrer";
+      ruta.textContent = "Ver ruta en Google Maps";
+      contenido.append(nombre, direccion, ruta);
+
+      return L.marker([punto.coordenadas.lat, punto.coordenadas.lng], { icon: icono })
+        .addTo(mapa)
+        .bindPopup(contenido);
+    });
+
+    if (ubicacionUsuario) {
+      L.circleMarker([ubicacionUsuario.lat, ubicacionUsuario.lng], {
+        radius: 8,
+        color: "#fff",
+        weight: 3,
+        fillColor: "#2675e8",
+        fillOpacity: 1,
+      })
+        .addTo(mapa)
+        .bindPopup("Tu ubicación actual");
+    }
+
+    if (puntoMasCercano) {
+      mapa.setView(
+        [puntoMasCercano.coordenadas.lat, puntoMasCercano.coordenadas.lng],
+        15,
+      );
+      marcadores[puntosOficiales.findIndex((punto) => punto.id === puntoMasCercano.id)].openPopup();
+    } else {
+      mapa.fitBounds(L.featureGroup(marcadores).getBounds().pad(0.15));
+    }
+
+    return () => mapa.remove();
+  }, [puntoMasCercano, ubicacionUsuario]);
+
+  return (
+    <div
+      ref={mapaRef}
+      className="google-map"
+      role="region"
+      aria-label="Mapa interactivo de puntos de recolección"
+    />
+  );
 }
 
 export default function PuntosRecoleccion({ auth }) {
@@ -300,16 +374,49 @@ export default function PuntosRecoleccion({ auth }) {
 
       <div className="puntos-content-layout">
         <section className="mapa-section">
-          <h2>Mapa de Popayán</h2>
+          <div className="mapa-section__heading">
+            <h2>Mapa de Popayán</h2>
+            <button
+              type="button"
+              className="puntos-nearest-button"
+              onClick={buscarPuntoMasCercano}
+              disabled={buscandoCercano}
+            >
+              {buscandoCercano ? "Buscando ubicación..." : "Usar mi ubicación"}
+            </button>
+          </div>
+          <p className="puntos-location-help">
+            Al dar permiso, el mapa se centra en el punto oficial más cercano. La cercanía
+            se estima en línea recta y los marcadores usan coordenadas aproximadas. La ruta
+            se abre en Google Maps.
+          </p>
+          {errorUbicacion && (
+            <p role="alert" className="visual-data-message visual-data-message--error">
+              {errorUbicacion}
+            </p>
+          )}
           <div className="mapa-box">
-            <iframe
-              className="google-map"
-              title="Mapa de puntos de reciclaje en Popayán"
-              src="https://maps.google.com/maps?q=Popay%C3%A1n%2C%20Colombia&output=embed"
-              loading="lazy"
-              allowFullScreen
+            <MapaPuntos
+              puntoMasCercano={puntoMasCercano}
+              ubicacionUsuario={ubicacionUsuario}
             />
           </div>
+          {puntoMasCercano && (
+            <div className="punto-nearest-result" role="status">
+              <p>
+                El punto más cercano es <strong>{puntoMasCercano.nombre}</strong>:{" "}
+                {puntoMasCercano.direccion}
+              </p>
+              <a
+                className="punto-card__link"
+                href={crearEnlaceRuta(puntoMasCercano, ubicacionUsuario)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Iniciar ruta
+              </a>
+            </div>
+          )}
         </section>
 
         {auth?.user && (
@@ -432,42 +539,6 @@ export default function PuntosRecoleccion({ auth }) {
             <h2>Puntos oficiales</h2>
             <span className="visual-tag">{puntosOficiales.length} puntos</span>
           </div>
-          <p className="puntos-location-help">
-            Comparte tu ubicación solo al solicitarlo para encontrar el punto más cercano.
-            La distancia se estima en línea recta con coordenadas aproximadas; Google Maps
-            calcula la ruta. Coordenadas: © colaboradores de OpenStreetMap.
-          </p>
-          <button
-            type="button"
-            className="puntos-nearest-button"
-            onClick={buscarPuntoMasCercano}
-            disabled={buscandoCercano}
-          >
-            {buscandoCercano ? "Buscando tu ubicación..." : "Encontrar el punto más cercano"}
-          </button>
-
-          {errorUbicacion && (
-            <p role="alert" className="visual-data-message visual-data-message--error">
-              {errorUbicacion}
-            </p>
-          )}
-
-          {puntoMasCercano && (
-            <div className="punto-nearest-result" role="status">
-              <p>
-                El punto más cercano según tu ubicación es <strong>{puntoMasCercano.nombre}</strong>.
-              </p>
-              <a
-                className="punto-card__link"
-                href={crearEnlaceRuta(puntoMasCercano, ubicacionUsuario)}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Ver ruta en Google Maps
-              </a>
-            </div>
-          )}
-
           <div className="puntos-list">
             {puntosOficiales.map((punto) => (
               <article className="punto-card" key={punto.id}>
@@ -527,15 +598,9 @@ export default function PuntosRecoleccion({ auth }) {
           </p>
         )}
 
-        {!cargando && !error && puntos.length === 0 && (
-          <p className="visual-data-message">
-            No hay puntos de recolección registrados por el momento.
-          </p>
-        )}
-
-        {!cargando && !error && puntos.length > 0 && (
+        {auth?.user && !cargando && !error && puntos.length > 0 && (
           <section className="puntos-list">
-            <h2>Puntos registrados</h2>
+            <h2>Administrar puntos</h2>
             {puntos.map((punto) => (
               <article className="punto-card" key={punto.id}>
                 <div className="punto-card__heading">

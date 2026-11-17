@@ -18,6 +18,7 @@ import Investigacion from "./pages/Investigacion";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import CompletarRegistro from "./pages/CompletarRegistro";
+import Nosotros from "./pages/Nosotros";
 import RequireAuth from "./components/RequireAuth";
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
           <Route path="/emprendimientos" element={<Emprendimientos />} />
           <Route path="/manualidades" element={<Manualidades />} />
           <Route path="/tienda" element={<Tienda />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/recompensas" element={<Navigate to="/tienda" replace />} />
           <Route path="/conocimiento" element={<Conocimiento />} />
           <Route path="/investigacion" element={<Investigacion />} />
