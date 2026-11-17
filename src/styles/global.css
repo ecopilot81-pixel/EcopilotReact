@@ -394,6 +394,7 @@ h6 {
   gap: 1rem;
 }
 
+<<<<<<< HEAD
 .footer-shortcuts a {
   /* Da a cada red un botón circular acorde con la paleta verde del aplicativo. */
   display: grid;
@@ -409,6 +410,21 @@ h6 {
     border-color 0.2s ease,
     background-color 0.2s ease,
     color 0.2s ease;
+=======
+.footer-logo h2 {
+  margin: 0;
+  color: #f0f5f1;
+  font-size: 1.55rem;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+}
+
+.footer-logo img {
+  display: block;
+  width: 4.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+>>>>>>> main
 }
 
 .footer-shortcuts a:hover {
@@ -418,6 +434,7 @@ h6 {
   color: #a5e9b7;
 }
 
+<<<<<<< HEAD
 .footer-shortcuts a:focus-visible {
   /* Hace visible el foco para quienes navegan con teclado. */
   outline: 3px solid #72d58f;
@@ -461,6 +478,29 @@ h6 {
 .footer-author-list li {
   /* Da a cada nombre una etiqueta suave con un acento verde del proyecto. */
   display: inline-flex;
+=======
+.footer-about-link {
+  display: inline-block;
+  color: #b7c2ba;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.footer-about-link:hover {
+  transform: translateX(3px);
+  color: #b5dfbd;
+}
+
+.footer-about-link:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid #72d58f;
+  outline-offset: 4px;
+}
+
+.contact-email {
+  display: flex;
+>>>>>>> main
   align-items: center;
   gap: 0.55rem;
   padding: 0.6rem 1rem;
@@ -834,12 +874,16 @@ h6 {
 }
 
 @media (max-width: 520px) {
+<<<<<<< HEAD
   /* Reduce espacios y tamaño de los accesos en teléfonos. */
+=======
+>>>>>>> main
   .footer-container {
     padding-top: 2.5rem;
   }
 
   .footer-content {
+<<<<<<< HEAD
     gap: 1.75rem;
   }
 
@@ -862,6 +906,14 @@ h6 {
 
   .footer-author-list li {
     padding: 0.55rem 0.85rem;
+=======
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .footer-column.branding {
+    grid-column: auto;
+>>>>>>> main
   }
 
   .footer-bottom {
@@ -927,6 +979,19 @@ h6 {
   color: #d7f5df;
 }
 
+.mapa-section__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.mapa-section__heading h2 {
+  margin: 0;
+}
+
 /* El mapa incrustado ocupa el panel completo. */
 .mapa-box {
   background: linear-gradient(145deg, #194b2d, #102d1d);
@@ -945,6 +1010,46 @@ h6 {
   border-radius: 10px;
   background: #173523;
   border: 0;
+}
+
+.punto-map-marker {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+}
+
+.punto-map-marker span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  transform: rotate(-45deg);
+  border: 2px solid #eaf5ed;
+  border-radius: 50% 50% 50% 0;
+  background: #238b49;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.punto-map-marker--nearest span {
+  background: #d3a82e;
+  color: #17231a;
+}
+
+.leaflet-popup-content {
+  min-width: 180px;
+}
+
+.leaflet-popup-content p {
+  margin: 0.45rem 0;
+}
+
+.leaflet-popup-content a {
+  color: #237b43;
+  font-weight: 700;
 }
 
 /* Alinea el título y el total de ubicaciones cargadas desde el API. */
@@ -967,7 +1072,6 @@ h6 {
 }
 
 .puntos-nearest-button {
-  margin-bottom: 1.25rem;
   padding: 0.75rem 1rem;
   border: 1px solid rgba(165, 214, 177, 0.45);
   border-radius: 0.75rem;

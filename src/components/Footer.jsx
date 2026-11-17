@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
+import ecopilotLogo from "../assets/ecopilot log.png";
+
 const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="footer-content">
+<<<<<<< HEAD
         <section className="footer-social-section" aria-labelledby="footer-about-heading">
           {/* Presenta el título con la tipografía global, encima de los iconos sociales. */}
           <h2 className="footer-section-title" id="footer-about-heading">Sobre nosotros:</h2>
@@ -67,6 +71,32 @@ const Footer = () => {
             <li>Alejandro</li>
           </ul>
         </section>
+=======
+        <div className="footer-column branding">
+          <div className="footer-logo">
+            <img src={ecopilotLogo} alt="" />
+            <h2>Eco-Pilot</h2>
+          </div>
+          <p className="footer-description">
+            Se el piloto del planeta. Juntos construimos un futuro más sostenible.
+          </p>
+        </div>
+
+        <div className="footer-column">
+          <h3>Más Sobre Nosotros</h3>
+          <Link className="footer-about-link" to="/nosotros">
+            Quiénes somos
+          </Link>
+        </div>
+
+        <div className="footer-column">
+          <h3>Información de Contacto</h3>
+          <div className="contact-email">
+            <span className="footer-icon">✉️</span>
+            <a href="mailto:ecopilot05@gmail.com">ecopilot05@gmail.com</a>
+          </div>
+        </div>
+>>>>>>> main
       </div>
 
       <div className="footer-bottom">
