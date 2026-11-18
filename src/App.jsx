@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { getCurrentUser, signIn, signOut } from "./api/auth";
+import { getCurrentUser, getMyProfile, signIn, signOut } from "./api/auth";
 import MainLayout from "./layouts/Main";
 import Home from "./pages/Home";
 import PuntosRecoleccion from "./pages/Puntosrecoleccion";
@@ -21,6 +21,12 @@ import CompletarRegistro from "./pages/CompletarRegistro";
 import Nosotros from "./pages/Nosotros";
 import RequireAuth from "./components/RequireAuth";
 
+// Usa el nombre persistido en el perfil y conserva el de la cuenta como respaldo.
+function withProfileName(user, profile) {
+  const profileName = [profile?.nombre, profile?.apellido].filter(Boolean).join(" ");
+  return profileName ? { ...user, name: profileName } : user;
+}
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +37,16 @@ function App() {
     const controller = new AbortController();
 
     getCurrentUser({ signal: controller.signal })
-      .then(setUser)
+      .then(async (currentUser) => {
+        if (!currentUser) {
+          setUser(null);
+          return;
+        }
+
+        setUser(currentUser);
+        const { profile } = await getMyProfile({ signal: controller.signal });
+        setUser(withProfileName(currentUser, profile));
+      })
       .catch((requestError) => {
         if (requestError.name !== "AbortError") {
           setError(requestError.message);
@@ -49,9 +64,11 @@ function App() {
   // Actualiza el usuario local después de autenticarlo con Laravel.
   async function login(credentials) {
     const authenticatedUser = await signIn(credentials);
-    setUser(authenticatedUser);
+    const { profile } = await getMyProfile();
+    const displayUser = withProfileName(authenticatedUser, profile);
+    setUser(displayUser);
     setError("");
-    return authenticatedUser;
+    return displayUser;
   }
 
   // Limpia la sesión local después de cerrarla en Laravel.
@@ -61,8 +78,15 @@ function App() {
     setError("");
   }
 
+  // Actualiza el saludo después de que la vista guarde el perfil en la API.
+  function updateProfileName(profile) {
+    setUser((currentUser) => (
+      currentUser ? withProfileName(currentUser, profile) : currentUser
+    ));
+  }
+
   // Comparte los datos de sesión con los componentes que los necesitan.
-  const auth = { user, loading, error, login, logout };
+  const auth = { user, loading, error, login, logout, updateProfileName };
 
   return (
     <BrowserRouter>
@@ -82,7 +106,7 @@ function App() {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/comunidad" element={<Navigate to="/chatbot" replace />} />
           <Route element={<RequireAuth auth={auth} />}>
-            <Route path="/perfil" element={<Perfil />} />
+            <Route path="/perfil" element={<Perfil auth={auth} />} />
             <Route path="/coleccion" element={<MiColeccion />} />
             <Route path="/chatbot" element={<Chatbot />} />
           </Route>

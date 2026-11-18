@@ -6,7 +6,7 @@ import NavigationMenu from "./NavigationMenu";
 const Navbar = ({ auth }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { user, loading, logout } = auth;
+  const { user, logout } = auth;
   const [logoutError, setLogoutError] = useState("");
   const [buscandoPuntoCercano, setBuscandoPuntoCercano] = useState(false);
 
@@ -58,7 +58,7 @@ const Navbar = ({ auth }) => {
     }
   }
 
-  const authAction = loading ? null : user ? (
+  const authAction = user ? (
     <>
       <li className="nav-user">Hola, {user.name}</li>
       <li>

@@ -71,6 +71,7 @@ const Carousel = () => {
             className={`hero-slide ${index === currentSlide ? "active" : ""}`}
             aria-hidden={index !== currentSlide}
           >
+            
             {/* El img usa el asset importado para que Vite resuelva la ruta en producción. */}
             <img className="hero-image" src={slide.image} alt="" />
             <div className="hero-overlay" />
@@ -81,6 +82,7 @@ const Carousel = () => {
             </div>
           </div>
         ))}
+        
         <button
           type="button"
           className="slider-arrow slider-arrow--next"
