@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { getMyProfile, saveMyProfile } from "../api/auth";
 import { apiAssetUrl } from "../api/client";
+// Se integra para mostrar el ranking dentro del perfil.
+import Ranking from "./Ranking";
+// Se integra para mostrar materiales reciclables dentro del perfil.
+import Reciclaje from "./Reciclaje";
 
-export default function Perfil() {
+export default function Perfil({ auth }) {
   const [perfil, setPerfil] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -61,6 +65,7 @@ export default function Perfil() {
     }));
   }
 
+  // Persiste los datos editados del perfil mediante la API existente.
   async function guardarPerfil(event) {
     event.preventDefault();
     setGuardando(true);
@@ -80,6 +85,7 @@ export default function Perfil() {
     try {
       const datosActualizados = await saveMyProfile(datos);
       setPerfil(datosActualizados);
+      auth.updateProfileName(datosActualizados.profile);
       setFotoNoDisponible(false);
       setForm((actual) => ({ ...actual, foto_perfil: null }));
       setFileInputKey((key) => key + 1);
@@ -152,8 +158,9 @@ export default function Perfil() {
               {perfil.profile ? "Editar mi perfil" : "Completar mi perfil"}
             </h2>
             <form className="profile-form" onSubmit={guardarPerfil}>
+              {/* Este nombre se guarda junto con el perfil al enviar el formulario. */}
               <label>
-                Nombre
+                Nombre del perfil
                 <input
                   name="nombre"
                   value={form.nombre}
