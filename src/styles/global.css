@@ -363,7 +363,7 @@ h6 {
 
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1.2fr 1fr 0.8fr;
   align-items: start;
   gap: 2rem;
   max-width: 1280px;
@@ -372,9 +372,9 @@ h6 {
 
 .footer-column {
   display: grid;
-  justify-items: center;
+  justify-items: start;
   gap: 1rem;
-  text-align: center;
+  text-align: left;
 }
 
 .footer-description {
@@ -407,8 +407,15 @@ h6 {
 
 .footer-social-section {
   display: grid;
-  justify-items: center;
-  gap: 1rem;
+  justify-items: start;
+  gap: 0.9rem;
+}
+
+.footer-contact {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
 }
 
 .footer-section-title {
@@ -418,22 +425,20 @@ h6 {
   font-size: clamp(1.15rem, 2.5vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  text-align: center;
+  text-align: left;
 }
 
 .footer-shortcuts {
-  /* Centra y distribuye los enlaces circulares de redes sociales. */
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .footer-shortcuts a {
-  /* Da a cada red un botón circular acorde con la paleta verde del aplicativo. */
   display: grid;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   place-items: center;
   border: 1px solid rgba(165, 214, 177, 0.45);
   border-radius: 50%;
@@ -469,85 +474,52 @@ h6 {
   stroke-width: 1.8;
 }
 
+.footer-shortcuts .footer-icon-facebook {
+  fill: currentColor;
+  stroke: none;
+}
+
 .footer-shortcuts .footer-icon-fill {
-  /* Rellena el punto de Instagram para completar la forma de su icono. */
   fill: currentColor;
   stroke: none;
 }
 
 .footer-authors {
-  /* Ordena el título y las etiquetas de autores como un bloque centrado. */
   display: grid;
-  justify-items: center;
-  gap: 1rem;
+  justify-items: start;
+  gap: 0.75rem;
 }
 
 .footer-author-list {
-  /* Permite que las etiquetas se distribuyan y envuelvan en espacios reducidos. */
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .footer-author-list li {
-  /* Da a cada nombre una etiqueta suave con un acento verde del proyecto. */
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.6rem 1rem;
-  border: 1px solid rgba(165, 214, 177, 0.2);
-  border-radius: 999px;
-  background: linear-gradient(145deg, rgba(114, 170, 126, 0.16), rgba(114, 170, 126, 0.06));
-  box-shadow: inset 0 1px 0 rgba(226, 239, 228, 0.06);
-  color: #e2ebe4;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.footer-about-link {
-  display: inline-block;
-  color: #b7c2ba;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: color 0.18s ease, transform 0.18s ease;
-}
-
-.footer-about-link:hover {
-  transform: translateX(3px);
-  color: #b5dfbd;
-}
-
-.footer-about-link:focus-visible {
-  border-radius: 3px;
-  outline: 2px solid #72d58f;
-  outline-offset: 4px;
+  color: #aab8af;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .contact-email {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.6rem 1rem;
-  border: 1px solid rgba(165, 214, 177, 0.2);
-  border-radius: 999px;
-  background: linear-gradient(145deg, rgba(114, 170, 126, 0.16), rgba(114, 170, 126, 0.06));
-  box-shadow: inset 0 1px 0 rgba(226, 239, 228, 0.06);
-  color: #e2ebe4;
-  font-size: 0.95rem;
-  font-weight: 600;
+  color: #aab8af;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.footer-author-list li::before {
-  /* Añade un punto decorativo para reforzar la lectura de cada nombre. */
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background: #72d58f;
-  content: "";
+.contact-email:hover {
+  color: #a5e9b7;
+}
+
+.contact-email:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid #72d58f;
+  outline-offset: 4px;
 }
 
 .footer-bottom {
@@ -577,6 +549,12 @@ h6 {
   display: grid;
   justify-items: end;
   gap: 0.75rem;
+  transition: opacity 0.2s ease;
+}
+
+.floating-chatbot--menu-overlap {
+  opacity: 0.16;
+  pointer-events: none;
 }
 
 .floating-chatbot__welcome {
@@ -1127,11 +1105,7 @@ h6 {
   }
 
   .footer-author-list {
-    gap: 0.55rem;
-  }
-
-  .footer-author-list li {
-    padding: 0.55rem 0.85rem;
+    gap: 0.35rem 0.8rem;
   }
 
   .footer-bottom {
@@ -1646,6 +1620,199 @@ h6 {
   margin: 0;
   color: #b5c9ba;
   line-height: 1.6;
+}
+
+.about-page {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.about-page__purpose {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-page__purpose-intro,
+.about-page__purpose-card {
+  position: relative;
+  min-height: 220px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  overflow: hidden;
+  border: 1px solid rgba(114, 213, 143, 0.18);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgba(35, 69, 50, 0.78), rgba(21, 29, 24, 0.9));
+}
+
+.about-page__purpose-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(145deg, #28583a, #193526);
+}
+
+.about-page__eyebrow {
+  color: #8cdda0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.about-page__purpose-intro h2,
+.about-page__purpose-card h2,
+.about-page__section-heading h2,
+.about-page__project h2 {
+  margin: 0.65rem 0;
+  color: #f2f7f3;
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+}
+
+.about-page__purpose-intro p,
+.about-page__purpose-card p,
+.about-page__section-heading p,
+.about-page__project p {
+  margin: 0;
+  color: #c1d0c5;
+  line-height: 1.7;
+}
+
+.about-page__number {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border-radius: 50%;
+  background: rgba(114, 213, 143, 0.14);
+  color: #8cdda0;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.about-page__community {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.about-page__section-heading {
+  max-width: 700px;
+}
+
+.about-page__gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-page__gallery figure {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(114, 213, 143, 0.18);
+  border-radius: 1rem;
+  background: #151d18;
+}
+
+.about-page__gallery img {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 22vw, 270px);
+  object-fit: cover;
+}
+
+.about-page__gallery figcaption {
+  padding: 1rem 1.1rem;
+  color: #dce8df;
+  line-height: 1.5;
+}
+
+.about-page__project {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.8fr);
+  gap: 2rem;
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgba(114, 213, 143, 0.2);
+  border-radius: 1rem;
+  background: rgba(17, 24, 20, 0.8);
+}
+
+.about-page__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  color: #8cdda0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.about-page__link:hover {
+  color: #b5e9c0;
+}
+
+.about-page__link:focus-visible,
+.about-page__project-links a:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid #72d58f;
+  outline-offset: 4px;
+}
+
+.about-page__project-links {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.about-page__project-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.7rem;
+  background: rgba(69, 185, 107, 0.1);
+  color: #eaf3ed;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.about-page__project-links a:hover {
+  background: rgba(69, 185, 107, 0.2);
+  color: #a5e9b7;
+}
+
+.about-page__project-links a span {
+  color: #8cdda0;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 760px) {
+  .about-page__purpose {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page__purpose-intro,
+  .about-page__purpose-card {
+    min-height: auto;
+  }
+
+  .about-page__number {
+    margin-bottom: 0.75rem;
+  }
+
+  .about-page__gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page__gallery img {
+    height: 230px;
+  }
+
+  .about-page__project {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 /* Identifica páginas y secciones con el verde de marca. */

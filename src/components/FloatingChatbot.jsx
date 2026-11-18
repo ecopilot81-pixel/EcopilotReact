@@ -1,14 +1,66 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import titiAvatar from "../assets/titi-cabeciblanco.png";
 
 const DRAG_THRESHOLD = 5;
+
+function rectanglesOverlap(first, second) {
+  return (
+    first.left <= second.right &&
+    first.right >= second.left &&
+    first.top <= second.bottom &&
+    first.bottom >= second.top
+  );
+}
 
 export default function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [overlapsMenu, setOverlapsMenu] = useState(false);
+  const chatbotRef = useRef(null);
   const dragStart = useRef(null);
   const didDrag = useRef(false);
+
+  const updateMenuOverlap = useCallback(() => {
+    const menu = document.querySelector(".navigation-menu__dropdown");
+    const chatbot = chatbotRef.current;
+    const overlap = Boolean(
+      menu &&
+      chatbot &&
+      !menu.hidden &&
+      rectanglesOverlap(menu.getBoundingClientRect(), chatbot.getBoundingClientRect())
+    );
+
+    setOverlapsMenu((current) => (current === overlap ? current : overlap));
+  }, []);
+
+  useEffect(() => {
+    const menu = document.querySelector(".navigation-menu__dropdown");
+    const chatbot = chatbotRef.current;
+    if (!menu || !chatbot) return undefined;
+
+    const menuObserver = new MutationObserver(updateMenuOverlap);
+    const resizeObserver = new ResizeObserver(updateMenuOverlap);
+    menuObserver.observe(menu, { attributes: true, attributeFilter: ["hidden"] });
+    resizeObserver.observe(menu);
+    resizeObserver.observe(chatbot);
+    window.addEventListener("resize", updateMenuOverlap);
+    window.addEventListener("scroll", updateMenuOverlap, true);
+    menu.addEventListener("animationend", updateMenuOverlap);
+    updateMenuOverlap();
+
+    return () => {
+      menuObserver.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateMenuOverlap);
+      window.removeEventListener("scroll", updateMenuOverlap, true);
+      menu.removeEventListener("animationend", updateMenuOverlap);
+    };
+  }, [updateMenuOverlap]);
+
+  useEffect(() => {
+    updateMenuOverlap();
+  }, [position, isOpen, updateMenuOverlap]);
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -94,7 +146,12 @@ export default function FloatingChatbot() {
     : undefined;
 
   return (
-    <aside className="floating-chatbot" style={widgetPosition} aria-label="Chat con Tití">
+    <aside
+      ref={chatbotRef}
+      className={`floating-chatbot${overlapsMenu ? " floating-chatbot--menu-overlap" : ""}`}
+      style={widgetPosition}
+      aria-label="Chat con Tití"
+    >
       {isOpen && (
         <section className="floating-chatbot__panel" aria-labelledby="floating-chatbot-title">
           <header className="floating-chatbot__header">
